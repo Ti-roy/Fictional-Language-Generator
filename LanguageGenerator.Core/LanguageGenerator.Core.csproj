@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B9E20BA3-AFB5-4276-A166-751F17B932D9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LanguageGenerator.Core</RootNamespace>
+    <AssemblyName>LanguageGenerator.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbstractFactory\IAbstractFactory.cs" />
+    <Compile Include="Constructor\ISyntactycUnitConstructor.cs" />
+    <Compile Include="Constructor\SyntacticUnitResult\SyntacticUnitResultGeneric.cs" />
+    <Compile Include="Constructor\SyntacticUnitResultScale\SyntacticUnitResultScale.cs" />
+    <Compile Include="Constructor\SyntactycUnitConstructor.cs" />
+    <Compile Include="FrequencyDictionary\FrequencyDictionary.cs" />
+    <Compile Include="FrequencyDictionary\IFrequencyDictionary.cs" />
+    <Compile Include="Constructor\SyntacticUnitResult\ISyntacticUnitResult.cs" />
+    <Compile Include="Constructor\SyntacticUnitResultScale\ISyntacticUnitResultScale.cs" />
+    <Compile Include="Repository\ISyntacticRepository.cs" />
+    <Compile Include="Repository\SyntacticRepository.cs" />
+    <Compile Include="SyntacticProperty\BaseProperty.cs" />
+    <Compile Include="SyntacticProperty\ParentProperty\IParentProperty.cs" />
+    <Compile Include="SyntacticProperty\ParentProperty\ParentProperty.cs" />
+    <Compile Include="SyntacticProperty\RootProperty\RootProperty.cs" />
+    <Compile Include="SyntacticUnit\BasicSyntacticUnits\BasicSyntacticUnitsFactory.cs" />
+    <Compile Include="SyntacticUnit\BasicSyntacticUnits\IBasicSyntacticUnitsFactory.cs" />
+    <Compile Include="SyntacticUnit\ParentSU\IParentSU.cs" />
+    <Compile Include="SyntacticProperty\IProperty.cs" />
+    <Compile Include="SyntacticProperty\RootProperty\IRootProperty.cs" />
+    <Compile Include="SyntacticUnit\ParentSU\ParentSU.cs" />
+    <Compile Include="SyntacticUnit\RootSU\IRootSU.cs" />
+    <Compile Include="SyntacticUnit\ISyntacticUnit.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SyntacticUnit\RootSU\RootSU.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
