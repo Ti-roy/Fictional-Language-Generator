@@ -40,6 +40,11 @@ namespace LanguageGenerator.Core.Repository
         }
 
 
+        public SyntacticRepository(Random random) : this(random, new BasicSyntacticUnitsFactory(), new List<IProperty>(), new List<ISyntacticUnit>())
+        {
+        }
+
+
         public ISyntacticUnit GetRandomSyntacticUnitsOfProperty(IProperty property)
         {
             IRootProperty rootProperty = property as IRootProperty;
@@ -59,8 +64,8 @@ namespace LanguageGenerator.Core.Repository
         public bool DoesPropertyCanStartFrom(IProperty propertyThatStarts, IProperty propertyToStartFrom)
         {
             return propertyThatStarts.StartsWithFrequencyFrom.Keys.Any(
-                aProperty => aProperty == _basicSyntacticUnitsFactory.GetSyntacticUnitForAny() ||
-                             aProperty == propertyToStartFrom);
+                aProperty => aProperty.Equals(_basicSyntacticUnitsFactory.GetSyntacticUnitForAny()) ||
+                             aProperty.Equals(propertyToStartFrom));
         }
 
 
@@ -93,7 +98,7 @@ namespace LanguageGenerator.Core.Repository
                 index++;
                 randomNumberInRangeOfTotal -= syntacticUnits[index].Frequency;
             }
-            return syntacticUnits[index];
+            return syntacticUnits[index]; //-V3106
         }
 
 

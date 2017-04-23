@@ -17,7 +17,6 @@ namespace LanguageGenerator.Core.SyntacticProperty.ParentProperty
             new List<IParentSU>(),
             new List<IProperty>())
         {
-            PropertyName = propertyName;
         }
 
 
@@ -27,7 +26,6 @@ namespace LanguageGenerator.Core.SyntacticProperty.ParentProperty
             IList<IParentSU> parentSyntacticUnits,
             IList<IProperty> mustContainProperties) : base(propertyName, startsWithFrequencyFrom)
         {
-            PropertyName = propertyName;
             ParentSyntacticUnits = parentSyntacticUnits;
             MustContainProperties = mustContainProperties;
         }
@@ -35,7 +33,6 @@ namespace LanguageGenerator.Core.SyntacticProperty.ParentProperty
 
         public ParentProperty(string propertyName) : this(propertyName, new List<IParentSU>(), new List<IProperty>())
         {
-            PropertyName = propertyName;
         }
 
 
@@ -44,7 +41,6 @@ namespace LanguageGenerator.Core.SyntacticProperty.ParentProperty
             IList<IParentSU> parentSyntacticUnits,
             IList<IProperty> mustContainProperties) : base(propertyName)
         {
-            PropertyName = propertyName;
             ParentSyntacticUnits = parentSyntacticUnits;
             MustContainProperties = mustContainProperties;
         }

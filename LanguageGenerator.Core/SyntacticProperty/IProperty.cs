@@ -1,11 +1,12 @@
-﻿using LanguageGenerator.Core.FrequencyDictionary;
+﻿using System;
+using LanguageGenerator.Core.FrequencyDictionary;
 
 
 namespace LanguageGenerator.Core.SyntacticProperty
 {
-    public interface IProperty
+    public interface IProperty :IEquatable<IProperty>
     {
-        string PropertyName { get; set; }
-        IFrequencyDictionary<IProperty> StartsWithFrequencyFrom { get; set; }
+        string PropertyName { get; }
+        IFrequencyDictionary<IProperty> StartsWithFrequencyFrom { get;  }
     }
 }

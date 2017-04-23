@@ -48,6 +48,9 @@
   <ItemGroup>
     <Compile Include="BaseTestClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests_For_Comperison_Of_IProperty.cs" />
+    <Compile Include="Tests_Of_ParentProperty.cs" />
+    <Compile Include="Tests_Of_RootProperty.cs" />
     <Compile Include="Tests_SyntacticRepository.cs" />
     <Compile Include="Tests_For_IFrequencyDictionary.cs" />
   </ItemGroup>

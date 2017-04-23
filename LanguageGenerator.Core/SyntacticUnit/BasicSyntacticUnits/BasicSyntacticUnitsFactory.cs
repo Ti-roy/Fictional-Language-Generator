@@ -12,7 +12,7 @@ namespace LanguageGenerator.Core.SyntacticUnit.BasicSyntacticUnits
         readonly IRootProperty _propertyForAny;
 
 
-        public BasicSyntacticUnitsFactory(string propertyNameForAny, string propertyNameForStartOfConstruction)
+        public BasicSyntacticUnitsFactory(string propertyNameForAny = "Any", string propertyNameForStartOfConstruction = "StartOfConstruction")
         {
             _propertyForStartOfConstruction = new RootProperty(propertyNameForStartOfConstruction, new FrequencyDictionary<IProperty>());
             _propertyForAny = new RootProperty(propertyNameForAny, new FrequencyDictionary<IProperty>());

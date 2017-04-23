@@ -19,7 +19,7 @@ namespace LanguageGenerator.Core.AbstractFactory
         public ConcreteFactory()
         {
             _random = new Random();
-            _basicSyntacticUnitsFactory = new BasicSyntacticUnitsFactory("Any", "StartOfConstruction");
+            _basicSyntacticUnitsFactory = new BasicSyntacticUnitsFactory();
         }
 
 

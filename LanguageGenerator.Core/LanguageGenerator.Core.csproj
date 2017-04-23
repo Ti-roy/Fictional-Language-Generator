@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="AbstractFactory\IAbstractFactory.cs" />
     <Compile Include="Constructor\ISyntactycUnitConstructor.cs" />
-    <Compile Include="Constructor\SyntacticUnitResult\SyntacticUnitResultGeneric.cs" />
+    <Compile Include="Constructor\SyntacticUnitResult\SyntacticUnitResult.cs" />
     <Compile Include="Constructor\SyntacticUnitResultScale\SyntacticUnitResultScale.cs" />
     <Compile Include="Constructor\SyntactycUnitConstructor.cs" />
     <Compile Include="FrequencyDictionary\FrequencyDictionary.cs" />

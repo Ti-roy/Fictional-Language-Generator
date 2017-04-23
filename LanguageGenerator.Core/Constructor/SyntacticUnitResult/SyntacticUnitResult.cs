@@ -5,19 +5,19 @@ using LanguageGenerator.Core.SyntacticUnit;
 
 namespace LanguageGenerator.Core.Constructor.SyntacticUnitResult
 {
-    public class SyntacticUnitResultGeneric : ISyntacticUnitResult 
+    public class SyntacticUnitResult : ISyntacticUnitResult 
     {
         public ISyntacticUnit ChoosenUnit { get;  }
         public IProperty Property { get;  }
         public IList<ISyntacticUnitResult> Children { get;  }
 
 
-        public SyntacticUnitResultGeneric()
+        public SyntacticUnitResult()
         {
         }
 
 
-        public SyntacticUnitResultGeneric(ISyntacticUnit choosenUnit, IList<ISyntacticUnitResult> children) 
+        public SyntacticUnitResult(ISyntacticUnit choosenUnit, IList<ISyntacticUnitResult> children) 
         {
             Children = children;
             ChoosenUnit = choosenUnit;
