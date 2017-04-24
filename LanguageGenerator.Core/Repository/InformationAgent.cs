@@ -10,7 +10,7 @@ using LanguageGenerator.Core.SyntacticUnit.RootSU;
 
 namespace LanguageGenerator.Core.Repository
 {
-    public class SyntacticRepository : ISyntacticRepository
+    public class InformationAgent : IInformationAgent
     {
         public IList<IProperty> Properties { get; set; }
         public IList<ISyntacticUnit> SyntacticUnits { get; set; }
@@ -18,7 +18,7 @@ namespace LanguageGenerator.Core.Repository
         private IBasicSyntacticUnitsFactory _basicSyntacticUnitsFactory;
 
 
-        public SyntacticRepository(
+        public InformationAgent(
             Random random,
             IBasicSyntacticUnitsFactory basicSyntacticUnitsFactory,
             IList<IProperty> properties,
@@ -31,7 +31,7 @@ namespace LanguageGenerator.Core.Repository
         }
 
 
-        public SyntacticRepository(Random random, IBasicSyntacticUnitsFactory basicSyntacticUnitsFactory) : this(
+        public InformationAgent(Random random, IBasicSyntacticUnitsFactory basicSyntacticUnitsFactory) : this(
             random,
             basicSyntacticUnitsFactory,
             new List<IProperty>(),
@@ -40,8 +40,14 @@ namespace LanguageGenerator.Core.Repository
         }
 
 
-        public SyntacticRepository(Random random) : this(random, new BasicSyntacticUnitsFactory(), new List<IProperty>(), new List<ISyntacticUnit>())
+        public InformationAgent(Random random) : this(random, new BasicSyntacticUnitsFactory(), new List<IProperty>(), new List<ISyntacticUnit>())
         {
+        }
+
+
+        public IEnumerable<ISyntacticUnit> GetSetOfChildren(IParentSU parentSU)
+        {
+            throw new NotImplementedException();
         }
 
 

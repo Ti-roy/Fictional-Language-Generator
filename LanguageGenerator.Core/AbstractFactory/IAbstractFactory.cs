@@ -7,7 +7,7 @@ namespace LanguageGenerator.Core.AbstractFactory
 {
     public interface IAbstractFactory
     {
-        ISyntacticRepository CreateSyntacticRepository();
+        IInformationAgent CreateSyntacticRepository();
     }
 
 
@@ -23,9 +23,9 @@ namespace LanguageGenerator.Core.AbstractFactory
         }
 
 
-        public ISyntacticRepository CreateSyntacticRepository()
+        public IInformationAgent CreateSyntacticRepository()
         {
-            return new SyntacticRepository(_random, _basicSyntacticUnitsFactory);
+            return new InformationAgent(_random, _basicSyntacticUnitsFactory);
         }
     }
 }

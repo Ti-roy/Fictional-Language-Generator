@@ -24,7 +24,7 @@ namespace LanguageGenerator.Tests
         public void Does_GetPropertyWithName_Works_With_One_Property_Data()
         {
             //Arrange
-            ISyntacticRepository repo = new SyntacticRepository(Substitute.For<Random>());
+            IInformationAgent repo = new InformationAgent(Substitute.For<Random>());
             repo.Properties = new List<IProperty>();
             string testPropertyName = "TestProperty";
             //Act
@@ -38,7 +38,7 @@ namespace LanguageGenerator.Tests
         public void Does_GetPropertyWithName_Works_With_Few_Properties_Data()
         {
             //Arrange
-            ISyntacticRepository repo = new SyntacticRepository(Substitute.For<Random>());
+            IInformationAgent repo = new InformationAgent(Substitute.For<Random>());
             repo.Properties = new List<IProperty>();
             string testPropertyName1 = "TestProperty1";
             string testPropertyName2 = "TestProperty2";
@@ -54,7 +54,7 @@ namespace LanguageGenerator.Tests
         public void Does_GetPropertyWithName_Throws_Exception_When_Nothing_Found()
         {
             //Arrange
-            ISyntacticRepository repo = new SyntacticRepository(Substitute.For<Random>());
+            IInformationAgent repo = new InformationAgent(Substitute.For<Random>());
             repo.Properties = new List<IProperty>();
             //Act Assert
             Assert.Throws<InvalidOperationException>(() => { repo.GetPropertyWithName("a name"); });
@@ -64,7 +64,7 @@ namespace LanguageGenerator.Tests
         [Test]
         public void Does_DoesPropertyCanStartFrom_Returns_False_On_EmptyProperty_Data()
         {
-            ISyntacticRepository repo = new SyntacticRepository(Substitute.For<Random>());
+            IInformationAgent repo = new InformationAgent(Substitute.For<Random>());
             IProperty propertyWithCanStartFromCollection = GetPropertyWith_CanStartFrom_Dictionary(new List<IProperty>());
             //Act 
             bool canStart = repo.DoesPropertyCanStartFrom(propertyWithCanStartFromCollection, Substitute.For<IProperty>());
@@ -93,7 +93,7 @@ namespace LanguageGenerator.Tests
         [Test]
         public void Does_DoesPropertyCanStartFrom_Works_If_Property_Includes_aProperty_in_CanStartFrom_Collection()
         {
-            ISyntacticRepository repo = new SyntacticRepository(Substitute.For<Random>());
+            IInformationAgent repo = new InformationAgent(Substitute.For<Random>());
             IProperty startFromThisProperty = Substitute.For<IProperty>();
             IProperty propertyWithCanStartFromCollection = GetPropertyWith_CanStartFrom_Dictionary(
                 new List<IProperty>() {startFromThisProperty, Substitute.For<IProperty>(), Substitute.For<IProperty>()});
@@ -107,7 +107,7 @@ namespace LanguageGenerator.Tests
         [Test]
         public void Does_DoesPropertyCanStartFrom_Dont_Work_If_Property_Doesnt_Include_aProperty_in_CanStartFrom_Collection()
         {
-            ISyntacticRepository repo = new SyntacticRepository(Substitute.For<Random>());
+            IInformationAgent repo = new InformationAgent(Substitute.For<Random>());
             IProperty startFromThisProperty = Substitute.For<IProperty>();
             IProperty propertyWithCanStartFromCollection =
                 GetPropertyWith_CanStartFrom_Dictionary(new List<IProperty>() {Substitute.For<IProperty>(), Substitute.For<IProperty>()});

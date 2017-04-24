@@ -1,74 +1,95 @@
 ﻿using System;
 using System.Collections.Generic;
-using LanguageGenerator.Core.Constructor.SyntacticUnitResult;
+using System.Linq;
 using LanguageGenerator.Core.Repository;
 using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticProperty.ParentProperty;
 using LanguageGenerator.Core.SyntacticUnit;
 using LanguageGenerator.Core.SyntacticUnit.BasicSyntacticUnits;
-using LanguageGenerator.Core.SyntacticUnit.RootSU;
 
 
 namespace LanguageGenerator.Core.Constructor
 {
-    public class SyntactycUnitConstructor<TBasicUnits> : ISyntactycUnitConstructor where TBasicUnits : IBasicSyntacticUnitsFactory, new()
+    public class SyntactycUnitConstructor : ISyntactycUnitConstructor
     {
-        public ISyntacticRepository Repository { get; set; }
+        public IInformationAgent InformationAgent { get; }
         IBasicSyntacticUnitsFactory BasicSyntacticUnitsFactory { get; }
 
 
-        public SyntactycUnitConstructor()
+        public SyntactycUnitConstructor(IBasicSyntacticUnitsFactory basicSyntacticUnitsFactory, IInformationAgent informationAgent)
         {
-            BasicSyntacticUnitsFactory = new TBasicUnits();
+            BasicSyntacticUnitsFactory = basicSyntacticUnitsFactory;
+            InformationAgent = informationAgent;
+        }
+
+
+        public SyntactycUnitConstructor(IInformationAgent repository) : this(new BasicSyntacticUnitsFactory(), repository)
+        {
+        }
+
+
+        public SyntactycUnitConstructor(Random rnd) : this(new BasicSyntacticUnitsFactory(), new InformationAgent(rnd))
+        {
         }
 
 
         public string GetStringOfProperty(string propertyName)
         {
-            return GetStringOfProperty(Repository.GetPropertyWithName(propertyName));
+            throw new System.NotImplementedException();
         }
 
 
         public string GetStringOfProperty(IProperty property)
         {
-            IRootSU startOfConstruction = BasicSyntacticUnitsFactory.GetSyntacticUnitForStartOfConstraction();
-            CheckIfPropertyCanBeginWithStartOfConstruction(property, startOfConstruction);
-
-
-            List<ISyntacticUnit> constructionScale = new List<ISyntacticUnit>();
-            constructionScale.Add(startOfConstruction);
-            constructionScale.Add(Repository.GetRandomSyntacticUnitsOfProperty(property));
-
-
-            return "";
+            throw new System.NotImplementedException();
         }
 
 
-        private void CheckIfPropertyCanBeginWithStartOfConstruction(IProperty property, IRootSU startOfConstruction)
+        private void CheckIfPropertyCanBeginWithStartOfConstruction(IProperty property)
         {
-            if (!Repository.DoesPropertyCanStartFrom(property,startOfConstruction.Property)) throw new ArgumentException("The property can`t start from " + startOfConstruction);
+            IProperty startOfConstructionProperty = BasicSyntacticUnitsFactory.GetSyntacticUnitForStartOfConstraction().Property;
+            if (!InformationAgent.DoesPropertyCanStartFrom(property, startOfConstructionProperty))
+                throw new ArgumentException("The property can`t start from " + startOfConstructionProperty.PropertyName + ".");
         }
 
 
-        private IParentSU GetFirstNotRootProperty(List<ISyntacticUnit> constructionScale)
+        private ISyntacticUnitResult GetFirstParentSU(IList<ISyntacticUnitResult> constructionScale)
         {
-            foreach (ISyntacticUnit syntacticUnit in constructionScale)
+            foreach (ISyntacticUnitResult syntacticUnit in constructionScale)
             {
-                if (syntacticUnit is IParentSU) return (IParentSU) syntacticUnit;
+                if (syntacticUnit.ChoosenUnit is IParentSU) return syntacticUnit;
             }
             return null;
         }
 
 
-        public ISyntacticUnitResultScale GetResultScaleOfProperty(string propertyName)
+        public ISyntacticUnitResultScheme GetResultScaleOfProperty(string propertyName)
         {
             throw new System.NotImplementedException();
         }
 
 
-        public ISyntacticUnitResultScale GetResultScaleOfProperty(IProperty property)
+        public ISyntacticUnitResultScheme GetResultScaleOfProperty(IProperty property)
         {
+            SyntacticUnitResultScheme scheme = new SyntacticUnitResultScheme();
+            scheme.ResultScale.Add(new SyntacticUnitResult(BasicSyntacticUnitsFactory.GetSyntacticUnitForStartOfConstraction()));
+
+            CheckIfPropertyCanBeginWithStartOfConstruction(property);
+
+            scheme.ResultScale.Add(new SyntacticUnitResult(InformationAgent.GetRandomSyntacticUnitsOfProperty(property)));
+
+            ISyntacticUnitResult parentSUResult = GetFirstParentSU(scheme.ResultScale);
+            if (parentSUResult != null)
+                parentSUResult.Children = CreateChildrenSyntacticUnitsOfParent( parentSUResult).ToList();
             throw new System.NotImplementedException();
+        }
+
+
+        private IEnumerable<ISyntacticUnitResult> CreateChildrenSyntacticUnitsOfParent(ISyntacticUnitResult parentSUResult)
+        {
+            List<ISyntacticUnitResult> collectionOfChildrenResults = InformationAgent.GetSetOfChildren((IParentSU)parentSUResult.ChoosenUnit).Select(SU=>new SyntacticUnitResult(SU,parentSUResult)).ToList<ISyntacticUnitResult>();
+            parentSUResult.Children = collectionOfChildrenResults;
+            return collectionOfChildrenResults;
         }
 
 

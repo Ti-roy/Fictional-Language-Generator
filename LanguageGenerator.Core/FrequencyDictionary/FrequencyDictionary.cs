@@ -17,6 +17,13 @@ namespace LanguageGenerator.Core.FrequencyDictionary
         }
 
 
+        public T GetRandomElementBasedOnFrequency(Random random)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
         public IEnumerator<KeyValuePair<T, int>> GetEnumerator()
         {
             return _valueAndFrequency.GetEnumerator();
