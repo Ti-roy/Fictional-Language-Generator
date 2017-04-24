@@ -19,9 +19,32 @@ namespace LanguageGenerator.Core.FrequencyDictionary
 
         public T GetRandomElementBasedOnFrequency(Random random)
         {
-            throw new NotImplementedException();
+            List<KeyValuePair<T, int>> orderLockedDictionary = _valueAndFrequency
+                .Select(keyValuePair => new KeyValuePair<T, int>(keyValuePair.Key, keyValuePair.Value))
+                .ToList();
+            int randomNumberInRangeOfTotal = RandomNumberInRangeOfTotal(random, orderLockedDictionary);
+            return RandomElementBasedOnFrequency(randomNumberInRangeOfTotal, orderLockedDictionary);
         }
 
+
+        private int RandomNumberInRangeOfTotal(Random random, List<KeyValuePair<T, int>> orderLockedDictionary)
+        {
+            int totalFrequency = orderLockedDictionary.Sum(keyValuePair => keyValuePair.Value);
+            if (totalFrequency < 1) throw new InvalidOperationException("Total frequency of frequencyDictionary is 0.");
+            int randomNumberInRangeOfTotal = random.Next(1, totalFrequency);
+            return randomNumberInRangeOfTotal;
+        }
+
+
+        private T RandomElementBasedOnFrequency(int randomNumberInRangeOfTotal, List<KeyValuePair<T, int>> orderLockedDictionary)
+        {
+            int leftFrequency = randomNumberInRangeOfTotal;
+            for (int index = 0;; index++)
+            {
+                leftFrequency -= orderLockedDictionary[index].Value;
+                if (leftFrequency <= 0) return orderLockedDictionary[index].Key;
+            }
+        }
 
 
         public IEnumerator<KeyValuePair<T, int>> GetEnumerator()
@@ -86,8 +109,7 @@ namespace LanguageGenerator.Core.FrequencyDictionary
 
         public void Add(T key, int value = 1000)
         {
-            if (value < 0)
-                throw new InvalidOperationException("Negative values are not allowed as frequency.");
+            if (value < 0) throw new InvalidOperationException("Negative values are not allowed as frequency.");
             _valueAndFrequency.Add(key, value);
         }
 

@@ -1,4 +1,4 @@
-﻿using LanguageGenerator.Core.Repository;
+﻿using LanguageGenerator.Core.InformationAgent;
 using LanguageGenerator.Core.SyntacticProperty;
 
 

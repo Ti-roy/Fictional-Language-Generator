@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using LanguageGenerator.Core.FrequencyDictionary;
 using LanguageGenerator.Core.SyntacticProperty;
-using LanguageGenerator.Core.SyntacticProperty.ParentProperty;
 
 
 namespace LanguageGenerator.Core.SyntacticUnit
@@ -10,5 +10,6 @@ namespace LanguageGenerator.Core.SyntacticUnit
     {
         IFrequencyDictionary<IProperty> PossibleChildren { get; }
         IFrequencyDictionary<int> ChildrenAmount { get; }
+        IEnumerable<ISyntacticUnit> GetSetOfChildren();
     }
 }

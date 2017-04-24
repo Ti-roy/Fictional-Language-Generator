@@ -1,5 +1,5 @@
 ﻿using System;
-using LanguageGenerator.Core.Repository;
+using LanguageGenerator.Core.InformationAgent;
 using LanguageGenerator.Core.SyntacticUnit.BasicSyntacticUnits;
 
 
@@ -25,7 +25,7 @@ namespace LanguageGenerator.Core.AbstractFactory
 
         public IInformationAgent CreateSyntacticRepository()
         {
-            return new InformationAgent(_random, _basicSyntacticUnitsFactory);
+            return new InformationAgent.InformationAgent(_random, _basicSyntacticUnitsFactory);
         }
     }
 }

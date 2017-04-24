@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LanguageGenerator.Core.Repository;
+using LanguageGenerator.Core.InformationAgent;
 using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticProperty.ParentProperty;
 using LanguageGenerator.Core.SyntacticUnit;
@@ -28,7 +28,7 @@ namespace LanguageGenerator.Core.Constructor
         }
 
 
-        public SyntactycUnitConstructor(Random rnd) : this(new BasicSyntacticUnitsFactory(), new InformationAgent(rnd))
+        public SyntactycUnitConstructor(Random rnd) : this(new BasicSyntacticUnitsFactory(), new InformationAgent.InformationAgent(rnd))
         {
         }
 
@@ -81,7 +81,7 @@ namespace LanguageGenerator.Core.Constructor
             ISyntacticUnitResult parentSUResult = GetFirstParentSU(scheme.ResultScale);
             if (parentSUResult != null)
                 parentSUResult.Children = CreateChildrenSyntacticUnitsOfParent( parentSUResult).ToList();
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
 

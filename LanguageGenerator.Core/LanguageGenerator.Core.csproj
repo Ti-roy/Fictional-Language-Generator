@@ -49,8 +49,8 @@
     <Compile Include="FrequencyDictionary\IFrequencyDictionary.cs" />
     <Compile Include="Constructor\SyntacticUnitResult\ISyntacticUnitResult.cs" />
     <Compile Include="Constructor\SyntacticUnitResultScheme\ISyntacticUnitResultScheme.cs" />
-    <Compile Include="Repository\IInformationAgent.cs" />
-    <Compile Include="Repository\InformationAgent.cs" />
+    <Compile Include="InformationAgent\IInformationAgent.cs" />
+    <Compile Include="InformationAgent\InformationAgent.cs" />
     <Compile Include="SyntacticProperty\BaseProperty.cs" />
     <Compile Include="SyntacticProperty\ParentProperty\IParentProperty.cs" />
     <Compile Include="SyntacticProperty\ParentProperty\ParentProperty.cs" />

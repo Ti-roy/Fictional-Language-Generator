@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LanguageGenerator.Core.FrequencyDictionary;
-using LanguageGenerator.Core.Repository;
+using LanguageGenerator.Core.InformationAgent;
 using LanguageGenerator.Core.SyntacticProperty;
 using NUnit.Framework;
 using NSubstitute;

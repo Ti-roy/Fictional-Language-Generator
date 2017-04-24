@@ -8,7 +8,7 @@ using LanguageGenerator.Core.SyntacticUnit.BasicSyntacticUnits;
 using LanguageGenerator.Core.SyntacticUnit.RootSU;
 
 
-namespace LanguageGenerator.Core.Repository
+namespace LanguageGenerator.Core.InformationAgent
 {
     public class InformationAgent : IInformationAgent
     {
@@ -45,12 +45,7 @@ namespace LanguageGenerator.Core.Repository
         }
 
 
-        public IEnumerable<ISyntacticUnit> GetSetOfChildren(IParentSU parentSU)
-        {
-            throw new NotImplementedException();
-        }
-
-
+        //TODO: GetRandomSyntacticUnitsOfProperty remove it
         public ISyntacticUnit GetRandomSyntacticUnitsOfProperty(IProperty property)
         {
             IRootProperty rootProperty = property as IRootProperty;
