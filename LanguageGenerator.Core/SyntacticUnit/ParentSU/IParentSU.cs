@@ -10,6 +10,6 @@ namespace LanguageGenerator.Core.SyntacticUnit
     {
         IFrequencyDictionary<IProperty> PossibleChildren { get; }
         IFrequencyDictionary<int> ChildrenAmount { get; }
-        IEnumerable<ISyntacticUnit> GetSetOfChildren();
+        IEnumerable<ISyntacticUnit> GetSetOfChildren(Random random);
     }
 }

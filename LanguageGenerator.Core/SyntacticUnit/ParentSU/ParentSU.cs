@@ -1,4 +1,6 @@
-﻿using LanguageGenerator.Core.FrequencyDictionary;
+﻿using System;
+using System.Collections.Generic;
+using LanguageGenerator.Core.FrequencyDictionary;
 using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticProperty.ParentProperty;
 
@@ -14,7 +16,13 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
         public IFrequencyDictionary<IProperty> PossibleChildren { get; }
         public IFrequencyDictionary<int> ChildrenAmount { get; }
 
-        
+
+        public IEnumerable<ISyntacticUnit> GetSetOfChildren(Random random)
+        {
+            throw new NotImplementedException();
+        }
+
+
         public ParentSU(
             int frequency,
             IParentProperty parentProperty,
@@ -23,6 +31,7 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
         {
             Frequency = frequency;
             Property = parentProperty;
+            parentProperty.ParentSyntacticUnits.Add(this,frequency);
             PossibleChildren = possibleChildren;
             ChildrenAmount = childrenAmount;
         }

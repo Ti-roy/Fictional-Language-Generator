@@ -14,6 +14,7 @@ namespace LanguageGenerator.Core.Constructor
     {
         public IInformationAgent InformationAgent { get; }
         IBasicSyntacticUnitsFactory BasicSyntacticUnitsFactory { get; }
+        Random _random;
 
 
         public SyntactycUnitConstructor(IBasicSyntacticUnitsFactory basicSyntacticUnitsFactory, IInformationAgent informationAgent)
@@ -28,8 +29,9 @@ namespace LanguageGenerator.Core.Constructor
         }
 
 
-        public SyntactycUnitConstructor(Random rnd) : this(new BasicSyntacticUnitsFactory(), new InformationAgent.InformationAgent(rnd))
+        public SyntactycUnitConstructor(Random random) : this(new BasicSyntacticUnitsFactory(), new InformationAgent.InformationAgent(random))
         {
+            _random = random;
         }
 
 
@@ -79,15 +81,17 @@ namespace LanguageGenerator.Core.Constructor
             scheme.ResultScale.Add(new SyntacticUnitResult(InformationAgent.GetRandomSyntacticUnitsOfProperty(property)));
 
             ISyntacticUnitResult parentSUResult = GetFirstParentSU(scheme.ResultScale);
-            if (parentSUResult != null)
-                parentSUResult.Children = CreateChildrenSyntacticUnitsOfParent( parentSUResult).ToList();
+            if (parentSUResult != null) parentSUResult.Children = CreateChildrenSyntacticUnitsOfParent(parentSUResult).ToList();
             throw new NotImplementedException();
         }
 
 
         private IEnumerable<ISyntacticUnitResult> CreateChildrenSyntacticUnitsOfParent(ISyntacticUnitResult parentSUResult)
         {
-            List<ISyntacticUnitResult> collectionOfChildrenResults = InformationAgent.GetSetOfChildren((IParentSU)parentSUResult.ChoosenUnit).Select(SU=>new SyntacticUnitResult(SU,parentSUResult)).ToList<ISyntacticUnitResult>();
+            List<ISyntacticUnitResult> collectionOfChildrenResults = ((IParentSU) parentSUResult.ChoosenUnit)
+                .GetSetOfChildren(_random)
+                .Select(SU => new SyntacticUnitResult(SU, parentSUResult))
+                .ToList<ISyntacticUnitResult>();
             parentSUResult.Children = collectionOfChildrenResults;
             return collectionOfChildrenResults;
         }

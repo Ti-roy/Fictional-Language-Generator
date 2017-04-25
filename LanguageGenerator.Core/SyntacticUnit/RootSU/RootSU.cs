@@ -6,7 +6,7 @@ namespace LanguageGenerator.Core.SyntacticUnit.RootSU
     public class RootSU : IRootSU
     {
         public int Frequency { get; }
-        public IProperty Property { get; }
+        public IProperty Property { get { return RootProperty; } }
         public IRootProperty RootProperty { get; }
 
 
@@ -19,7 +19,7 @@ namespace LanguageGenerator.Core.SyntacticUnit.RootSU
             StringRepresentation = stringRepresentation;
             Frequency = frequency;
             RootProperty = rootProperty;
-            RootProperty.RootSyntacticUnits.Add(this);
+            RootProperty.RootSyntacticUnits.Add(this,frequency);
         }
 
 

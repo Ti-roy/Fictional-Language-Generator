@@ -5,7 +5,6 @@ using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticProperty.ParentProperty;
 using LanguageGenerator.Core.SyntacticUnit;
 using LanguageGenerator.Core.SyntacticUnit.BasicSyntacticUnits;
-using LanguageGenerator.Core.SyntacticUnit.RootSU;
 
 
 namespace LanguageGenerator.Core.InformationAgent
@@ -45,18 +44,18 @@ namespace LanguageGenerator.Core.InformationAgent
         }
 
 
-        //TODO: GetRandomSyntacticUnitsOfProperty remove it
+        //TODO: GetRandomSyntacticUnitsOfProperty consider implement IFrequecny dictionoary for IProperty and destroy this method
         public ISyntacticUnit GetRandomSyntacticUnitsOfProperty(IProperty property)
         {
             IRootProperty rootProperty = property as IRootProperty;
             if (rootProperty != null)
             {
-                return ReturnSyntacticPropertyBasedOnProbabilytieScale(rootProperty.RootSyntacticUnits);
+                return rootProperty.RootSyntacticUnits.GetRandomElementBasedOnFrequency(_random);
             }
             IParentProperty parentProperty = property as IParentProperty;
             if (parentProperty != null)
             {
-                return ReturnSyntacticPropertyBasedOnProbabilytieScale(parentProperty.ParentSyntacticUnits);
+                return parentProperty.ParentSyntacticUnits.GetRandomElementBasedOnFrequency(_random);
             }
             throw new InvalidOperationException("Trying to get syntactic property of uknown property type.");
         }
@@ -64,56 +63,20 @@ namespace LanguageGenerator.Core.InformationAgent
 
         public bool DoesPropertyCanStartFrom(IProperty propertyThatStarts, IProperty propertyToStartFrom)
         {
-            return propertyThatStarts.StartsWithFrequencyFrom.Keys.Any(
-                aProperty => aProperty.Equals(_basicSyntacticUnitsFactory.GetSyntacticUnitForAny()) ||
-                             aProperty.Equals(propertyToStartFrom));
-        }
-
-
-        private ISyntacticUnit ReturnSyntacticPropertyBasedOnProbabilytieScale(IList<IParentSU> syntacticUnits)
-        {
-            return GetRandomSyntacticUnitBasedOnProbability(syntacticUnits.ToList<ISyntacticUnit>());
-        }
-
-
-        private ISyntacticUnit ReturnSyntacticPropertyBasedOnProbabilytieScale(IList<IRootSU> syntacticUnits)
-        {
-            return GetRandomSyntacticUnitBasedOnProbability(syntacticUnits.ToList<ISyntacticUnit>());
-        }
-
-
-        private ISyntacticUnit GetRandomSyntacticUnitBasedOnProbability(IList<ISyntacticUnit> syntacticUnits)
-        {
-            int totalFrequencyOfAllSyntacticUnits = 0;
-            totalFrequencyOfAllSyntacticUnits = CalculateTotalFrequencyOfAllSyntacticUnits(syntacticUnits, totalFrequencyOfAllSyntacticUnits);
-            int randomNumberInRangeOfTotal = _random.Next(1, totalFrequencyOfAllSyntacticUnits);
-            return GetSyntacticUnitWithNumberInTotalRange(syntacticUnits, randomNumberInRangeOfTotal);
-        }
-
-
-        private static ISyntacticUnit GetSyntacticUnitWithNumberInTotalRange(IList<ISyntacticUnit> syntacticUnits, int randomNumberInRangeOfTotal)
-        {
-            int index = -1;
-            for (; randomNumberInRangeOfTotal > 0;)
-            {
-                index++;
-                randomNumberInRangeOfTotal -= syntacticUnits[index].Frequency;
-            }
-            return syntacticUnits[index]; //-V3106
-        }
-
-
-        private static int CalculateTotalFrequencyOfAllSyntacticUnits(IList<ISyntacticUnit> syntacticUnits, int total)
-        {
-            foreach (ISyntacticUnit syntacticUnit in syntacticUnits)
-            {
-                total += syntacticUnit.Frequency;
-            }
-            if (total < 1)
-            {
-                throw new ArgumentOutOfRangeException("Total frequency of all elements less then 1.");
-            }
-            return total;
+            IProperty anyProperty = _basicSyntacticUnitsFactory.GetSyntacticUnitForAny().Property;
+            return (propertyThatStarts.StartsWithFrequencyFrom.ContainsKey(propertyToStartFrom)&&
+                propertyThatStarts.StartsWithFrequencyFrom[propertyToStartFrom] > 0) ||
+                   (propertyThatStarts.StartsWithFrequencyFrom.ContainsKey(anyProperty) && propertyThatStarts.StartsWithFrequencyFrom[anyProperty] > 0);
+            //foreach (KeyValuePair<IProperty, int> keyValuePair in propertyThatStarts.StartsWithFrequencyFrom)
+            //{
+            //    if (keyValuePair.Value > 0 && (keyValuePair.Key.Equals(_basicSyntacticUnitsFactory.GetSyntacticUnitForAny().Property) || keyValuePair.Key.Equals(propertyToStartFrom)))
+            //        return true;
+            //}
+            //return false;
+            //return propertyThatStarts.StartsWithFrequencyFrom.Any(
+            //    aProperty => aProperty.Value > 0 &&
+            //                 (aProperty.Key.Equals(_basicSyntacticUnitsFactory.GetSyntacticUnitForAny().Property) ||
+            //                  aProperty.Key.Equals(propertyToStartFrom)));
         }
 
 

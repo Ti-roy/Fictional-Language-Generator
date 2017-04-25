@@ -7,14 +7,14 @@ namespace LanguageGenerator.Core.SyntacticProperty.ParentProperty
 {
     public class ParentProperty : BaseProperty, IParentProperty
     {
-        public IList<IParentSU> ParentSyntacticUnits { get; }
+        public IFrequencyDictionary<IParentSU> ParentSyntacticUnits { get; }
         public IList<IProperty> MustContainProperties { get; }
 
 
         public ParentProperty(string propertyName, IFrequencyDictionary<IProperty> startsWithFrequencyFrom) : this(
             propertyName,
             startsWithFrequencyFrom,
-            new List<IParentSU>(),
+            new FrequencyDictionary<IParentSU>(),
             new List<IProperty>())
         {
         }
@@ -23,7 +23,7 @@ namespace LanguageGenerator.Core.SyntacticProperty.ParentProperty
         public ParentProperty(
             string propertyName,
             IFrequencyDictionary<IProperty> startsWithFrequencyFrom,
-            IList<IParentSU> parentSyntacticUnits,
+            IFrequencyDictionary<IParentSU> parentSyntacticUnits,
             IList<IProperty> mustContainProperties) : base(propertyName, startsWithFrequencyFrom)
         {
             ParentSyntacticUnits = parentSyntacticUnits;
@@ -31,14 +31,14 @@ namespace LanguageGenerator.Core.SyntacticProperty.ParentProperty
         }
 
 
-        public ParentProperty(string propertyName) : this(propertyName, new List<IParentSU>(), new List<IProperty>())
+        public ParentProperty(string propertyName) : this(propertyName, new FrequencyDictionary<IParentSU>(), new List<IProperty>())
         {
         }
 
 
         public ParentProperty(
             string propertyName,
-            IList<IParentSU> parentSyntacticUnits,
+            IFrequencyDictionary<IParentSU> parentSyntacticUnits,
             IList<IProperty> mustContainProperties) : base(propertyName)
         {
             ParentSyntacticUnits = parentSyntacticUnits;

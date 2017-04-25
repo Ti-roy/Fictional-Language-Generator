@@ -8,12 +8,12 @@ namespace LanguageGenerator.Core.SyntacticProperty.RootProperty
     //TODO: resolve constrictor hell
     public class RootProperty : BaseProperty, IRootProperty
     {
-        public IList<IRootSU> RootSyntacticUnits { get; set; }
+        public IFrequencyDictionary<IRootSU> RootSyntacticUnits { get; set; }
 
 
         public RootProperty(
             string propertyName,
-            IList<IRootSU> rootSyntacticUnits,
+            IFrequencyDictionary<IRootSU> rootSyntacticUnits,
             IFrequencyDictionary<IProperty> startsWithFrequencyFrom) : base(propertyName, startsWithFrequencyFrom)
         {
             RootSyntacticUnits = rootSyntacticUnits;
@@ -24,11 +24,11 @@ namespace LanguageGenerator.Core.SyntacticProperty.RootProperty
             propertyName,
             startsWithFrequencyFrom)
         {
-            RootSyntacticUnits = new List<IRootSU>();
+            RootSyntacticUnits = new FrequencyDictionary<IRootSU>();
         }
 
 
-        public RootProperty(string propertyName, IList<IRootSU> rootSyntacticUnits) : base(propertyName)
+        public RootProperty(string propertyName, IFrequencyDictionary<IRootSU> rootSyntacticUnits) : base(propertyName)
         {
             RootSyntacticUnits = rootSyntacticUnits;
         }
