@@ -17,21 +17,21 @@ namespace LanguageGenerator.Core.FrequencyDictionary
         }
 
 
-        public T GetRandomElementBasedOnFrequency(Random random)
+        public T GetRandomElementBasedOnFrequency()
         {
             List<KeyValuePair<T, int>> orderLockedDictionary = _valueAndFrequency
                 .Select(keyValuePair => new KeyValuePair<T, int>(keyValuePair.Key, keyValuePair.Value))
                 .ToList();
-            int randomNumberInRangeOfTotal = RandomNumberInRangeOfTotal(random, orderLockedDictionary);
+            int randomNumberInRangeOfTotal = RandomNumberInRangeOfTotal(orderLockedDictionary);
             return RandomElementBasedOnFrequency(randomNumberInRangeOfTotal, orderLockedDictionary);
         }
 
 
-        private int RandomNumberInRangeOfTotal(Random random, List<KeyValuePair<T, int>> orderLockedDictionary)
+        private int RandomNumberInRangeOfTotal(List<KeyValuePair<T, int>> orderLockedDictionary)
         {
             int totalFrequency = orderLockedDictionary.Sum(keyValuePair => keyValuePair.Value);
             if (totalFrequency < 1) throw new InvalidOperationException("Total frequency of frequencyDictionary is 0.");
-            int randomNumberInRangeOfTotal = random.Next(1, totalFrequency);
+            int randomNumberInRangeOfTotal = RandomSingleton.Random.Next(1, totalFrequency);
             return randomNumberInRangeOfTotal;
         }
 

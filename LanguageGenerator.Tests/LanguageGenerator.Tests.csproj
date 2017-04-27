@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseTestClass.cs" />
-    <Compile Include="IntegrationTests_Of_InformationAgent.cs" />
+    <Compile Include="IntegrationTests_Of_BasicProperty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests_For_Comperison_Of_IProperty.cs" />
     <Compile Include="Tests_Of_ParentProperty.cs" />
@@ -63,6 +63,9 @@
       <Project>{b9e20ba3-afb5-4276-a166-751f17b932d9}</Project>
       <Name>LanguageGenerator.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

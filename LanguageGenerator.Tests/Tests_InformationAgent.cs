@@ -23,7 +23,7 @@ namespace LanguageGenerator.Tests
         public void Does_GetPropertyWithName_Works_With_One_Property_Data()
         {
             //Arrange
-            IInformationAgent repo = new InformationAgent(Substitute.For<Random>());
+            IInformationAgent repo = new InformationAgent();
             repo.Properties = new List<IProperty>();
             string testPropertyName = "TestProperty";
             //Act
@@ -37,7 +37,7 @@ namespace LanguageGenerator.Tests
         public void Does_GetPropertyWithName_Works_With_Few_Properties_Data()
         {
             //Arrange
-            IInformationAgent repo = new InformationAgent(Substitute.For<Random>());
+            IInformationAgent repo = new InformationAgent();
             repo.Properties = new List<IProperty>();
             string testPropertyName1 = "TestProperty1";
             string testPropertyName2 = "TestProperty2";
@@ -53,7 +53,7 @@ namespace LanguageGenerator.Tests
         public void Does_GetPropertyWithName_Throws_Exception_When_Nothing_Found()
         {
             //Arrange
-            IInformationAgent repo = new InformationAgent(Substitute.For<Random>());
+            IInformationAgent repo = new InformationAgent();
             repo.Properties = new List<IProperty>();
             //Act Assert
             Assert.Throws<InvalidOperationException>(() => { repo.GetPropertyWithName("a name"); });

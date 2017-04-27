@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using LanguageGenerator.Core.FrequencyDictionary;
 using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticProperty.ParentProperty;
+using LanguageGenerator.Core.SyntacticUnit.BasicSyntacticUnits;
 
 
 namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
@@ -17,9 +19,18 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
         public IFrequencyDictionary<int> ChildrenAmount { get; }
 
 
-        public IEnumerable<ISyntacticUnit> GetSetOfChildren(Random random)
+        public int GetChildrenAmountBasedOnDfrequency()
         {
-            throw new NotImplementedException();
+            return ChildrenAmount.GetRandomElementBasedOnFrequency();
+        }
+
+
+        public IProperty GetChildPropertyBasedOnFrequecyThatCanStartFrom(IProperty propertyToStartFrom)
+        {
+            IFrequencyDictionary<IProperty> childrenPropertiesThatCanStartFromTheProperty = PossibleChildren
+                .Where(prop => prop.Key.CanStartFrom(propertyToStartFrom))
+                .ToFrequencyDictionary();
+            return childrenPropertiesThatCanStartFromTheProperty.GetRandomElementBasedOnFrequency();
         }
 
 
@@ -27,11 +38,11 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
             int frequency,
             IParentProperty parentProperty,
             IFrequencyDictionary<IProperty> possibleChildren,
-            IFrequencyDictionary<int> childrenAmount) 
+            IFrequencyDictionary<int> childrenAmount)
         {
             Frequency = frequency;
             Property = parentProperty;
-            parentProperty.ParentSyntacticUnits.Add(this,frequency);
+            parentProperty.ParentSyntacticUnits.Add(this, frequency);
             PossibleChildren = possibleChildren;
             ChildrenAmount = childrenAmount;
         }
@@ -48,9 +59,9 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
 
         public bool Equals(IParentSU other)
         {
-            if(other == null)
-                return false;
-            return (Frequency == other.Frequency && Equals(Property, other.Property) && Equals(PossibleChildren, other.PossibleChildren) && Equals(ChildrenAmount, other.ChildrenAmount));
+            if (other == null) return false;
+            return (Frequency == other.Frequency && Equals(Property, other.Property) && Equals(PossibleChildren, other.PossibleChildren) &&
+                    Equals(ChildrenAmount, other.ChildrenAmount));
         }
 
 

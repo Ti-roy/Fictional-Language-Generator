@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using LanguageGenerator.Core.FrequencyDictionary;
 using LanguageGenerator.Core.SyntacticUnit;
 
@@ -7,6 +8,7 @@ namespace LanguageGenerator.Core.SyntacticProperty.ParentProperty
 {
     public class ParentProperty : BaseProperty, IParentProperty
     {
+        public override IFrequencyDictionary<ISyntacticUnit> SyntacticUnits { get { return (IFrequencyDictionary<ISyntacticUnit>)ParentSyntacticUnits; } }
         public IFrequencyDictionary<IParentSU> ParentSyntacticUnits { get; }
         public IList<IProperty> MustContainProperties { get; }
 
@@ -44,5 +46,7 @@ namespace LanguageGenerator.Core.SyntacticProperty.ParentProperty
             ParentSyntacticUnits = parentSyntacticUnits;
             MustContainProperties = mustContainProperties;
         }
+
+
     }
 }

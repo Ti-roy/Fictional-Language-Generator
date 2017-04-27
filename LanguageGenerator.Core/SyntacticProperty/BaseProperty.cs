@@ -1,5 +1,7 @@
 ﻿using System;
 using LanguageGenerator.Core.FrequencyDictionary;
+using LanguageGenerator.Core.SyntacticUnit;
+using LanguageGenerator.Core.SyntacticUnit.BasicSyntacticUnits;
 
 
 namespace LanguageGenerator.Core.SyntacticProperty
@@ -8,6 +10,7 @@ namespace LanguageGenerator.Core.SyntacticProperty
     {
         public string PropertyName { get; }
         public IFrequencyDictionary<IProperty> StartsWithFrequencyFrom { get; }
+        public abstract IFrequencyDictionary<ISyntacticUnit> SyntacticUnits { get; }
 
 
         protected BaseProperty(string propertyName) : this(propertyName, new FrequencyDictionary<IProperty>())
@@ -19,6 +22,14 @@ namespace LanguageGenerator.Core.SyntacticProperty
         {
             PropertyName = propertyName;
             StartsWithFrequencyFrom = startsWithFrequencyFrom;
+        }
+
+
+        public bool CanStartFrom(IProperty propertyToStartFrom)
+        {
+            IProperty propertyOfAny = BasicSyntacticUnitsSingleton.AnyProperty;
+            return StartsWithFrequencyFrom.ContainsKey(propertyOfAny) && StartsWithFrequencyFrom[propertyOfAny] > 0 ||
+                   StartsWithFrequencyFrom.ContainsKey(propertyToStartFrom) && StartsWithFrequencyFrom[propertyToStartFrom] > 0;
         }
 
 

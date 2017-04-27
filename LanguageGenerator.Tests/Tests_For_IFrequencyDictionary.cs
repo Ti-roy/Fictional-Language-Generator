@@ -44,7 +44,7 @@ namespace LanguageGenerator.Tests
             aDictionary.Add(2, 1);
             aDictionary.Add(3, 199);
             aDictionary.Add(4, 100);
-            int aKey = aDictionary.GetRandomElementBasedOnFrequency(new Random());
+            int aKey = aDictionary.GetRandomElementBasedOnFrequency();
             //Assert
             Assert.That(aKey == 2 || aKey == 3 || aKey == 4);
         }
@@ -57,7 +57,7 @@ namespace LanguageGenerator.Tests
             IFrequencyDictionary<int> aDictionary = new FrequencyDictionary<int>();
             //Act
             aDictionary.Add(1, 1);
-            int aKey = aDictionary.GetRandomElementBasedOnFrequency(new Random());
+            int aKey = aDictionary.GetRandomElementBasedOnFrequency();
             //Assert
             Assert.That(aKey == 1);
         }
@@ -73,7 +73,7 @@ namespace LanguageGenerator.Tests
             aDictionary.Add(2, 0);
             aDictionary.Add(3, 0);
             //Assert
-            Assert.Throws<InvalidOperationException>(() => { aDictionary.GetRandomElementBasedOnFrequency(new Random()); });
+            Assert.Throws<InvalidOperationException>(() => { aDictionary.GetRandomElementBasedOnFrequency(); });
         }
 
 
@@ -84,7 +84,7 @@ namespace LanguageGenerator.Tests
             IFrequencyDictionary<int> aDictionary = new FrequencyDictionary<int>();
 
             //ActAssert
-            Assert.Throws<InvalidOperationException>(() => { aDictionary.GetRandomElementBasedOnFrequency(new Random()); });
+            Assert.Throws<InvalidOperationException>(() => { aDictionary.GetRandomElementBasedOnFrequency(); });
         }
     }
 }

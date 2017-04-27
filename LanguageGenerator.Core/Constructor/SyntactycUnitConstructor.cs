@@ -13,25 +13,11 @@ namespace LanguageGenerator.Core.Constructor
     public class SyntactycUnitConstructor : ISyntactycUnitConstructor
     {
         public IInformationAgent InformationAgent { get; }
-        IBasicSyntacticUnitsFactory BasicSyntacticUnitsFactory { get; }
-        Random _random;
 
 
-        public SyntactycUnitConstructor(IBasicSyntacticUnitsFactory basicSyntacticUnitsFactory, IInformationAgent informationAgent)
+        public SyntactycUnitConstructor(IInformationAgent informationAgent)
         {
-            BasicSyntacticUnitsFactory = basicSyntacticUnitsFactory;
             InformationAgent = informationAgent;
-        }
-
-
-        public SyntactycUnitConstructor(IInformationAgent repository) : this(new BasicSyntacticUnitsFactory(), repository)
-        {
-        }
-
-
-        public SyntactycUnitConstructor(Random random) : this(new BasicSyntacticUnitsFactory(), new InformationAgent.InformationAgent(random))
-        {
-            _random = random;
         }
 
 
@@ -49,19 +35,9 @@ namespace LanguageGenerator.Core.Constructor
 
         private void CheckIfPropertyCanBeginWithStartOfConstruction(IProperty property)
         {
-            IProperty startOfConstructionProperty = BasicSyntacticUnitsFactory.GetSyntacticUnitForStartOfConstraction().Property;
-            if (!InformationAgent.DoesPropertyCanStartFrom(property, startOfConstructionProperty))
+            IProperty startOfConstructionProperty = BasicSyntacticUnitsSingleton.StartOfConstractionProperty;
+            if (property.CanStartFrom(startOfConstructionProperty))
                 throw new ArgumentException("The property can`t start from " + startOfConstructionProperty.PropertyName + ".");
-        }
-
-
-        private ISyntacticUnitResult GetFirstParentSU(IList<ISyntacticUnitResult> constructionScale)
-        {
-            foreach (ISyntacticUnitResult syntacticUnit in constructionScale)
-            {
-                if (syntacticUnit.ChoosenUnit is IParentSU) return syntacticUnit;
-            }
-            return null;
         }
 
 
@@ -74,26 +50,49 @@ namespace LanguageGenerator.Core.Constructor
         public ISyntacticUnitResultScheme GetResultScaleOfProperty(IProperty property)
         {
             SyntacticUnitResultScheme scheme = new SyntacticUnitResultScheme();
-            scheme.ResultScale.Add(new SyntacticUnitResult(BasicSyntacticUnitsFactory.GetSyntacticUnitForStartOfConstraction()));
+
+            scheme.ResultScale.Add(new SyntacticUnitResult(BasicSyntacticUnitsSingleton.StartOfConstractionSyntacticUnit));
 
             CheckIfPropertyCanBeginWithStartOfConstruction(property);
 
-            scheme.ResultScale.Add(new SyntacticUnitResult(InformationAgent.GetRandomSyntacticUnitsOfProperty(property)));
+            scheme.ResultScale.Add(new SyntacticUnitResult(property.SyntacticUnits.GetRandomElementBasedOnFrequency()));
 
-            ISyntacticUnitResult parentSUResult = GetFirstParentSU(scheme.ResultScale);
-            if (parentSUResult != null) parentSUResult.Children = CreateChildrenSyntacticUnitsOfParent(parentSUResult).ToList();
-            throw new NotImplementedException();
+            DissasembleSchemeToRootSU(scheme);
+
+            return scheme;
         }
 
 
-        private IEnumerable<ISyntacticUnitResult> CreateChildrenSyntacticUnitsOfParent(ISyntacticUnitResult parentSUResult)
+        private void DissasembleSchemeToRootSU(SyntacticUnitResultScheme scheme)
         {
-            List<ISyntacticUnitResult> collectionOfChildrenResults = ((IParentSU) parentSUResult.ChoosenUnit)
-                .GetSetOfChildren(_random)
-                .Select(SU => new SyntacticUnitResult(SU, parentSUResult))
-                .ToList<ISyntacticUnitResult>();
-            parentSUResult.Children = collectionOfChildrenResults;
-            return collectionOfChildrenResults;
+            ISyntacticUnitResult parentSUResult = scheme.ResultScale.FirstOrDefault(suResult => suResult.ChoosenUnit is IParentSU);
+            while (parentSUResult != null)
+            {
+                IEnumerable<ISyntacticUnit> childrenSU = GetChildrenSyntacticUnits((IParentSU) parentSUResult.ChoosenUnit);
+                scheme.ResultScale.Remove(parentSUResult);
+                foreach (ISyntacticUnit syntacticUnit in childrenSU)
+                {
+                    scheme.ResultScale.Add(new SyntacticUnitResult(syntacticUnit));
+                }
+                parentSUResult = scheme.ResultScale.FirstOrDefault(suResult => suResult.ChoosenUnit is IParentSU);
+            }
+        }
+
+
+        private IEnumerable<ISyntacticUnit> GetChildrenSyntacticUnits(IParentSU parentSU)
+        {
+            IProperty lastProperty = BasicSyntacticUnitsSingleton.StartOfConstractionProperty;
+            List<ISyntacticUnit> setOfChildrenSyntacticUnits = new List<ISyntacticUnit>();
+            int childrenAmount = parentSU.GetChildrenAmountBasedOnDfrequency();
+            for (; childrenAmount > 0; childrenAmount--)
+            {
+                IProperty childProperty = parentSU.GetChildPropertyBasedOnFrequecyThatCanStartFrom(
+                    lastProperty);
+                ISyntacticUnit childPropertyaSyntacticUnit = childProperty.SyntacticUnits.GetRandomElementBasedOnFrequency();
+                setOfChildrenSyntacticUnits.Add(childPropertyaSyntacticUnit);
+                lastProperty = childProperty;
+            }
+            return setOfChildrenSyntacticUnits;
         }
 
 

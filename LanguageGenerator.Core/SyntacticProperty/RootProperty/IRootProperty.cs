@@ -6,6 +6,6 @@ namespace LanguageGenerator.Core.SyntacticProperty
 {
     public interface IRootProperty : IProperty
     {
-        IFrequencyDictionary<IRootSU> RootSyntacticUnits { get; set; }
+        IFrequencyDictionary<IRootSU> RootSyntacticUnits { get; }
     }
 }

@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractFactory\IAbstractFactory.cs" />
     <Compile Include="Constructor\ISyntactycUnitConstructor.cs" />
     <Compile Include="Constructor\SyntacticUnitResult\SyntacticUnitResult.cs" />
     <Compile Include="Constructor\SyntacticUnitResultScheme\SyntacticUnitResultScheme.cs" />
@@ -49,14 +48,15 @@
     <Compile Include="FrequencyDictionary\IFrequencyDictionary.cs" />
     <Compile Include="Constructor\SyntacticUnitResult\ISyntacticUnitResult.cs" />
     <Compile Include="Constructor\SyntacticUnitResultScheme\ISyntacticUnitResultScheme.cs" />
+    <Compile Include="FrequencyDictionary\LambdaFrequencyDictionary.cs" />
     <Compile Include="InformationAgent\IInformationAgent.cs" />
     <Compile Include="InformationAgent\InformationAgent.cs" />
+    <Compile Include="RandomSingleton.cs" />
     <Compile Include="SyntacticProperty\BaseProperty.cs" />
     <Compile Include="SyntacticProperty\ParentProperty\IParentProperty.cs" />
     <Compile Include="SyntacticProperty\ParentProperty\ParentProperty.cs" />
     <Compile Include="SyntacticProperty\RootProperty\RootProperty.cs" />
-    <Compile Include="SyntacticUnit\BasicSyntacticUnits\BasicSyntacticUnitsFactory.cs" />
-    <Compile Include="SyntacticUnit\BasicSyntacticUnits\IBasicSyntacticUnitsFactory.cs" />
+    <Compile Include="SyntacticUnit\BasicSyntacticUnits\BasicSyntacticUnitsSingleton.cs" />
     <Compile Include="SyntacticUnit\ParentSU\IParentSU.cs" />
     <Compile Include="SyntacticProperty\IProperty.cs" />
     <Compile Include="SyntacticProperty\RootProperty\IRootProperty.cs" />
