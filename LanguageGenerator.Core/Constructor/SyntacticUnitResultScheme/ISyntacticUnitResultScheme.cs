@@ -6,5 +6,6 @@ namespace LanguageGenerator.Core.Constructor
     public interface ISyntacticUnitResultScheme
     {
         IList<ISyntacticUnitResult> ResultScale { get; }
+        string TranformResultScaleToString();
     }
 }

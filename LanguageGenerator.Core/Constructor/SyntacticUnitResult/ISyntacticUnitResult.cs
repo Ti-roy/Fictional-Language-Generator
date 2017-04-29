@@ -11,5 +11,8 @@ namespace LanguageGenerator.Core.Constructor
         IProperty Property { get;  }
         IList<ISyntacticUnitResult> Children { get; set; }
         ISyntacticUnitResult ParentResult { get; }
+        ISyntacticUnitResult PreviosResult { get; }
+
+        IEnumerable<ISyntacticUnitResult> GetAllParentResults();
     }
 }

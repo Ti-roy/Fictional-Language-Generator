@@ -1,7 +1,6 @@
 ﻿using System;
 using LanguageGenerator.Core.FrequencyDictionary;
 using LanguageGenerator.Core.SyntacticUnit;
-using LanguageGenerator.Core.SyntacticUnit.BasicSyntacticUnits;
 
 
 namespace LanguageGenerator.Core.SyntacticProperty

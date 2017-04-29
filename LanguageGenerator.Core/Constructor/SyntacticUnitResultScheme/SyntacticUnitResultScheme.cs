@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using LanguageGenerator.Core.SyntacticUnit.RootSU;
 
 
 namespace LanguageGenerator.Core.Constructor
@@ -16,6 +19,17 @@ namespace LanguageGenerator.Core.Constructor
 
         public SyntacticUnitResultScheme() : this(new List<ISyntacticUnitResult>())
         {
+        }
+
+
+        public string TranformResultScaleToString()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (ISyntacticUnitResult syntacticUnitResult in ResultScale)
+            {
+                stringBuilder.Append(((IRootSU)syntacticUnitResult.ChoosenUnit).StringRepresentation);
+            }
+            return stringBuilder.ToString();
         }
     }
 }

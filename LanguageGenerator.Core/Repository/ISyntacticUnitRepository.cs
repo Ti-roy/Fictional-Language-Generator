@@ -3,9 +3,9 @@ using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticUnit;
 
 
-namespace LanguageGenerator.Core.InformationAgent
+namespace LanguageGenerator.Core.Repository
 {
-    public interface IInformationAgent
+    public interface ISyntacticUnitRepository
     {
         IList<IProperty> Properties { get; set; }
         IList<ISyntacticUnit> SyntacticUnits { get; set; }

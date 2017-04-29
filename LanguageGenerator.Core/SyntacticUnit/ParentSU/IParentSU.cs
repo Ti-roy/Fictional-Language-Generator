@@ -10,7 +10,8 @@ namespace LanguageGenerator.Core.SyntacticUnit
     {
         IFrequencyDictionary<IProperty> PossibleChildren { get; }
         IFrequencyDictionary<int> ChildrenAmount { get; }
-        int GetChildrenAmountBasedOnDfrequency();
+        int GetChildrenAmountBasedOnFrequency();
         IProperty GetChildPropertyBasedOnFrequecyThatCanStartFrom(IProperty propertyToStartFrom);
+        IProperty GetChildPropertyBasedOnFrequecyThatCanStartFrom(IEnumerable<IProperty> propertiesToStartFrom);
     }
 }

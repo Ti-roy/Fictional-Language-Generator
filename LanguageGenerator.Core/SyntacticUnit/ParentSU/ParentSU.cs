@@ -4,7 +4,6 @@ using System.Linq;
 using LanguageGenerator.Core.FrequencyDictionary;
 using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticProperty.ParentProperty;
-using LanguageGenerator.Core.SyntacticUnit.BasicSyntacticUnits;
 
 
 namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
@@ -19,7 +18,7 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
         public IFrequencyDictionary<int> ChildrenAmount { get; }
 
 
-        public int GetChildrenAmountBasedOnDfrequency()
+        public int GetChildrenAmountBasedOnFrequency()
         {
             return ChildrenAmount.GetRandomElementBasedOnFrequency();
         }
@@ -30,6 +29,27 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
             IFrequencyDictionary<IProperty> childrenPropertiesThatCanStartFromTheProperty = PossibleChildren
                 .Where(prop => prop.Key.CanStartFrom(propertyToStartFrom))
                 .ToFrequencyDictionary();
+            if(childrenPropertiesThatCanStartFromTheProperty.Count==0)
+                throw new InvalidOperationException("Property "+ Property.PropertyName+" dont have children that can go after " + propertyToStartFrom .PropertyName+ ".");
+            return childrenPropertiesThatCanStartFromTheProperty.GetRandomElementBasedOnFrequency();
+        }
+
+
+        public IProperty GetChildPropertyBasedOnFrequecyThatCanStartFrom(IEnumerable<IProperty> propertiesToStartFrom)
+        {
+            IFrequencyDictionary<IProperty> childrenPropertiesThatCanStartFromTheProperty = PossibleChildren
+                .Where(prop => propertiesToStartFrom.Any(propertyToStartFrom=>prop.Key.CanStartFrom(propertyToStartFrom)))
+                .ToFrequencyDictionary();
+            if (childrenPropertiesThatCanStartFromTheProperty.Count == 0)
+            {
+                //TODO: implement this as an separate exception
+                string propertyNames = "";
+                foreach (IProperty property in propertiesToStartFrom)
+                {
+                    propertyNames += " " + property.PropertyName;
+                }
+                throw new InvalidOperationException("Property " + Property.PropertyName + " dont have children that can go after" + propertyNames + ".");
+            }
             return childrenPropertiesThatCanStartFromTheProperty.GetRandomElementBasedOnFrequency();
         }
 

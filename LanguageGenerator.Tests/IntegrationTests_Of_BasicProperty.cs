@@ -1,6 +1,6 @@
 ﻿using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticProperty.ParentProperty;
-using LanguageGenerator.Core.SyntacticUnit.BasicSyntacticUnits;
+using LanguageGenerator.Core.SyntacticUnit;
 using NUnit.Framework;
 
 

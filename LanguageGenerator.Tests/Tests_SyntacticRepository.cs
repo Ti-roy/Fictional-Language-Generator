@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LanguageGenerator.Core.InformationAgent;
+using LanguageGenerator.Core.Repository;
 using LanguageGenerator.Core.SyntacticProperty;
 using NUnit.Framework;
 using NSubstitute;
@@ -9,7 +10,7 @@ using NSubstitute;
 namespace LanguageGenerator.Tests
 {
     [TestFixture]
-    class Tests_InformationAgent
+    class Tests_SyntacticRepository
     {
         IProperty GetSubstituteFor_IPropery_WichReturnsPropertyName(string propertyName)
         {
@@ -23,7 +24,7 @@ namespace LanguageGenerator.Tests
         public void Does_GetPropertyWithName_Works_With_One_Property_Data()
         {
             //Arrange
-            IInformationAgent repo = new InformationAgent();
+            ISyntacticUnitRepository repo = new SyntacticUnitRepository();
             repo.Properties = new List<IProperty>();
             string testPropertyName = "TestProperty";
             //Act
@@ -37,7 +38,7 @@ namespace LanguageGenerator.Tests
         public void Does_GetPropertyWithName_Works_With_Few_Properties_Data()
         {
             //Arrange
-            IInformationAgent repo = new InformationAgent();
+            ISyntacticUnitRepository repo = new SyntacticUnitRepository();
             repo.Properties = new List<IProperty>();
             string testPropertyName1 = "TestProperty1";
             string testPropertyName2 = "TestProperty2";
@@ -53,7 +54,7 @@ namespace LanguageGenerator.Tests
         public void Does_GetPropertyWithName_Throws_Exception_When_Nothing_Found()
         {
             //Arrange
-            IInformationAgent repo = new InformationAgent();
+            ISyntacticUnitRepository repo = new SyntacticUnitRepository();
             repo.Properties = new List<IProperty>();
             //Act Assert
             Assert.Throws<InvalidOperationException>(() => { repo.GetPropertyWithName("a name"); });

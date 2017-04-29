@@ -1,11 +1,9 @@
-using System.Dynamic;
-using LanguageGenerator.Core.FrequencyDictionary;
 using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticProperty.RootProperty;
 using LanguageGenerator.Core.SyntacticUnit.RootSU;
 
 
-namespace LanguageGenerator.Core.SyntacticUnit.BasicSyntacticUnits
+namespace LanguageGenerator.Core.SyntacticUnit
 {
     public static class BasicSyntacticUnitsSingleton 
     {

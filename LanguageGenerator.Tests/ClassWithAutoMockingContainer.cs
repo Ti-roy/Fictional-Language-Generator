@@ -6,7 +6,7 @@ using Arg = DryIoc.Arg;
 
 namespace LanguageGenerator.Tests
 {
-    class BaseTestClass
+    class ClassWithAutoMockingContainer
     {
         public Container GetAutoMockingContainer()
         {
