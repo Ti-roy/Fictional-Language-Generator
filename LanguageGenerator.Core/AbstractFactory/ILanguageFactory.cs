@@ -1,5 +1,4 @@
-﻿using System;
-using LanguageGenerator.Core.Repository;
+﻿using LanguageGenerator.Core.Repository;
 using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticProperty.ParentProperty;
 using LanguageGenerator.Core.SyntacticUnit;

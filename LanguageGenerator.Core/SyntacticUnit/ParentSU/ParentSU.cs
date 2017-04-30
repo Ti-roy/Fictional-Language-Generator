@@ -8,7 +8,7 @@ using LanguageGenerator.Core.SyntacticProperty.ParentProperty;
 
 namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
 {
-    public class ParentSU : IParentSU
+    public class ParentSU : IParentSU, IChildInfoForLinker
     {
         public int Frequency { get; }
         public IProperty Property { get; }
@@ -16,6 +16,7 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
 
         public IFrequencyDictionary<IProperty> PossibleChildren { get; }
         public IFrequencyDictionary<int> ChildrenAmount { get; }
+        public IFrequencyDictionary<string> PossibleChildrenByPropertyNames { get; }
 
 
         public int GetChildrenAmountBasedOnFrequency()
@@ -65,6 +66,7 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
             parentProperty.ParentSyntacticUnits.Add(this, frequency);
             PossibleChildren = possibleChildren;
             ChildrenAmount = childrenAmount;
+            PossibleChildrenByPropertyNames = new FrequencyDictionary<string>();
         }
 
 
@@ -105,5 +107,7 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
                 return hashCode;
             }
         }
+
+
     }
 }

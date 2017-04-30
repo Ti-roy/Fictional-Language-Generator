@@ -18,6 +18,14 @@ namespace LanguageGenerator.Core.InformationAgent
         {
             Properties = properties;
             SyntacticUnits = syntacticUnits;
+            AddDefaultProperties();
+        }
+
+
+        private void AddDefaultProperties()
+        {
+            Properties.Add(BasicSyntacticUnitsSingleton.AnyProperty);
+            Properties.Add(BasicSyntacticUnitsSingleton.StartOfConstructionProperty);
         }
 
 

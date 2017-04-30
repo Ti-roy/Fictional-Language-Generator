@@ -44,7 +44,7 @@ namespace LanguageGenerator.Core.SyntacticUnit
         }
 
 
-        public static IRootProperty StartOfConstractionProperty
+        public static IRootProperty StartOfConstructionProperty
         {
             get
             {

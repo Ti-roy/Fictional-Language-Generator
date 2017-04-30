@@ -56,11 +56,13 @@
     <Compile Include="RandomSingleton.cs" />
     <Compile Include="SyntacticProperty\BaseProperty.cs" />
     <Compile Include="SyntacticProperty\ExtensionOfIProperty.cs" />
+    <Compile Include="SyntacticProperty\IOrderInfoForLinker.cs" />
     <Compile Include="SyntacticProperty\ParentProperty\IParentProperty.cs" />
     <Compile Include="SyntacticProperty\ParentProperty\ParentProperty.cs" />
     <Compile Include="SyntacticProperty\RootProperty\RootProperty.cs" />
     <Compile Include="SyntacticUnit\BasicSyntacticUnitsSingleton.cs" />
     <Compile Include="SyntacticUnit\ParentSU\ExtensionsIParentSU.cs" />
+    <Compile Include="SyntacticUnit\ParentSU\IChildInfoForLinker.cs" />
     <Compile Include="SyntacticUnit\ParentSU\IParentSU.cs" />
     <Compile Include="SyntacticProperty\IProperty.cs" />
     <Compile Include="SyntacticProperty\RootProperty\IRootProperty.cs" />

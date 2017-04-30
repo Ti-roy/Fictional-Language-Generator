@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LanguageGenerator.Core.AbstractFactory;
 using LanguageGenerator.Core.Repository;
 using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticUnit;
@@ -11,13 +12,21 @@ namespace LanguageGenerator.Core.Constructor
 {
     public class SyntacticUnitConstructor : ISyntacticUnitConstructor
     {
-        public ISyntacticUnitRepository SyntacticUnitRepository { get; }
+        public SyntacticUnitConstructor(
+            ISyntacticUnitRepository syntacticUnitRepository, IRepositoryLinker repositoryLinker) : this(syntacticUnitRepository)
+        {
+            if (!repositoryLinker.IsRepositoryLinked(syntacticUnitRepository))
+                repositoryLinker.LinkRepository(syntacticUnitRepository);
+        }
 
 
         public SyntacticUnitConstructor(ISyntacticUnitRepository syntacticUnitRepository)
         {
             SyntacticUnitRepository = syntacticUnitRepository;
         }
+
+
+        public ISyntacticUnitRepository SyntacticUnitRepository { get; }
 
 
         public string GetStringOfProperty(string propertyName)
@@ -57,7 +66,7 @@ namespace LanguageGenerator.Core.Constructor
 
         private void CheckIfPropertyCanBeginWithStartOfConstruction(IProperty property)
         {
-            IProperty startOfConstructionProperty = BasicSyntacticUnitsSingleton.StartOfConstractionProperty;
+            IProperty startOfConstructionProperty = BasicSyntacticUnitsSingleton.StartOfConstructionProperty;
             if (!property.CanStartFrom(startOfConstructionProperty))
                 throw new InvalidOperationException(
                     "The property" + property + " can`t start from " + startOfConstructionProperty.PropertyName + ".");
@@ -113,7 +122,6 @@ namespace LanguageGenerator.Core.Constructor
         private IEnumerable<ISyntacticUnit> GetChildrenSyntacticUnitsThatCanGoAfterlastProperties(
             IParentSU parentSU, IEnumerable<IProperty> lastProperties)
         {
-            //TODO: finish getting children that can start from scrape of last properties
             IEnumerable<IProperty> _lastProperties = lastProperties;
             List<ISyntacticUnit> setOfChildrenSyntacticUnits = new List<ISyntacticUnit>();
             for (int childrenAmount = parentSU.GetChildrenAmountBasedOnFrequency(); childrenAmount > 0; childrenAmount--)
@@ -121,7 +129,7 @@ namespace LanguageGenerator.Core.Constructor
                 IProperty childProperty = parentSU.GetChildPropertyBasedOnFrequecyThatCanStartFrom(_lastProperties);
                 ISyntacticUnit childPropertySyntacticUnit = childProperty.SyntacticUnits.GetRandomElementBasedOnFrequency();
                 setOfChildrenSyntacticUnits.Add(childPropertySyntacticUnit);
-                _lastProperties = new[] { childProperty };
+                _lastProperties = new[] {childProperty};
             }
             return setOfChildrenSyntacticUnits;
         }
@@ -152,7 +160,6 @@ namespace LanguageGenerator.Core.Constructor
         {
             int indexOfTheParentSU = scheme.ResultScale.IndexOf(parentSUResult);
             scheme.ResultScale.RemoveAt(indexOfTheParentSU);
-            List<ISyntacticUnit> listOfChildrenSyntacticUnits = childrenSU.ToList();
             foreach (ISyntacticUnit syntacticUnit in childrenSU)
             {
                 scheme.ResultScale.Insert(indexOfTheParentSU, new SyntacticUnitResult(syntacticUnit, parentSUResult));

@@ -1,17 +1,11 @@
-﻿using System;
-using LanguageGenerator.Core.FrequencyDictionary;
+﻿using LanguageGenerator.Core.FrequencyDictionary;
 using LanguageGenerator.Core.SyntacticUnit;
 
 
 namespace LanguageGenerator.Core.SyntacticProperty
 {
-    public abstract class BaseProperty : IProperty
+    public abstract class BaseProperty : IProperty, IOrderInfoForLinker
     {
-        public string PropertyName { get; }
-        public IFrequencyDictionary<IProperty> StartsWithFrequencyFrom { get; }
-        public abstract IFrequencyDictionary<ISyntacticUnit> SyntacticUnits { get; }
-
-
         protected BaseProperty(string propertyName) : this(propertyName, new FrequencyDictionary<IProperty>())
         {
         }
@@ -21,7 +15,14 @@ namespace LanguageGenerator.Core.SyntacticProperty
         {
             PropertyName = propertyName;
             StartsWithFrequencyFrom = startsWithFrequencyFrom;
+            StartsWithFrequencyFromPropertyName = new FrequencyDictionary<string>();
         }
+
+
+        public IFrequencyDictionary<string> StartsWithFrequencyFromPropertyName { get; }
+        public string PropertyName { get; }
+        public IFrequencyDictionary<IProperty> StartsWithFrequencyFrom { get; }
+        public abstract IFrequencyDictionary<ISyntacticUnit> SyntacticUnits { get; }
 
 
         public bool CanStartFrom(IProperty propertyToStartFrom)
@@ -32,18 +33,20 @@ namespace LanguageGenerator.Core.SyntacticProperty
         }
 
 
+        public bool Equals(IProperty baseProperty)
+        {
+            if (ReferenceEquals(null, baseProperty))
+                return false;
+            if (ReferenceEquals(this, baseProperty))
+                return true;
+            return PropertyName == baseProperty.PropertyName;
+        }
+
+
         public override bool Equals(object obj)
         {
             IProperty baseProperty = obj as IProperty;
             return Equals(baseProperty);
-        }
-
-
-        public bool Equals(IProperty baseProperty)
-        {
-            if (ReferenceEquals(null, baseProperty)) return false;
-            if (ReferenceEquals(this, baseProperty)) return true;
-            return PropertyName == baseProperty.PropertyName;
         }
 
 
