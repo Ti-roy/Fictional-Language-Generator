@@ -3,6 +3,7 @@ using LanguageGenerator.Core.AbstractFactory;
 using LanguageGenerator.Core.Constructor;
 using LanguageGenerator.Core.InformationAgent;
 using LanguageGenerator.Core.Repository;
+using LanguageGenerator.Core.Repository.RepositoryLinker;
 using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticProperty.ParentProperty;
 using LanguageGenerator.Core.SyntacticProperty.RootProperty;
@@ -93,22 +94,22 @@ namespace LanguageGenerator.Tests
             ILanguageFactory languageFactory = new LanguageFactory();
 
             languageFactory.CreateRootProperty("0_1").PropertyCanGoAfter("StartOfConstruction", 1);
-            languageFactory.CreateRootSyntacticUnit("a", 1, "0_1");
+            languageFactory.CreateRootSyntacticUnit("a", "0_1", 1);
 
             languageFactory.CreateRootProperty("0_2").PropertyCanGoAfter("0_1", 1);
-            languageFactory.CreateRootSyntacticUnit("b", 1, "0_2");
+            languageFactory.CreateRootSyntacticUnit("b", "0_2", 1);
 
 
             languageFactory.CreateParentProperty("1_0").PropertyCanGoAfter("StartOfConstruction", 1);
-            languageFactory.CreateParentSyntacticUnit(1, "1_0").AddChildrenAmount(1, 1).AddPossibleChild("0_1", 1);
+            languageFactory.CreateParentSyntacticUnit("1_0", 1).AddChildrenAmount(1, 1).AddPossibleChild("0_1", 1);
 
 
             languageFactory.CreateParentProperty("1_1").PropertyCanGoAfter("1_0", 1);
-            languageFactory.CreateParentSyntacticUnit(1, "1_1").AddChildrenAmount(1, 1).AddPossibleChild("0_2");
+            languageFactory.CreateParentSyntacticUnit("1_1", 1).AddChildrenAmount(1, 1).AddPossibleChild("0_2");
 
 
             languageFactory.CreateParentProperty("2_0").PropertyCanGoAfter("StartOfConstruction", 1);
-            languageFactory.CreateParentSyntacticUnit(1, "2_0").AddChildrenAmount(2, 1).AddPossibleChild("1_1", 1).AddPossibleChild("1_0", 1);
+            languageFactory.CreateParentSyntacticUnit("2_0", 1).AddChildrenAmount(2, 1).AddPossibleChild("1_1", 1).AddPossibleChild("1_0", 1);
 
             ISyntacticUnitConstructor suConstructor = new SyntacticUnitConstructor(languageFactory.Repository , new RepositoryLinker());
             //Act 

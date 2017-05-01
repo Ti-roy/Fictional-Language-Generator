@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LanguageGenerator.Core.AbstractFactory;
 using LanguageGenerator.Core.Repository;
+using LanguageGenerator.Core.Repository.RepositoryLinker;
 using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticUnit;
 using LanguageGenerator.Core.SyntacticUnit.RootSU;

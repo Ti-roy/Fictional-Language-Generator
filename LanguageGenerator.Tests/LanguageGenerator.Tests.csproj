@@ -56,6 +56,7 @@
     <Compile Include="Tests_SyntacticRepository.cs" />
     <Compile Include="Tests_For_IFrequencyDictionary.cs" />
     <Compile Include="IntegrationTests_Of_SyntacticUnitConstructor.cs" />
+    <Compile Include="IntegrationTests_Of_RepositoryLinker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

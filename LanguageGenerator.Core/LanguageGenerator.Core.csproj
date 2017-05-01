@@ -41,6 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractFactory\ILanguageFactory.cs" />
+    <Compile Include="AbstractFactory\PropertyNotExistsInRepositoryException.cs" />
+    <Compile Include="Repository\RepositoryLinker\RepositoryLinker.cs" />
+    <Compile Include="Repository\RepositoryLinker\IRepositoryLinker.cs" />
     <Compile Include="AbstractFactory\LanguageFactory.cs" />
     <Compile Include="Constructor\ISyntacticUnitConstructor.cs" />
     <Compile Include="Constructor\SyntacticUnitResult\SyntacticUnitResult.cs" />
