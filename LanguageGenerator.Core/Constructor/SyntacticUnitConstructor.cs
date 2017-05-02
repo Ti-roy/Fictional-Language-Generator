@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LanguageGenerator.Core.AbstractFactory;
 using LanguageGenerator.Core.Repository;
 using LanguageGenerator.Core.Repository.RepositoryLinker;
 using LanguageGenerator.Core.SyntacticProperty;
@@ -13,17 +12,18 @@ namespace LanguageGenerator.Core.Constructor
 {
     public class SyntacticUnitConstructor : ISyntacticUnitConstructor
     {
-        public SyntacticUnitConstructor(
-            ISyntacticUnitRepository syntacticUnitRepository, IRepositoryLinker repositoryLinker) : this(syntacticUnitRepository)
+        public SyntacticUnitConstructor(ISyntacticUnitRepository syntacticUnitRepository, IRepositoryLinker repositoryLinker)
         {
-            if (!repositoryLinker.IsRepositoryLinked(syntacticUnitRepository))
-                repositoryLinker.LinkRepository(syntacticUnitRepository);
+            SyntacticUnitRepository = syntacticUnitRepository;
+            if (!repositoryLinker.IsRepositoryLinked(SyntacticUnitRepository))
+            {
+                repositoryLinker.LinkRepository(SyntacticUnitRepository);
+            }
         }
 
 
-        public SyntacticUnitConstructor(ISyntacticUnitRepository syntacticUnitRepository)
+        public SyntacticUnitConstructor(ISyntacticUnitRepository syntacticUnitRepository) : this(syntacticUnitRepository, new RepositoryLinker())
         {
-            SyntacticUnitRepository = syntacticUnitRepository;
         }
 
 
@@ -69,8 +69,10 @@ namespace LanguageGenerator.Core.Constructor
         {
             IProperty startOfConstructionProperty = BasicSyntacticUnitsSingleton.StartOfConstructionProperty;
             if (!property.CanStartFrom(startOfConstructionProperty))
+            {
                 throw new InvalidOperationException(
                     "The property" + property + " can`t start from " + startOfConstructionProperty.PropertyName + ".");
+            }
         }
 
 
@@ -81,7 +83,7 @@ namespace LanguageGenerator.Core.Constructor
             {
                 List<IProperty> lastProperties = GetScrapeOfLastPropertiesThatGoAfterProperty(scheme, parentSUResult);
                 IEnumerable<ISyntacticUnit> childrenSU =
-                    GetChildrenSyntacticUnitsThatCanGoAfterlastProperties((IParentSU) parentSUResult.ChoosenUnit, lastProperties);
+                    GetChildrenSyntacticUnitsThatCanGoAfterLastProperties((IParentSU) parentSUResult.ChoosenUnit, lastProperties);
                 ReplaceParent_SU_WithChidrenSU(scheme, parentSUResult, childrenSU);
             }
         }
@@ -96,21 +98,21 @@ namespace LanguageGenerator.Core.Constructor
         private List<IProperty> GetScrapeOfLastPropertiesThatGoAfterProperty(SyntacticUnitResultScheme scheme, ISyntacticUnitResult parentSUResult)
         {
             List<IProperty> scrapeOfLastProperties = new List<IProperty>();
-            ISyntacticUnitResult lastRootResult = GetLastRootResult(scheme);
+            ISyntacticUnitResult lastRootResult = GetLastRootResultBeforeParentResult(scheme, parentSUResult);
             scrapeOfLastProperties.Add(lastRootResult.Property);
             ISyntacticUnitResult lastResult = lastRootResult;
             while (lastResult.ParentResult != null && !IsResultParentOfResult(lastResult.ParentResult, parentSUResult))
             {
-                scrapeOfLastProperties.Add(lastResult.Property);
+                scrapeOfLastProperties.Add(lastResult.ParentResult.Property);
                 lastResult = lastResult.ParentResult;
             }
             return scrapeOfLastProperties;
         }
 
 
-        private ISyntacticUnitResult GetLastRootResult(SyntacticUnitResultScheme scheme)
+        private ISyntacticUnitResult GetLastRootResultBeforeParentResult(SyntacticUnitResultScheme scheme, ISyntacticUnitResult parentSUResult)
         {
-            return scheme.ResultScale.Last(suResult => suResult.ChoosenUnit is IRootSU);
+            return scheme.ResultScale.TakeWhile(result=>result!=parentSUResult).Last(suResult => suResult.ChoosenUnit is IRootSU);
         }
 
 
@@ -120,7 +122,7 @@ namespace LanguageGenerator.Core.Constructor
         }
 
 
-        private IEnumerable<ISyntacticUnit> GetChildrenSyntacticUnitsThatCanGoAfterlastProperties(
+        private IEnumerable<ISyntacticUnit> GetChildrenSyntacticUnitsThatCanGoAfterLastProperties(
             IParentSU parentSU, IEnumerable<IProperty> lastProperties)
         {
             IEnumerable<IProperty> _lastProperties = lastProperties;

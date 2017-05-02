@@ -3,7 +3,6 @@ using LanguageGenerator.Core.AbstractFactory;
 using LanguageGenerator.Core.Constructor;
 using LanguageGenerator.Core.InformationAgent;
 using LanguageGenerator.Core.Repository;
-using LanguageGenerator.Core.Repository.RepositoryLinker;
 using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticProperty.ParentProperty;
 using LanguageGenerator.Core.SyntacticProperty.RootProperty;
@@ -18,6 +17,27 @@ namespace LanguageGenerator.Tests
     [TestFixture]
     internal class IntegrationTests_Of_SyntacticUnitConstructor
     {
+        private void CreateParentPropertySyntacticUnitParent(
+            ILanguageFactory languageFactory, string propertyName, string propertyCanGoAfter, params string[] possibleChildren)
+        {
+            languageFactory.CreateParentProperty(propertyName).PropertyCanGoAfter(propertyCanGoAfter);
+            IParentSU parentSU = languageFactory.CreateParentSyntacticUnit(propertyName, 1);
+            foreach (string possibleChild in possibleChildren)
+            {
+                parentSU.AddPossibleChild(possibleChild, 1);
+            }
+            parentSU.AddChildrenAmount(possibleChildren.Length);
+        }
+
+
+        private void CreateRootPropertySyntacticUnitPair(
+            ILanguageFactory languageFactory, string propertyName, string propertyCanGoAfter, string rootRepresentation)
+        {
+            languageFactory.CreateRootProperty(propertyName).PropertyCanGoAfter(propertyCanGoAfter, 1);
+            languageFactory.CreateRootSyntacticUnit(rootRepresentation, propertyName, 1);
+        }
+
+
         [Test]
         public void Does_GetResultSchemeOfProperty_Throws_Exception_When_Asked_Propety_Cant_Start_From_StartOfConstruction()
         {
@@ -79,6 +99,41 @@ namespace LanguageGenerator.Tests
         }
 
 
+        //                  3_0
+        //              /       \
+        //           2_0        2_1 ---
+        //         /      \       \    \
+        //        1_0     1_1     0_5  1_2
+        //        | \     | \           |
+        //  0_0  0_1 0_2 0_3 0_4       0_6
+        [Test]
+        public void Does_Root_SU_On_Different_Levels_Constracted_And_Start_From_Different_Levels()
+        {
+            //Arrange
+            ILanguageFactory languageFactory = new LanguageFactory();
+
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_1", "Start", "a");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_2", "0_1", "b");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_3", "1_0", "c");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_4", "0_3", "d");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_5", "2_0", "f");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_6", "0_5", "k");
+
+            CreateParentPropertySyntacticUnitParent(languageFactory, "1_0", "Start", "0_1", "0_2");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "1_1", "1_0", "0_3", "0_4");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "1_2", "0_5", "0_6");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "2_0", "Start", "1_0", "1_1");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "2_1", "2_0", "0_5", "1_2");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "3_0", "Start", "2_0", "2_1");
+
+            //Act
+            string result = new SyntacticUnitConstructor(languageFactory.Repository).GetStringOfProperty("3_0");
+
+            //Assert
+            Assert.That(result == "abcdfk");
+        }
+
+
         //    2_0
         //     | \ 
         //    1_0 1_1
@@ -93,25 +148,14 @@ namespace LanguageGenerator.Tests
 
             ILanguageFactory languageFactory = new LanguageFactory();
 
-            languageFactory.CreateRootProperty("0_1").PropertyCanGoAfter("StartOfConstruction", 1);
-            languageFactory.CreateRootSyntacticUnit("a", "0_1", 1);
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_1", "Start", "a");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_2", "0_1", "b");
 
-            languageFactory.CreateRootProperty("0_2").PropertyCanGoAfter("0_1", 1);
-            languageFactory.CreateRootSyntacticUnit("b", "0_2", 1);
+            CreateParentPropertySyntacticUnitParent(languageFactory, "1_0", "Start", "0_1");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "1_1", "1_0", "0_2");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "2_0", "Start", "1_0", "1_1");
 
-
-            languageFactory.CreateParentProperty("1_0").PropertyCanGoAfter("StartOfConstruction", 1);
-            languageFactory.CreateParentSyntacticUnit("1_0", 1).AddChildrenAmount(1, 1).AddPossibleChild("0_1", 1);
-
-
-            languageFactory.CreateParentProperty("1_1").PropertyCanGoAfter("1_0", 1);
-            languageFactory.CreateParentSyntacticUnit("1_1", 1).AddChildrenAmount(1, 1).AddPossibleChild("0_2");
-
-
-            languageFactory.CreateParentProperty("2_0").PropertyCanGoAfter("StartOfConstruction", 1);
-            languageFactory.CreateParentSyntacticUnit("2_0", 1).AddChildrenAmount(2, 1).AddPossibleChild("1_1", 1).AddPossibleChild("1_0", 1);
-
-            ISyntacticUnitConstructor suConstructor = new SyntacticUnitConstructor(languageFactory.Repository , new RepositoryLinker());
+            ISyntacticUnitConstructor suConstructor = new SyntacticUnitConstructor(languageFactory.Repository);
             //Act 
             string result = suConstructor.GetStringOfProperty("2_0");
             //Assert
@@ -218,6 +262,120 @@ namespace LanguageGenerator.Tests
             string result = suConstructor.GetStringOfProperty(parentProperty);
             //Assert
             Assert.That(result == "ab");
+        }
+
+
+        //                  4_0
+        //                /    | 
+        //              0_1   3_0
+        //                    |   \
+        //                   0_2  2_0
+        //                        |  \
+        //                       0_3 1_0
+        //                            | \
+        //         0_0               0_4 0_5   
+        [Test]
+        public void Test_Binary_Tree_Structure_With_Left_Child_As_Root()
+        {
+            //Arrange
+            ILanguageFactory languageFactory = new LanguageFactory();
+
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_1", "Start", "a");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_2", "0_1", "b");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_3", "0_2", "c");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_4", "0_3", "d");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_5", "0_4", "f");
+
+            CreateParentPropertySyntacticUnitParent(languageFactory, "1_0", "0_3", "0_4", "0_5");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "2_0", "0_2", "1_0", "0_3");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "3_0", "0_1", "2_0", "0_2");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "4_0", "Start", "3_0", "0_1");
+            //Act
+            string result = new SyntacticUnitConstructor(languageFactory.Repository).GetStringOfProperty("4_0");
+            //Assert
+            Assert.That(result == "abcdf");
+        }
+
+
+        //                  4_0
+        //                /    | 
+        //              3_0   0_5
+        //            /   |
+        //          2_0  0_4
+        //         /  |
+        //       1_0 0_3
+        //       / |
+        // 0_0 0_1 0_2   
+        [Test]
+        public void Test_Binary_Tree_Structure_With_Right_Child_As_Root()
+        {
+            //Arrange
+            ILanguageFactory languageFactory = new LanguageFactory();
+
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_1", "Start", "a");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_2", "0_1", "b");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_3", "1_0", "c");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_4", "2_0", "d");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_5", "3_0", "f");
+
+            CreateParentPropertySyntacticUnitParent(languageFactory, "1_0", "Start", "0_1", "0_2");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "2_0", "Start", "1_0", "0_3");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "3_0", "Start", "2_0", "0_4");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "4_0", "Start", "3_0", "0_5");
+            //Act
+            string result = new SyntacticUnitConstructor(languageFactory.Repository).GetStringOfProperty("4_0");
+            //Assert
+            Assert.That(result == "abcdf");
+        }
+
+        //                        4_0
+        //                /        |      \
+        //              3_0       3_1     3_2
+        //            /   |     /    \     |  \
+        //          2_0  0_4  2_1    2_2  0_9 2_3
+        //         /  |       / \    /  \      |   \
+        //       1_0 0_3    0_5 0_6 0_7 0_8   0_10 1_1 
+        //       / |                                |  \
+        // 0_0 0_1 0_2                            0_11 0_12
+
+        [Test]
+        public void Test_Complex_Tree()
+        {
+            //Arrange
+            ILanguageFactory languageFactory = new LanguageFactory();
+
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_1", "Start", "q");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_2", "0_1", "w");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_3", "1_0", "e");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_4", "2_0", "r");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_5", "3_0", "t");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_6", "0_5", "y");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_7", "0_6", "u");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_8", "0_7", "i");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_9", "0_8", "o");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_10", "0_9", "p");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_11", "0_10", "a");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "0_12", "0_11", "s");
+
+            
+            CreateParentPropertySyntacticUnitParent(languageFactory, "1_0", "Start", "0_1", "0_2");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "1_1", "0_10", "0_11", "0_12");
+
+            CreateParentPropertySyntacticUnitParent(languageFactory, "2_0", "Start", "1_0", "0_3");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "2_1", "3_0", "0_5", "0_6");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "2_2", "2_1", "0_7", "0_8");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "2_3", "0_9", "0_10", "1_1");
+
+            CreateParentPropertySyntacticUnitParent(languageFactory, "3_0", "Start", "2_0", "0_4");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "3_1", "3_0", "2_1", "2_2");
+            CreateParentPropertySyntacticUnitParent(languageFactory, "3_2", "3_1", "0_9", "2_3");
+
+
+            CreateParentPropertySyntacticUnitParent(languageFactory, "4_0", "Start", "3_0", "3_1","3_2");
+            //Act
+            string result = new SyntacticUnitConstructor(languageFactory.Repository).GetStringOfProperty("4_0");
+            //Assert
+            Assert.That(result == "qwertyuiopas");
         }
     }
 }

@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace LanguageGenerator.Tests
 {
-    class Tests_For_IFrequencyDictionary
+    class Tests_Of_IFrequencyDictionary
     {
         [Test]
         public void Does_Add_Throws_The_Exception_On_Negative_Frequency()

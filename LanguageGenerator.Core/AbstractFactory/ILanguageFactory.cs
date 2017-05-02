@@ -12,9 +12,9 @@ namespace LanguageGenerator.Core.AbstractFactory
         ISyntacticUnitRepository Repository { get; }
         IRootProperty CreateRootProperty(string propertyName);
         IParentProperty CreateParentProperty(string propertyName);
-        IRootSU CreateRootSyntacticUnit(string stringRepresentation, IRootProperty itsProperty, int frequency);
-        IRootSU CreateRootSyntacticUnit(string stringRepresentation, string itsPropertyName, int frequency);
-        IParentSU CreateParentSyntacticUnit(IParentProperty itsProperty, int frequency);
-        IParentSU CreateParentSyntacticUnit(string itsPropertyName, int frequency);
+        IRootSU CreateRootSyntacticUnit(string stringRepresentation, IRootProperty itsProperty, int frequency = 1000);
+        IRootSU CreateRootSyntacticUnit(string stringRepresentation, string itsPropertyName, int frequency = 1000);
+        IParentSU CreateParentSyntacticUnit(IParentProperty itsProperty, int frequency = 1000);
+        IParentSU CreateParentSyntacticUnit(string itsPropertyName, int frequency = 1000);
     }
 }

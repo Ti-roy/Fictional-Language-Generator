@@ -43,7 +43,7 @@ namespace LanguageGenerator.Core.AbstractFactory
         }
 
 
-        public IRootSU CreateRootSyntacticUnit(string stringRepresentation, IRootProperty itsProperty, int frequency)
+        public IRootSU CreateRootSyntacticUnit(string stringRepresentation, IRootProperty itsProperty, int frequency = 1000)
         {
             IRootSU rootSyntacticUnit = new RootSU(stringRepresentation, frequency, itsProperty);
             Repository.SyntacticUnits.Add(rootSyntacticUnit);
@@ -51,7 +51,7 @@ namespace LanguageGenerator.Core.AbstractFactory
         }
 
 
-        public IRootSU CreateRootSyntacticUnit(string stringRepresentation, string itsPropertyName, int frequency)
+        public IRootSU CreateRootSyntacticUnit(string stringRepresentation, string itsPropertyName, int frequency = 1000)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace LanguageGenerator.Core.AbstractFactory
         }
 
 
-        public IParentSU CreateParentSyntacticUnit(string itsPropertyName, int frequency)
+        public IParentSU CreateParentSyntacticUnit(string itsPropertyName, int frequency = 1000)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace LanguageGenerator.Core.AbstractFactory
         }
 
 
-        public IParentSU CreateParentSyntacticUnit(IParentProperty itsProperty, int frequency)
+        public IParentSU CreateParentSyntacticUnit(IParentProperty itsProperty, int frequency = 1000)
         {
             IParentSU parentSu = new ParentSU(frequency, itsProperty);
             Repository.SyntacticUnits.Add(parentSu);

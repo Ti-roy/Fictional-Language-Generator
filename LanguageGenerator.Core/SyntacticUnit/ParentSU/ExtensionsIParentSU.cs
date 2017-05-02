@@ -29,7 +29,8 @@ namespace LanguageGenerator.Core.SyntacticUnit
                 childInfo.PossibleChildrenByPropertyNames.Add(propertyName, frequencyForThatAmount);
                 return parentSU;
             }
-            else throw new InvalidOperationException("Current implementation of IParentSU dont implplement IChildInfoForLinker for linker. You can use overload with property reference.");
+            throw new InvalidOperationException(
+                "Current implementation of IParentSU dont implplement IChildInfoForLinker for linker. You can use overload with property reference.");
         }
     }
 }

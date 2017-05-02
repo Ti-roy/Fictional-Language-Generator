@@ -10,7 +10,7 @@ using NSubstitute;
 namespace LanguageGenerator.Tests
 {
     [TestFixture]
-    class Tests_SyntacticRepository
+    class Tests_Of_SyntacticRepository
     {
         IProperty GetSubstituteFor_IPropery_WichReturnsPropertyName(string propertyName)
         {

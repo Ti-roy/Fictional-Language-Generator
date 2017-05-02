@@ -10,13 +10,31 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
 {
     public class ParentSU : IParentSU, IChildInfoForLinker
     {
+        public ParentSU(
+            int frequency, IParentProperty parentProperty, IFrequencyDictionary<IProperty> possibleChildren, IFrequencyDictionary<int> childrenAmount)
+        {
+            Frequency = frequency;
+            Property = parentProperty;
+            parentProperty.ParentSyntacticUnits.Add(this, frequency);
+            PossibleChildren = possibleChildren;
+            ChildrenAmount = childrenAmount;
+            PossibleChildrenByPropertyNames = new FrequencyDictionary<string>();
+        }
+
+
+        public ParentSU(int frequency, IParentProperty parentProperty) : this(
+            frequency, parentProperty, new FrequencyDictionary<IProperty>(), new FrequencyDictionary<int>())
+        {
+        }
+
+
+        public IFrequencyDictionary<string> PossibleChildrenByPropertyNames { get; }
         public int Frequency { get; }
         public IProperty Property { get; }
 
 
         public IFrequencyDictionary<IProperty> PossibleChildren { get; }
         public IFrequencyDictionary<int> ChildrenAmount { get; }
-        public IFrequencyDictionary<string> PossibleChildrenByPropertyNames { get; }
 
 
         public int GetChildrenAmountBasedOnFrequency()
@@ -30,8 +48,12 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
             IFrequencyDictionary<IProperty> childrenPropertiesThatCanStartFromTheProperty = PossibleChildren
                 .Where(prop => prop.Key.CanStartFrom(propertyToStartFrom))
                 .ToFrequencyDictionary();
-            if(childrenPropertiesThatCanStartFromTheProperty.Count==0)
-                throw new InvalidOperationException("Property "+ Property.PropertyName+" dont have children that can go after " + propertyToStartFrom .PropertyName+ ".");
+            if (childrenPropertiesThatCanStartFromTheProperty.Count == 0)
+            {
+                throw new InvalidOperationException(
+                    "During construction children sequence of property " + Property.PropertyName + " no children were found that can go after " +
+                    propertyToStartFrom.PropertyName + ".");
+            }
             return childrenPropertiesThatCanStartFromTheProperty.GetRandomElementBasedOnFrequency();
         }
 
@@ -39,59 +61,43 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
         public IProperty GetChildPropertyBasedOnFrequecyThatCanStartFrom(IEnumerable<IProperty> propertiesToStartFrom)
         {
             IFrequencyDictionary<IProperty> childrenPropertiesThatCanStartFromTheProperty = PossibleChildren
-                .Where(prop => propertiesToStartFrom.Any(propertyToStartFrom=>prop.Key.CanStartFrom(propertyToStartFrom)))
+                .Where(prop => propertiesToStartFrom.Any(propertyToStartFrom => prop.Key.CanStartFrom(propertyToStartFrom)))
                 .ToFrequencyDictionary();
             if (childrenPropertiesThatCanStartFromTheProperty.Count == 0)
             {
-                //TODO: implement this as an separate exception
-                string propertyNames = "";
-                foreach (IProperty property in propertiesToStartFrom)
-                {
-                    propertyNames += " " + property.PropertyName;
-                }
-                throw new InvalidOperationException("Property " + Property.PropertyName + " dont have children that can go after" + propertyNames + ".");
+                throw new InvalidOperationException(
+                    "During construction children sequence of property " + Property.PropertyName + " no children were found that can go after " +
+                    string.Join(" or ", propertiesToStartFrom.Select(prop => prop.PropertyName)) + ".");
             }
             return childrenPropertiesThatCanStartFromTheProperty.GetRandomElementBasedOnFrequency();
         }
 
 
-        public ParentSU(
-            int frequency,
-            IParentProperty parentProperty,
-            IFrequencyDictionary<IProperty> possibleChildren,
-            IFrequencyDictionary<int> childrenAmount)
-        {
-            Frequency = frequency;
-            Property = parentProperty;
-            parentProperty.ParentSyntacticUnits.Add(this, frequency);
-            PossibleChildren = possibleChildren;
-            ChildrenAmount = childrenAmount;
-            PossibleChildrenByPropertyNames = new FrequencyDictionary<string>();
-        }
-
-
-        public ParentSU(int frequency, IParentProperty parentProperty) : this(
-            frequency,
-            parentProperty,
-            new FrequencyDictionary<IProperty>(),
-            new FrequencyDictionary<int>())
-        {
-        }
-
-
         public bool Equals(IParentSU other)
         {
-            if (other == null) return false;
-            return (Frequency == other.Frequency && Equals(Property, other.Property) && Equals(PossibleChildren, other.PossibleChildren) &&
-                    Equals(ChildrenAmount, other.ChildrenAmount));
+            if (other == null)
+            {
+                return false;
+            }
+            return Frequency == other.Frequency && Equals(Property, other.Property) && Equals(PossibleChildren, other.PossibleChildren) &&
+                   Equals(ChildrenAmount, other.ChildrenAmount);
         }
 
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (!(obj is IParentSU)) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (!(obj is IParentSU))
+            {
+                return false;
+            }
             return Equals((IParentSU) obj);
         }
 
@@ -107,7 +113,5 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
                 return hashCode;
             }
         }
-
-
     }
 }

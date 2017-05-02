@@ -6,7 +6,7 @@ using LanguageGenerator.Core.SyntacticProperty;
 
 namespace LanguageGenerator.Core.SyntacticUnit
 {
-    public interface IParentSU : ISyntacticUnit,IEquatable<IParentSU>
+    public interface IParentSU : ISyntacticUnit, IEquatable<IParentSU>
     {
         IFrequencyDictionary<IProperty> PossibleChildren { get; }
         IFrequencyDictionary<int> ChildrenAmount { get; }
