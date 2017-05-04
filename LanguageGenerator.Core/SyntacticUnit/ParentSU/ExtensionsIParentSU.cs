@@ -1,5 +1,4 @@
-﻿using System;
-using LanguageGenerator.Core.SyntacticProperty;
+﻿using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticUnit.ParentSU;
 
 
@@ -7,30 +6,31 @@ namespace LanguageGenerator.Core.SyntacticUnit
 {
     public static class ExtensionsIParentSU
     {
-        public static IParentSU AddChildrenAmount(this IParentSU parentSU, int amount, int frequencyForThatAmount = 1000)
+        public static T AddChildrenAmount<T>(this T parentSU, int amount, int frequencyForThatAmount = 1000) where T : IParentSU
         {
             parentSU.ChildrenAmount.Add(amount, frequencyForThatAmount);
             return parentSU;
         }
 
 
-        public static IParentSU AddPossibleChild(this IParentSU parentSU, IProperty property, int frequencyForThatAmount = 1000)
+        public static T AddPossibleChild<T>(this T parentSU, IProperty property, int frequencyForThatAmount = 1000) where T : IParentSU
         {
             parentSU.PossibleChildren.Add(property, frequencyForThatAmount);
             return parentSU;
         }
 
 
-        public static IParentSU AddPossibleChild(this IParentSU parentSU, string propertyName, int frequencyForThatAmount = 1000)
+        public static T ForbidDubplicateValues<T>(this T parentSU) where T : IParentSU
         {
-            if (parentSU is IChildInfoForLinker)
-            {
-                IChildInfoForLinker childInfo = (IChildInfoForLinker) parentSU;
-                childInfo.PossibleChildrenByPropertyNames.Add(propertyName, frequencyForThatAmount);
-                return parentSU;
-            }
-            throw new InvalidOperationException(
-                "Current implementation of IParentSU dont implplement IChildInfoForLinker for linker. You can use overload with property reference.");
+            parentSU.DublicateChildrenAllowed = false;
+            return parentSU;
+        }
+
+
+        public static T AddPossibleChild<T>(this T childInfo, string propertyName, int frequencyForThatAmount = 1000) where T : IChildInfoForLinker
+        {
+            childInfo.PossibleChildrenByPropertyNames.Add(propertyName, frequencyForThatAmount);
+            return childInfo;
         }
     }
 }

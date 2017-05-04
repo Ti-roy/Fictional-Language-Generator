@@ -2,6 +2,7 @@
 using LanguageGenerator.Core.AbstractFactory;
 using LanguageGenerator.Core.Repository.RepositoryLinker;
 using LanguageGenerator.Core.SyntacticProperty;
+using LanguageGenerator.Core.SyntacticProperty.ParentProperty;
 using LanguageGenerator.Core.SyntacticUnit;
 using NUnit.Framework;
 
@@ -42,6 +43,21 @@ namespace LanguageGenerator.Tests
 
 
         [Test]
+        public void Does_IsRepositoryLinked_Returns_False_On_Not_Empty_MustContainInfo()
+        {
+            //Arrange
+            ILanguageFactory languageFactory = new LanguageFactory();
+            languageFactory.CreateRootProperty("childProperty");
+            languageFactory.CreateParentProperty("testProperty").MustContainProperty("aProperty");
+            IRepositoryLinker linker = new RepositoryLinker();
+            //Act
+            bool isRepositoryLinked = linker.IsRepositoryLinked(languageFactory.Repository);
+            //Assert
+            Assert.That(!isRepositoryLinked);
+        }
+
+
+        [Test]
         public void Does_IsRepositoryLinked_Returns_False_On_Not_Empty_OrderLinkInfo()
         {
             //Arrange
@@ -72,18 +88,24 @@ namespace LanguageGenerator.Tests
         public void Does_LinkRepository_Links()
         {
             //Arrange
+            string startPropertyName = "testStartProperty";
+            string mainTestPropertyName = "testProperty";
+            string childPropertyName = "testChildProperty";
+
             ILanguageFactory languageFactory = new LanguageFactory();
             IRepositoryLinker linker = new RepositoryLinker();
-            IProperty startProperty = languageFactory.CreateParentProperty("testStartProperty");
-            IProperty testProperty = languageFactory.CreateParentProperty("testProperty").PropertyCanGoAfter("testStartProperty");
-            languageFactory.CreateRootProperty("testChildProperty");
-            IParentSU parentSu = languageFactory.CreateParentSyntacticUnit("testProperty", 1).AddPossibleChild("testChildProperty");
+
+            IProperty startProperty = languageFactory.CreateParentProperty(startPropertyName);
+            IParentProperty testProperty = languageFactory.CreateParentProperty(mainTestPropertyName).PropertyCanGoAfter(startPropertyName).MustContainProperty(childPropertyName);
+            languageFactory.CreateRootProperty(childPropertyName);
+            IParentSU parentSu = languageFactory.CreateParentSyntacticUnit(mainTestPropertyName, 1).AddPossibleChild(childPropertyName);
             //Act
             linker.LinkRepository(languageFactory.Repository);
             bool Does_PropertyCanGoAfter_Works = testProperty.CanStartFrom(startProperty);
-            bool Does_AddPossibleChild_Works = parentSu.PossibleChildren.Keys.Any(property => property.PropertyName == "testChildProperty");
+            bool Does_AddPossibleChild_Works = parentSu.PossibleChildren.Keys.Any(property => property.PropertyName == childPropertyName);
+            bool Does_MustContainProperies_Works = testProperty.MustContainProperties.Any(property => property.PropertyName == childPropertyName);
             //Assert
-            Assert.That(Does_PropertyCanGoAfter_Works && Does_AddPossibleChild_Works);
+            Assert.That(Does_PropertyCanGoAfter_Works && Does_AddPossibleChild_Works && Does_MustContainProperies_Works);
         }
     }
 }

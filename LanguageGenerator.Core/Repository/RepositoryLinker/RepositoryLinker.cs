@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LanguageGenerator.Core.SyntacticProperty;
+using LanguageGenerator.Core.SyntacticProperty.ParentProperty;
 using LanguageGenerator.Core.SyntacticUnit;
 using LanguageGenerator.Core.SyntacticUnit.ParentSU;
 
@@ -12,20 +13,28 @@ namespace LanguageGenerator.Core.Repository.RepositoryLinker
         //TODO:Better to cover this class with tests
         public bool IsRepositoryLinked(ISyntacticUnitRepository repository)
         {
-            return IsAllChildLinkInfoEmpty(repository) && IsAllOrderLinkInfoEmpty(repository);
+            return IsAllChildLinkInfoEmpty(repository) && IsAllOrderLinkInfoEmpty(repository) && IsAllMustContainLinkInfoEmpty(repository);
         }
 
 
         public void LinkRepository(ISyntacticUnitRepository repository)
         {
             SetOrderFromOrderInfo(repository);
+            SetMustContainInfo(repository);
             SetChildInfoForParentSyntacticUnits(repository);
+        }
+
+
+        //IsAllMustContainLinkInfoEmpty and IsAllOrderLinkInfoEmpty can be joined to not iterate through Properties twice. Left for better code understanding.
+        private bool IsAllMustContainLinkInfoEmpty(ISyntacticUnitRepository repository)
+        {
+            return !repository.Properties.OfType<IPropertyMustContainInfoForLinker>().Any(info => info.MustContainPropertiesWithNames.Any());
         }
 
 
         private bool IsAllOrderLinkInfoEmpty(ISyntacticUnitRepository repository)
         {
-            return !repository.Properties.OfType<IOrderInfoForLinker>().Any(info => info.StartsWithFrequencyFromPropertyName.Any());
+            return !repository.Properties.OfType<IPropertyWithOrderInfoForLinker>().Any(info => info.StartsWithFrequencyFromPropertyName.Any());
         }
 
 
@@ -39,7 +48,7 @@ namespace LanguageGenerator.Core.Repository.RepositoryLinker
         {
             foreach (ISyntacticUnit repositorySyntacticUnit in repository.SyntacticUnits)
             {
-                if (repositorySyntacticUnit is IParentSU && repositorySyntacticUnit is IChildInfoForLinker)
+                if (repositorySyntacticUnit is IParentSU)
                 {
                     IParentSU parentSu = (IParentSU) repositorySyntacticUnit;
                     IChildInfoForLinker childInfo = (IChildInfoForLinker) repositorySyntacticUnit;
@@ -57,14 +66,28 @@ namespace LanguageGenerator.Core.Repository.RepositoryLinker
         {
             foreach (IProperty repositoryProperty in repository.Properties)
             {
-                if (repositoryProperty is IOrderInfoForLinker)
+                IPropertyWithOrderInfoForLinker propertyWithOrderInfo = repositoryProperty;
+                foreach (KeyValuePair<string, int> keyValuePair in propertyWithOrderInfo.StartsWithFrequencyFromPropertyName)
                 {
-                    IOrderInfoForLinker orderInfo = (IOrderInfoForLinker) repositoryProperty;
-                    foreach (KeyValuePair<string, int> keyValuePair in orderInfo.StartsWithFrequencyFromPropertyName)
+                    repositoryProperty.StartsWithFrequencyFrom.Add(repository.GetPropertyWithName(keyValuePair.Key), keyValuePair.Value);
+                }
+                propertyWithOrderInfo.StartsWithFrequencyFromPropertyName.Clear();
+            }
+        }
+
+
+        private void SetMustContainInfo(ISyntacticUnitRepository repository)
+        {
+            foreach (IProperty repositoryProperty in repository.Properties)
+            {
+                if (repositoryProperty is IParentProperty)
+                {
+                    IParentProperty parentProperty = (IParentProperty)repositoryProperty;
+                    foreach (string propertyName in parentProperty.MustContainPropertiesWithNames)
                     {
-                        repositoryProperty.StartsWithFrequencyFrom.Add(repository.GetPropertyWithName(keyValuePair.Key), keyValuePair.Value);
+                        parentProperty.MustContainProperties.Add(repository.GetPropertyWithName(propertyName));
                     }
-                    orderInfo.StartsWithFrequencyFromPropertyName.Clear();
+                    parentProperty.MustContainPropertiesWithNames.Clear();
                 }
             }
         }

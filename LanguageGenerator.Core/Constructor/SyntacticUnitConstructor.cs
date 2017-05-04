@@ -71,7 +71,7 @@ namespace LanguageGenerator.Core.Constructor
             if (!property.CanStartFrom(startOfConstructionProperty))
             {
                 throw new InvalidOperationException(
-                    "The property" + property + " can`t start from " + startOfConstructionProperty.PropertyName + ".");
+                    "The property" + property.PropertyName + " can`t start from " + startOfConstructionProperty.PropertyName + ".");
             }
         }
 
@@ -82,8 +82,8 @@ namespace LanguageGenerator.Core.Constructor
                  parentSUResult = FirstOrDefaultParentSyntacticUnit(scheme))
             {
                 List<IProperty> lastProperties = GetScrapeOfLastPropertiesThatGoAfterProperty(scheme, parentSUResult);
-                IEnumerable<ISyntacticUnit> childrenSU =
-                    GetChildrenSyntacticUnitsThatCanGoAfterLastProperties((IParentSU) parentSUResult.ChoosenUnit, lastProperties);
+                List<ISyntacticUnit> childrenSU =
+                    GetOrderedSetOfChildrenSyntacticUnitsThatCanGoAfterLastProperties((IParentSU) parentSUResult.ChoosenUnit, lastProperties);
                 ReplaceParent_SU_WithChidrenSU(scheme, parentSUResult, childrenSU);
             }
         }
@@ -112,7 +112,7 @@ namespace LanguageGenerator.Core.Constructor
 
         private ISyntacticUnitResult GetLastRootResultBeforeParentResult(SyntacticUnitResultScheme scheme, ISyntacticUnitResult parentSUResult)
         {
-            return scheme.ResultScale.TakeWhile(result=>result!=parentSUResult).Last(suResult => suResult.ChoosenUnit is IRootSU);
+            return scheme.ResultScale.TakeWhile(result => result != parentSUResult).Last(suResult => suResult.ChoosenUnit is IRootSU);
         }
 
 
@@ -122,44 +122,60 @@ namespace LanguageGenerator.Core.Constructor
         }
 
 
-        private IEnumerable<ISyntacticUnit> GetChildrenSyntacticUnitsThatCanGoAfterLastProperties(
+        private List<ISyntacticUnit> GetOrderedSetOfChildrenSyntacticUnitsThatCanGoAfterLastProperties(
             IParentSU parentSU, IEnumerable<IProperty> lastProperties)
         {
             IEnumerable<IProperty> _lastProperties = lastProperties;
             List<ISyntacticUnit> setOfChildrenSyntacticUnits = new List<ISyntacticUnit>();
+            List<IProperty> currentPropertyNecessetyProperties = new List<IProperty>(parentSU.ParentProperty.MustContainProperties);
             for (int childrenAmount = parentSU.GetChildrenAmountBasedOnFrequency(); childrenAmount > 0; childrenAmount--)
             {
-                IProperty childProperty = parentSU.GetChildPropertyBasedOnFrequecyThatCanStartFrom(_lastProperties);
-                ISyntacticUnit childPropertySyntacticUnit = childProperty.SyntacticUnits.GetRandomElementBasedOnFrequency();
-                setOfChildrenSyntacticUnits.Add(childPropertySyntacticUnit);
+                IProperty childProperty = GetChildProperty(parentSU, _lastProperties, currentPropertyNecessetyProperties);
+                AddToSetSyntacticUnitOfProperty(childProperty, setOfChildrenSyntacticUnits);
                 _lastProperties = new[] {childProperty};
             }
+            if(currentPropertyNecessetyProperties.Count !=0)
+                throw new CouldNotContructParentPropertyWithAllNecesseryPropties("During construction of syntactic unit with property "+ parentSU.ParentProperty.PropertyName +" constructor could not include all necessery properties in result set.");
             return setOfChildrenSyntacticUnits;
         }
 
 
-        private IEnumerable<IProperty> GetSUResultPropertyAndItsParentsExceptTopParent(ISyntacticUnitResult suResult)
+        private static void AddToSetSyntacticUnitOfProperty(IProperty childProperty, List<ISyntacticUnit> setOfChildrenSyntacticUnits)
         {
-            List<IProperty> properties = new List<IProperty>();
-            AddAllParentsOfSuResultThatHaveParents(suResult, properties);
-            properties.Add(suResult.Property);
-            return properties;
+            ISyntacticUnit childPropertySyntacticUnit = childProperty.SyntacticUnits.GetRandomElementBasedOnFrequency();
+            setOfChildrenSyntacticUnits.Add(childPropertySyntacticUnit);
         }
 
 
-        private void AddAllParentsOfSuResultThatHaveParents(ISyntacticUnitResult suResult, List<IProperty> properties)
+        private static IProperty GetChildProperty(
+            IParentSU parentSU, IEnumerable<IProperty> _lastProperties, List<IProperty> currentPropertyNecessetyProperties)
         {
-            ISyntacticUnitResult currentResult = suResult.ParentResult;
-            while (currentResult.ParentResult != null)
+            IProperty childProperty = TrySetChildPropertyFromNecessertyProperties(parentSU, _lastProperties, currentPropertyNecessetyProperties);
+            if (childProperty == null)
             {
-                properties.Add(currentResult.Property);
-                currentResult = currentResult.ParentResult;
+                childProperty = SetFromPossibleChildren(parentSU, _lastProperties);
             }
+            return childProperty;
+        }
+
+
+        private static IProperty TrySetChildPropertyFromNecessertyProperties(
+            IParentSU parentSU, IEnumerable<IProperty> _lastProperties, List<IProperty> currentPropertyNecessetyProperties)
+        {
+            IProperty childProperty = parentSU.TryGetNecessaryPropertyThatCanStartFrom(_lastProperties);
+            currentPropertyNecessetyProperties.Remove(childProperty);
+            return childProperty;
+        }
+
+
+        private static IProperty SetFromPossibleChildren(IParentSU parentSU, IEnumerable<IProperty> _lastProperties)
+        {
+            return parentSU.GetChildPropertyBasedOnFrequecyThatCanStartFrom(_lastProperties);
         }
 
 
         private void ReplaceParent_SU_WithChidrenSU(
-            SyntacticUnitResultScheme scheme, ISyntacticUnitResult parentSUResult, IEnumerable<ISyntacticUnit> childrenSU)
+            SyntacticUnitResultScheme scheme, ISyntacticUnitResult parentSUResult, List<ISyntacticUnit> childrenSU)
         {
             int indexOfTheParentSU = scheme.ResultScale.IndexOf(parentSUResult);
             scheme.ResultScale.RemoveAt(indexOfTheParentSU);

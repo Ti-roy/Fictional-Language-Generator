@@ -5,7 +5,7 @@ using LanguageGenerator.Core.SyntacticUnit;
 
 namespace LanguageGenerator.Core.SyntacticProperty.ParentProperty
 {
-    public interface IParentProperty : IProperty
+    public interface IParentProperty : IProperty,IPropertyMustContainInfoForLinker
     {
         IFrequencyDictionary<IParentSU> ParentSyntacticUnits { get; }
         IList<IProperty> MustContainProperties { get; }

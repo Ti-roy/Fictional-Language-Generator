@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="AbstractFactory\ILanguageFactory.cs" />
     <Compile Include="AbstractFactory\PropertyNotExistsInRepositoryException.cs" />
+    <Compile Include="Constructor\CouldNotContructParentPropertyWithAllNecesseryPropties.cs" />
     <Compile Include="Repository\RepositoryLinker\RepositoryLinker.cs" />
     <Compile Include="Repository\RepositoryLinker\IRepositoryLinker.cs" />
     <Compile Include="AbstractFactory\LanguageFactory.cs" />
@@ -59,8 +60,10 @@
     <Compile Include="RandomSingleton.cs" />
     <Compile Include="SyntacticProperty\BaseProperty.cs" />
     <Compile Include="SyntacticProperty\ExtensionOfIProperty.cs" />
-    <Compile Include="SyntacticProperty\IOrderInfoForLinker.cs" />
+    <Compile Include="SyntacticProperty\IPropertyWithOrderInfoForLinker.cs" />
+    <Compile Include="SyntacticProperty\ParentProperty\ExtensionOfIParentProperty.cs" />
     <Compile Include="SyntacticProperty\ParentProperty\IParentProperty.cs" />
+    <Compile Include="SyntacticProperty\ParentProperty\IPropertyMustContainInfoForLinker.cs" />
     <Compile Include="SyntacticProperty\ParentProperty\ParentProperty.cs" />
     <Compile Include="SyntacticProperty\RootProperty\RootProperty.cs" />
     <Compile Include="SyntacticUnit\BasicSyntacticUnitsSingleton.cs" />

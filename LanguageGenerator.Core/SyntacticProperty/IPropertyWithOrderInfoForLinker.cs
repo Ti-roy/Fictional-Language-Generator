@@ -3,7 +3,7 @@
 
 namespace LanguageGenerator.Core.SyntacticProperty
 {
-    public interface IOrderInfoForLinker
+    public interface IPropertyWithOrderInfoForLinker
     {
         IFrequencyDictionary<string> StartsWithFrequencyFromPropertyName { get; }
     }

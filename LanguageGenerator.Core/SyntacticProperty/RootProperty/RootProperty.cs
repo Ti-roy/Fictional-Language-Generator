@@ -8,7 +8,6 @@ using LanguageGenerator.Core.SyntacticUnit.RootSU;
 
 namespace LanguageGenerator.Core.SyntacticProperty.RootProperty
 {
-    //TODO: resolve constrictor hell
     public class RootProperty : BaseProperty, IRootProperty
     {
         public IFrequencyDictionary<IRootSU> RootSyntacticUnits { get; }

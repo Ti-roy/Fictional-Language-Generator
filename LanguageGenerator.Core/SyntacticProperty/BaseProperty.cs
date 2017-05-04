@@ -1,10 +1,12 @@
-﻿using LanguageGenerator.Core.FrequencyDictionary;
+﻿using System.Collections.Generic;
+using System.Linq;
+using LanguageGenerator.Core.FrequencyDictionary;
 using LanguageGenerator.Core.SyntacticUnit;
 
 
 namespace LanguageGenerator.Core.SyntacticProperty
 {
-    public abstract class BaseProperty : IProperty, IOrderInfoForLinker
+    public abstract class BaseProperty : IProperty
     {
         protected BaseProperty(string propertyName) : this(propertyName, new FrequencyDictionary<IProperty>())
         {
@@ -30,6 +32,12 @@ namespace LanguageGenerator.Core.SyntacticProperty
             IProperty propertyOfAny = BasicSyntacticUnitsSingleton.AnyProperty;
             return StartsWithFrequencyFrom.ContainsKey(propertyOfAny) && StartsWithFrequencyFrom[propertyOfAny] > 0 ||
                    StartsWithFrequencyFrom.ContainsKey(propertyToStartFrom) && StartsWithFrequencyFrom[propertyToStartFrom] > 0;
+        }
+
+
+        public bool CanStartFromAnyOf(IEnumerable<IProperty> propertiesToStartFrom)
+        {
+            return propertiesToStartFrom.Any(property => CanStartFrom(property));
         }
 
 

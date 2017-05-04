@@ -8,12 +8,13 @@ using LanguageGenerator.Core.SyntacticProperty.ParentProperty;
 
 namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
 {
-    public class ParentSU : IParentSU, IChildInfoForLinker
+    public class ParentSU : IParentSU
     {
         public ParentSU(
             int frequency, IParentProperty parentProperty, IFrequencyDictionary<IProperty> possibleChildren, IFrequencyDictionary<int> childrenAmount)
         {
             Frequency = frequency;
+            ParentProperty = parentProperty;
             Property = parentProperty;
             parentProperty.ParentSyntacticUnits.Add(this, frequency);
             PossibleChildren = possibleChildren;
@@ -33,6 +34,8 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
         public IProperty Property { get; }
 
 
+        public bool DublicateChildrenAllowed { get; set; }
+        public IParentProperty ParentProperty { get; }
         public IFrequencyDictionary<IProperty> PossibleChildren { get; }
         public IFrequencyDictionary<int> ChildrenAmount { get; }
 
@@ -61,7 +64,7 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
         public IProperty GetChildPropertyBasedOnFrequecyThatCanStartFrom(IEnumerable<IProperty> propertiesToStartFrom)
         {
             IFrequencyDictionary<IProperty> childrenPropertiesThatCanStartFromTheProperty = PossibleChildren
-                .Where(prop => propertiesToStartFrom.Any(propertyToStartFrom => prop.Key.CanStartFrom(propertyToStartFrom)))
+                .Where(prop =>  prop.Key.CanStartFromAnyOf(propertiesToStartFrom))
                 .ToFrequencyDictionary();
             if (childrenPropertiesThatCanStartFromTheProperty.Count == 0)
             {
@@ -70,6 +73,12 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
                     string.Join(" or ", propertiesToStartFrom.Select(prop => prop.PropertyName)) + ".");
             }
             return childrenPropertiesThatCanStartFromTheProperty.GetRandomElementBasedOnFrequency();
+        }
+
+
+        public IProperty TryGetNecessaryPropertyThatCanStartFrom(IEnumerable<IProperty> propertiesToStartFrom)
+        {
+            return ParentProperty.MustContainProperties.FirstOrDefault(property => property.CanStartFromAnyOf(propertiesToStartFrom));
         }
 
 
