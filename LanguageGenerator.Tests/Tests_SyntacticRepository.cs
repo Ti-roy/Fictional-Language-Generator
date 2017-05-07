@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using LanguageGenerator.Core.InformationAgent;
 using LanguageGenerator.Core.Repository;
 using LanguageGenerator.Core.SyntacticProperty;
 using NUnit.Framework;

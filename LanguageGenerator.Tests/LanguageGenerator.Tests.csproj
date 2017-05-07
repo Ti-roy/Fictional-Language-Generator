@@ -48,14 +48,15 @@
   <ItemGroup>
     <Compile Include="ClassWithAutoMockingContainer.cs" />
     <Compile Include="IntegrationTests_Of_BasicProperty.cs" />
+    <Compile Include="Frequency_IntegrationTests_Of_SyntacticUnitConstructor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests_For_Comperison_Of_IProperty.cs" />
+    <Compile Include="Tests_Of_Comperison_Of_IProperty.cs" />
     <Compile Include="Tests_Of_ParentProperty.cs" />
     <Compile Include="Tests_Of_RootProperty.cs" />
     <Compile Include="Tests_Of_SyntacticUnitsResult.cs" />
     <Compile Include="Tests_SyntacticRepository.cs" />
-    <Compile Include="Tests_For_IFrequencyDictionary.cs" />
-    <Compile Include="IntegrationTests_Of_SyntacticUnitConstructor.cs" />
+    <Compile Include="Tests_Of_IFrequencyDictionary.cs" />
+    <Compile Include="Order_And_Tree_IntegrationTests_Of_SyntacticUnitConstructor.cs" />
     <Compile Include="IntegrationTests_Of_RepositoryLinker.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -16,7 +16,7 @@ namespace LanguageGenerator.Core.SyntacticUnit
         IFrequencyDictionary<int> ChildrenAmount { get; }
         int GetChildrenAmountBasedOnFrequency();
         IProperty GetChildPropertyBasedOnFrequecyThatCanStartFrom(IProperty propertyToStartFrom);
-        IProperty GetChildPropertyBasedOnFrequecyThatCanStartFrom(IEnumerable<IProperty> propertiesToStartFrom);
-        IProperty TryGetNecessaryPropertyThatCanStartFrom(IEnumerable<IProperty> propertiesToStartFrom);
+        IProperty GetChildPropertyBasedOnFrequecyThatCanStartFromAnyOf(IEnumerable<IProperty> propertiesToStartFrom);
+        IProperty TryGetNecessaryPropertyThatCanStartFromAnyOf(IEnumerable<IProperty> propertiesToStartFrom);
     }
 }

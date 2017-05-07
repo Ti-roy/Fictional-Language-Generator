@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace LanguageGenerator.Tests
 {
-    class Tests_Of_RootProperty : Tests_For_Comperison_Of_IProperty
+    class Tests_Of_RootProperty : Tests_Of_Comperison_Of_IProperty
     {
         [Test]
         public void Is_Same_Elements_Equal()

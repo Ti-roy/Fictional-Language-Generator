@@ -11,7 +11,7 @@ namespace LanguageGenerator.Core.SyntacticProperty
         string PropertyName { get; }
         IFrequencyDictionary<IProperty> StartsWithFrequencyFrom { get; }
         IFrequencyDictionary<ISyntacticUnit> SyntacticUnits { get; }
-        bool CanStartFrom(IProperty propertyToStartFrom);
-        bool CanStartFromAnyOf(IEnumerable<IProperty> propertiesToStartFrom);
+        int FrequencyToStartFromProperty(IProperty propertyToStartFrom);
+        int MaxFrequencyToStartFromAnyOf(IEnumerable<IProperty> propertiesToStartFrom);
     }
 }

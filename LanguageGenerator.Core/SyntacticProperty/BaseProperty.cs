@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using LanguageGenerator.Core.FrequencyDictionary;
 using LanguageGenerator.Core.SyntacticUnit;
@@ -27,17 +29,29 @@ namespace LanguageGenerator.Core.SyntacticProperty
         public abstract IFrequencyDictionary<ISyntacticUnit> SyntacticUnits { get; }
 
 
-        public bool CanStartFrom(IProperty propertyToStartFrom)
+
+
+
+        public int FrequencyToStartFromProperty(IProperty propertyToStartFrom)
         {
             IProperty propertyOfAny = BasicSyntacticUnitsSingleton.AnyProperty;
-            return StartsWithFrequencyFrom.ContainsKey(propertyOfAny) && StartsWithFrequencyFrom[propertyOfAny] > 0 ||
-                   StartsWithFrequencyFrom.ContainsKey(propertyToStartFrom) && StartsWithFrequencyFrom[propertyToStartFrom] > 0;
+            if (StartsWithFrequencyFrom.ContainsKey(propertyToStartFrom))
+                return StartsWithFrequencyFrom[propertyToStartFrom];
+            if (StartsWithFrequencyFrom.ContainsKey(propertyOfAny))
+                return StartsWithFrequencyFrom[propertyOfAny];
+            return 0;
         }
 
 
-        public bool CanStartFromAnyOf(IEnumerable<IProperty> propertiesToStartFrom)
+        public int MaxFrequencyToStartFromAnyOf(IEnumerable<IProperty> propertiesToStartFrom)
         {
-            return propertiesToStartFrom.Any(property => CanStartFrom(property));
+            IProperty propertyOfAny = BasicSyntacticUnitsSingleton.AnyProperty;
+            IEnumerable<KeyValuePair<IProperty, int>> pairsThatIncludedArgumentSet = StartsWithFrequencyFrom.Where(pair => propertiesToStartFrom.Contains(pair.Key)).ToArray();
+            if (pairsThatIncludedArgumentSet.Any())
+                return pairsThatIncludedArgumentSet.Max(prop=>prop.Value);
+            if (StartsWithFrequencyFrom.ContainsKey(propertyOfAny))
+                return StartsWithFrequencyFrom[propertyOfAny];
+            return 0;
         }
 
 

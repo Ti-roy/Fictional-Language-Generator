@@ -21,7 +21,7 @@ namespace LanguageGenerator.Tests
             propertyWithCanStartFromCollection.StartsWithFrequencyFrom.Add(aProperty1, 1);
             propertyWithCanStartFromCollection.StartsWithFrequencyFrom.Add(aProperty2, 1);
             //Act 
-            bool canStart = propertyWithCanStartFromCollection.CanStartFrom(startFromThisProperty);
+            bool canStart = propertyWithCanStartFromCollection.DoesPropertyCanStartFrom(startFromThisProperty);
             //Assert
             Assert.That(canStart);
         }
@@ -37,7 +37,7 @@ namespace LanguageGenerator.Tests
             propertyWithCanStartFromCollection.StartsWithFrequencyFrom.Add(aProperty1, 1);
             propertyWithCanStartFromCollection.StartsWithFrequencyFrom.Add(aProperty2, 1);
             //Act 
-            bool canStart = propertyWithCanStartFromCollection.CanStartFrom(startFromThisProperty);
+            bool canStart = propertyWithCanStartFromCollection.DoesPropertyCanStartFrom(startFromThisProperty);
             //Assert
             Assert.That(!canStart);
         }
@@ -49,7 +49,7 @@ namespace LanguageGenerator.Tests
             IProperty startFromThisProperty = new ParentProperty("startProperty");
             IProperty propertyWithCanStartFromCollection = new ParentProperty("propertyWithEmptyCanStartFromCollection");
             //Act 
-            bool canStart = propertyWithCanStartFromCollection.CanStartFrom(startFromThisProperty);
+            bool canStart = propertyWithCanStartFromCollection.DoesPropertyCanStartFrom(startFromThisProperty);
             //Assert
             Assert.That(!canStart);
         }
@@ -67,7 +67,7 @@ namespace LanguageGenerator.Tests
             propertyWithCanStartFromCollection.StartsWithFrequencyFrom.Add(aProperty2, 1);
             propertyWithCanStartFromCollection.StartsWithFrequencyFrom.Add(BasicSyntacticUnitsSingleton.AnyProperty, 1);
             //Act 
-            bool canStart = propertyWithCanStartFromCollection.CanStartFrom(startFromThisProperty);
+            bool canStart = propertyWithCanStartFromCollection.DoesPropertyCanStartFrom(startFromThisProperty);
             //Assert
             Assert.That(canStart);
         }
@@ -84,7 +84,7 @@ namespace LanguageGenerator.Tests
             propertyWithCanStartFromCollection.StartsWithFrequencyFrom.Add(aProperty2, 1);
             propertyWithCanStartFromCollection.StartsWithFrequencyFrom.Add(BasicSyntacticUnitsSingleton.AnyProperty, 1);
             //Act 
-            bool canStart = propertyWithCanStartFromCollection.CanStartFrom(startFromThisProperty);
+            bool canStart = propertyWithCanStartFromCollection.DoesPropertyCanStartFrom(startFromThisProperty);
             //Assert
             Assert.That(canStart);
         }

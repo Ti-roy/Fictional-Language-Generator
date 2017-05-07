@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="AbstractFactory\ILanguageFactory.cs" />
     <Compile Include="AbstractFactory\PropertyNotExistsInRepositoryException.cs" />
-    <Compile Include="Constructor\CouldNotContructParentPropertyWithAllNecesseryPropties.cs" />
+    <Compile Include="Constructor\CouldNotContructParentPropertyWithAllNecesseryProptiesException.cs" />
     <Compile Include="Repository\RepositoryLinker\RepositoryLinker.cs" />
     <Compile Include="Repository\RepositoryLinker\IRepositoryLinker.cs" />
     <Compile Include="AbstractFactory\LanguageFactory.cs" />

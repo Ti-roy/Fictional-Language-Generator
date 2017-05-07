@@ -17,6 +17,17 @@ namespace LanguageGenerator.Core.FrequencyDictionary
         }
 
 
+        public FrequencyDictionary(IEnumerable<KeyValuePair<T,int>> frequencyDictionary)
+        {
+            Dictionary<T, int> dictionary = new Dictionary<T, int>();
+            foreach (KeyValuePair<T, int> rootSyntacticUnit in frequencyDictionary)
+            {
+                dictionary.Add(rootSyntacticUnit.Key, rootSyntacticUnit.Value);
+            }
+            _valueAndFrequency = dictionary;
+        }
+
+
         public T GetRandomElementBasedOnFrequency()
         {
             List<KeyValuePair<T, int>> orderLockedDictionary = _valueAndFrequency
@@ -24,26 +35,6 @@ namespace LanguageGenerator.Core.FrequencyDictionary
                 .ToList();
             int randomNumberInRangeOfTotal = RandomNumberInRangeOfTotal(orderLockedDictionary);
             return RandomElementBasedOnFrequency(randomNumberInRangeOfTotal, orderLockedDictionary);
-        }
-
-
-        private int RandomNumberInRangeOfTotal(List<KeyValuePair<T, int>> orderLockedDictionary)
-        {
-            int totalFrequency = orderLockedDictionary.Sum(keyValuePair => keyValuePair.Value);
-            if (totalFrequency < 1) throw new InvalidOperationException("Total frequency of frequencyDictionary is 0.");
-            int randomNumberInRangeOfTotal = RandomSingleton.Random.Next(1, totalFrequency);
-            return randomNumberInRangeOfTotal;
-        }
-
-
-        private T RandomElementBasedOnFrequency(int randomNumberInRangeOfTotal, List<KeyValuePair<T, int>> orderLockedDictionary)
-        {
-            int leftFrequency = randomNumberInRangeOfTotal;
-            for (int index = 0;; index++)
-            {
-                leftFrequency -= orderLockedDictionary[index].Value;
-                if (leftFrequency <= 0) return orderLockedDictionary[index].Key;
-            }
         }
 
 
@@ -107,9 +98,10 @@ namespace LanguageGenerator.Core.FrequencyDictionary
         }
 
 
-        public void Add(T key, int value = 1000)
+        public void Add(T key, int value = 100)
         {
-            if (value < 0) throw new InvalidOperationException("Negative values are not allowed as frequency.");
+            if (value < 0)
+                throw new InvalidOperationException("Negative values are not allowed as frequency.");
             _valueAndFrequency.Add(key, value);
         }
 
@@ -142,6 +134,28 @@ namespace LanguageGenerator.Core.FrequencyDictionary
         public ICollection<int> Values
         {
             get { return _valueAndFrequency.Values; }
+        }
+
+
+        private int RandomNumberInRangeOfTotal(List<KeyValuePair<T, int>> orderLockedDictionary)
+        {
+            int totalFrequency = orderLockedDictionary.Sum(keyValuePair => keyValuePair.Value);
+            if (totalFrequency < 1)
+                throw new InvalidOperationException("Total frequency of frequencyDictionary is 0.");
+            int randomNumberInRangeOfTotal = RandomSingleton.Random.Next(1, totalFrequency);
+            return randomNumberInRangeOfTotal;
+        }
+
+
+        private T RandomElementBasedOnFrequency(int randomNumberInRangeOfTotal, List<KeyValuePair<T, int>> orderLockedDictionary)
+        {
+            int leftFrequency = randomNumberInRangeOfTotal;
+            for (int index = 0;; index++)
+            {
+                leftFrequency -= orderLockedDictionary[index].Value;
+                if (leftFrequency <= 0)
+                    return orderLockedDictionary[index].Key;
+            }
         }
     }
 }

@@ -48,37 +48,55 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
 
         public IProperty GetChildPropertyBasedOnFrequecyThatCanStartFrom(IProperty propertyToStartFrom)
         {
-            IFrequencyDictionary<IProperty> childrenPropertiesThatCanStartFromTheProperty = PossibleChildren
-                .Where(prop => prop.Key.CanStartFrom(propertyToStartFrom))
-                .ToFrequencyDictionary();
-            if (childrenPropertiesThatCanStartFromTheProperty.Count == 0)
+            FrequencyDictionary<IProperty> childPropertiesWithFrequency = new FrequencyDictionary<IProperty>();
+            foreach (KeyValuePair<IProperty, int> pair in PossibleChildren)
+            {
+                int totalFrequncyOfProperty = pair.Key.FrequencyToStartFromProperty(propertyToStartFrom) * PossibleChildren[pair.Key];
+                if (totalFrequncyOfProperty > 0)
+                {
+                    childPropertiesWithFrequency.Add(pair.Key, totalFrequncyOfProperty);
+                }
+            }
+
+            if (childPropertiesWithFrequency.Count == 0)
             {
                 throw new InvalidOperationException(
                     "During construction children sequence of property " + Property.PropertyName + " no children were found that can go after " +
                     propertyToStartFrom.PropertyName + ".");
             }
-            return childrenPropertiesThatCanStartFromTheProperty.GetRandomElementBasedOnFrequency();
+            return childPropertiesWithFrequency.GetRandomElementBasedOnFrequency();
         }
 
 
-        public IProperty GetChildPropertyBasedOnFrequecyThatCanStartFrom(IEnumerable<IProperty> propertiesToStartFrom)
+        public IProperty GetChildPropertyBasedOnFrequecyThatCanStartFromAnyOf(IEnumerable<IProperty> propertiesToStartFrom)
         {
-            IFrequencyDictionary<IProperty> childrenPropertiesThatCanStartFromTheProperty = PossibleChildren
-                .Where(prop =>  prop.Key.CanStartFromAnyOf(propertiesToStartFrom))
-                .ToFrequencyDictionary();
-            if (childrenPropertiesThatCanStartFromTheProperty.Count == 0)
+            FrequencyDictionary<IProperty> childPropertiesWithFrequency = new FrequencyDictionary<IProperty>();
+            IEnumerable<IProperty> startProperties = propertiesToStartFrom as IProperty[] ?? propertiesToStartFrom.ToArray();
+            foreach (KeyValuePair<IProperty, int> pair in PossibleChildren)
+            {
+                int totalFrequncyOfProperty = 0;
+                checked
+                {
+                    totalFrequncyOfProperty = pair.Key.MaxFrequencyToStartFromAnyOf(startProperties) * PossibleChildren[pair.Key];
+                }
+                if (totalFrequncyOfProperty > 0)
+                {
+                    childPropertiesWithFrequency.Add(pair.Key, totalFrequncyOfProperty);
+                }
+            }
+            if (childPropertiesWithFrequency.Count == 0)
             {
                 throw new InvalidOperationException(
                     "During construction children sequence of property " + Property.PropertyName + " no children were found that can go after " +
-                    string.Join(" or ", propertiesToStartFrom.Select(prop => prop.PropertyName)) + ".");
+                    string.Join(" or ", startProperties.Select(prop => prop.PropertyName)) + ".");
             }
-            return childrenPropertiesThatCanStartFromTheProperty.GetRandomElementBasedOnFrequency();
+            return childPropertiesWithFrequency.GetRandomElementBasedOnFrequency();
         }
 
 
-        public IProperty TryGetNecessaryPropertyThatCanStartFrom(IEnumerable<IProperty> propertiesToStartFrom)
+        public IProperty TryGetNecessaryPropertyThatCanStartFromAnyOf(IEnumerable<IProperty> propertiesToStartFrom)
         {
-            return ParentProperty.MustContainProperties.FirstOrDefault(property => property.CanStartFromAnyOf(propertiesToStartFrom));
+            return ParentProperty.MustContainProperties.FirstOrDefault(property => property.DoesProppertyCanStartFromAnyOf(propertiesToStartFrom));
         }
 
 

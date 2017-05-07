@@ -3,7 +3,7 @@
 
 namespace LanguageGenerator.Tests
 {
-    class Tests_For_Comperison_Of_IProperty
+    class Tests_Of_Comperison_Of_IProperty
     {
         protected bool IsTwoIPropertyImplementationsEqual(IProperty property1, IProperty property2)
         {
