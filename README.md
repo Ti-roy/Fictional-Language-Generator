@@ -12,6 +12,6 @@ The general idea is to give API user way of creating unique strings, by allowing
 <li>defining element content (like string representaion or other elements)</li>
 </ul> 
 <b>TODO:</b>
-<h3>API overwiev</h3>
+<h3>API overview</h3>
 <h3>Examples of usage</h3>
 <h3>Predefined sets</h3>
