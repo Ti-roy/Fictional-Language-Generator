@@ -9,7 +9,7 @@ The general idea is to give API user way of creating unique strings, by allowing
 <li>length</li>
 <li>order</li>
 <li>amount of elements, this element consists of</li>
-<li>defining element content (like string representaion or other elements)</li>
+<li>element content (like string representaion or other elements)</li>
 </ul> 
 <b>TODO:</b>
 <h3>API overview</h3>
