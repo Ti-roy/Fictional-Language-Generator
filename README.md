@@ -1,6 +1,6 @@
 # Fictional language generator
 <h3>What is it?</h3>
-Fictional language generator is an API for construction strings with user defined order, length, and content, based on frequency.
+Fictional language generator is a well tested API for construction strings with user defined order, length, and content, based on frequency.
 <h3>What it can be used for?</h3>
 For generating senteces, characters names, or other strings, with certain patterns.
 <h3>Whats idea behind it?</h3>
