@@ -49,6 +49,7 @@
     <Compile Include="ClassWithAutoMockingContainer.cs" />
     <Compile Include="IntegrationTests_Of_BasicProperty.cs" />
     <Compile Include="Frequency_IntegrationTests_Of_SyntacticUnitConstructor.cs" />
+    <Compile Include="Load_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests_Of_Comperison_Of_IProperty.cs" />
     <Compile Include="Tests_Of_ParentProperty.cs" />
