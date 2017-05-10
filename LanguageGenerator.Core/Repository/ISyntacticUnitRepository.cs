@@ -8,8 +8,8 @@ namespace LanguageGenerator.Core.Repository
 {
     public interface ISyntacticUnitRepository
     {
-        IList<IProperty> Properties { get; set; }
-        IList<ISyntacticUnit> SyntacticUnits { get; set; }
+        ISet<IProperty> Properties { get;  }
+        ISet<ISyntacticUnit> SyntacticUnits { get;  }
 
         IProperty GetPropertyWithName(string propertyName);
         IParentProperty GetParentPropertyWithName(string propertyName);

@@ -14,7 +14,9 @@ namespace LanguageGenerator.Core.AbstractFactory
         IParentProperty CreateParentProperty(string propertyName);
         IRootSU CreateRootSyntacticUnit(string stringRepresentation, IRootProperty itsProperty, int frequency = 100);
         IRootSU CreateRootSyntacticUnit(string stringRepresentation, string itsPropertyName, int frequency = 100);
+        IRootSU CreateRootSyntacticUnitWithLastCreatedProperty(string stringRepresentation, int frequency = 100);
         IParentSU CreateParentSyntacticUnit(IParentProperty itsProperty, int frequency = 100);
         IParentSU CreateParentSyntacticUnit(string itsPropertyName, int frequency = 100);
+
     }
 }

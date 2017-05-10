@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using LanguageGenerator.Core.Repository;
 using LanguageGenerator.Core.Repository.RepositoryLinker;
+using LanguageGenerator.Core.SUConstroctor.Exceptions;
+using LanguageGenerator.Core.SUConstroctor.SyntacticUnitResultNamespace;
+using LanguageGenerator.Core.SUConstroctor.SyntacticUnitResultSchemeNamespace;
 using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticUnit;
 using LanguageGenerator.Core.SyntacticUnit.RootSU;
 
 
-namespace LanguageGenerator.Core.Constructor
+namespace LanguageGenerator.Core.SUConstroctor
 {
     public class SyntacticUnitConstructor : ISyntacticUnitConstructor
     {
-        IRepositoryLinker linker;
+        private readonly IRepositoryLinker linker;
+
+
         public SyntacticUnitConstructor(ISyntacticUnitRepository syntacticUnitRepository, IRepositoryLinker repositoryLinker)
         {
             linker = repositoryLinker;
@@ -31,10 +36,12 @@ namespace LanguageGenerator.Core.Constructor
 
         public ISyntacticUnitRepository SyntacticUnitRepository { get; }
 
+
         public void LinkRepository()
         {
             linker.LinkRepository(SyntacticUnitRepository);
         }
+
 
         public string GetResultStringOfProperty(string propertyName)
         {
@@ -56,30 +63,13 @@ namespace LanguageGenerator.Core.Constructor
 
         public ISyntacticUnitResultScheme GetResultSchemeOfProperty(IProperty property)
         {
-            SyntacticUnitResultScheme scheme = new SyntacticUnitResultScheme();
-            AddToSchemeStartSyntacticUnits(scheme, property);
+            SyntacticUnitResultScheme scheme = new SyntacticUnitResultScheme(property);
             BuildSchemeToRootSyntacticUnits(scheme);
             return scheme;
         }
 
 
-        private void AddToSchemeStartSyntacticUnits(SyntacticUnitResultScheme scheme, IProperty property)
-        {
-            scheme.ResultScale.Add(new SyntacticUnitResult(BasicSyntacticUnitsSingleton.StartOfConstractionSyntacticUnit));
-            CheckIfPropertyCanBeginWithStartOfConstruction(property);
-            scheme.ResultScale.Add(new SyntacticUnitResult(property.SyntacticUnits.GetRandomElementBasedOnFrequency(), scheme.ResultScale[0]));
-        }
-
-
-        private void CheckIfPropertyCanBeginWithStartOfConstruction(IProperty property)
-        {
-            IProperty startOfConstructionProperty = BasicSyntacticUnitsSingleton.StartOfConstructionProperty;
-            if (property.FrequencyToStartFromProperty(startOfConstructionProperty)==0)
-            {
-                throw new InvalidOperationException(
-                    "The property " + property.PropertyName + " can`t start from " + startOfConstructionProperty.PropertyName + ".");
-            }
-        }
+        
 
 
         private void BuildSchemeToRootSyntacticUnits(SyntacticUnitResultScheme scheme)
@@ -87,7 +77,7 @@ namespace LanguageGenerator.Core.Constructor
             for (ISyntacticUnitResult parentSUResult = FirstOrDefaultParentSyntacticUnit(scheme); parentSUResult != null;
                  parentSUResult = FirstOrDefaultParentSyntacticUnit(scheme))
             {
-                List<IProperty> lastProperties = GetScrapeOfLastPropertiesThatGoAfterProperty(scheme, parentSUResult);
+                List<IProperty> lastProperties = GetScrapeOfLastPropertiesThatGoBeforeSUResult(scheme, parentSUResult);
                 List<ISyntacticUnit> childrenSU =
                     GetOrderedSetOfChildrenSyntacticUnitsThatCanGoAfterLastProperties((IParentSU) parentSUResult.ChoosenUnit, lastProperties);
                 ReplaceParent_SU_WithChidrenSU(scheme, parentSUResult, childrenSU);
@@ -101,13 +91,14 @@ namespace LanguageGenerator.Core.Constructor
         }
 
 
-        private List<IProperty> GetScrapeOfLastPropertiesThatGoAfterProperty(SyntacticUnitResultScheme scheme, ISyntacticUnitResult parentSUResult)
+        private List<IProperty> GetScrapeOfLastPropertiesThatGoBeforeSUResult(SyntacticUnitResultScheme scheme, ISyntacticUnitResult parentSUResult)
         {
             List<IProperty> scrapeOfLastProperties = new List<IProperty>();
             ISyntacticUnitResult lastRootResult = GetLastRootResultBeforeParentResult(scheme, parentSUResult);
             scrapeOfLastProperties.Add(lastRootResult.Property);
             ISyntacticUnitResult lastResult = lastRootResult;
-            while (lastResult.ParentResult != null && !IsResultParentOfResult(lastResult.ParentResult, parentSUResult))
+            ISyntacticUnitResult parentResults = parentSUResult.ParentResult;
+            while (lastResult.ParentResult != null && parentResults != lastResult.ParentResult)
             {
                 scrapeOfLastProperties.Add(lastResult.ParentResult.Property);
                 lastResult = lastResult.ParentResult;
@@ -122,18 +113,12 @@ namespace LanguageGenerator.Core.Constructor
         }
 
 
-        private bool IsResultParentOfResult(ISyntacticUnitResult resultThatIsPossibleParent, ISyntacticUnitResult resultThatIsChild)
-        {
-            return resultThatIsChild.GetAllParentResults().Contains(resultThatIsPossibleParent);
-        }
-
-
         private List<ISyntacticUnit> GetOrderedSetOfChildrenSyntacticUnitsThatCanGoAfterLastProperties(
             IParentSU parentSU, IEnumerable<IProperty> lastProperties)
         {
             IEnumerable<IProperty> _lastProperties = lastProperties;
             List<ISyntacticUnit> setOfChildrenSyntacticUnits = new List<ISyntacticUnit>();
-            List<IProperty> currentNecesseryProperiesForConstruction = new List<IProperty>(parentSU.ParentProperty.MustContainProperties);
+            List<IProperty> currentNecesseryProperiesForConstruction = CreateNewListIfMustContainPropertiesNotEmpty(parentSU);
             for (int childrenAmount = parentSU.GetChildrenAmountBasedOnFrequency(); childrenAmount > 0; childrenAmount--)
             {
                 IProperty childProperty = GetChildProperty(parentSU, _lastProperties, currentNecesseryProperiesForConstruction);
@@ -145,11 +130,22 @@ namespace LanguageGenerator.Core.Constructor
         }
 
 
+        private List<IProperty> CreateNewListIfMustContainPropertiesNotEmpty(IParentSU parentSU)
+        {
+            if (parentSU.ParentProperty.MustContainProperties.Any())
+            {
+                return new List<IProperty>(parentSU.ParentProperty.MustContainProperties);
+            }
+            return null;
+        }
+
+
         private IProperty GetChildProperty(
             IParentSU parentSU, IEnumerable<IProperty> _lastProperties, List<IProperty> currentNecesseryProperiesForConstruction)
         {
-            IProperty childProperty = TrySetChildPropertyFromNecessertyProperties(parentSU, _lastProperties, currentNecesseryProperiesForConstruction);
-            if (childProperty == null)
+            IProperty childProperty =
+                TrySetChildPropertyFromNecessertyProperties(parentSU, _lastProperties, currentNecesseryProperiesForConstruction);
+            if (CouldntSetChildPropertyFromNecessetyProperties(childProperty))
             {
                 childProperty = SetChildPropertyFromPossibleChildren(parentSU, _lastProperties);
             }
@@ -157,9 +153,15 @@ namespace LanguageGenerator.Core.Constructor
         }
 
 
+        private static bool CouldntSetChildPropertyFromNecessetyProperties(IProperty childProperty)
+        {
+            return childProperty == null;
+        }
+
+
         private void ThrowExceptionIfNotAllNecessaryPropertiesUsed(IParentSU parentSU, List<IProperty> currentPropertyNecessetyProperties)
         {
-            if (currentPropertyNecessetyProperties.Count != 0)
+            if (currentPropertyNecessetyProperties != null && currentPropertyNecessetyProperties.Count != 0)
             {
                 throw new CouldNotContructParentPropertyWithAllNecesseryProptiesException(
                     "During construction of syntactic unit with property " + parentSU.ParentProperty.PropertyName +
@@ -178,6 +180,10 @@ namespace LanguageGenerator.Core.Constructor
         private IProperty TrySetChildPropertyFromNecessertyProperties(
             IParentSU parentSU, IEnumerable<IProperty> _lastProperties, List<IProperty> currentNecesseryProperiesForConstruction)
         {
+            if (currentNecesseryProperiesForConstruction == null || currentNecesseryProperiesForConstruction.Count == 0)
+            {
+                return null;
+            }
             IProperty childProperty = parentSU.TryGetNecessaryPropertyThatCanStartFromAnyOf(_lastProperties);
             currentNecesseryProperiesForConstruction.Remove(childProperty);
             return childProperty;

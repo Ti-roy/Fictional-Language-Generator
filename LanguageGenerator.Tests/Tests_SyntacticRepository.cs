@@ -24,7 +24,6 @@ namespace LanguageGenerator.Tests
         {
             //Arrange
             ISyntacticUnitRepository repo = new SyntacticUnitRepository();
-            repo.Properties = new List<IProperty>();
             string testPropertyName = "TestProperty";
             //Act
             repo.Properties.Add(GetSubstituteFor_IPropery_WichReturnsPropertyName(testPropertyName));
@@ -38,7 +37,6 @@ namespace LanguageGenerator.Tests
         {
             //Arrange
             ISyntacticUnitRepository repo = new SyntacticUnitRepository();
-            repo.Properties = new List<IProperty>();
             string testPropertyName1 = "TestProperty1";
             string testPropertyName2 = "TestProperty2";
             //Act
@@ -54,7 +52,6 @@ namespace LanguageGenerator.Tests
         {
             //Arrange
             ISyntacticUnitRepository repo = new SyntacticUnitRepository();
-            repo.Properties = new List<IProperty>();
             //Act Assert
             Assert.Throws<InvalidOperationException>(() => { repo.GetPropertyWithName("a name"); });
         }

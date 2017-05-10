@@ -3,7 +3,7 @@ using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticUnit;
 
 
-namespace LanguageGenerator.Core.Constructor
+namespace LanguageGenerator.Core.SUConstroctor.SyntacticUnitResultNamespace
 {
     public class SyntacticUnitResult : ISyntacticUnitResult
     {

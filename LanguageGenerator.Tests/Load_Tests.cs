@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using LanguageGenerator.Core.AbstractFactory;
-using LanguageGenerator.Core.Constructor;
+using LanguageGenerator.Core.SUConstroctor;
 using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticUnit.ParentSU;
 using NUnit.Framework;
@@ -25,7 +25,7 @@ namespace LanguageGenerator.Tests
         private readonly List<char> _consonants;
         private readonly List<char> _vowels;
 
-        private int amountOfWords = 10000;
+        private int amountOfWords = 1000000;
 
         private ILanguageFactory CreateRepositoryWithConsonantsAndVowels()
         {
@@ -67,10 +67,10 @@ namespace LanguageGenerator.Tests
 
 
         [Test]
-        public void Parralell_Attempt()
+        public void Parralell_Loop()
         {
             SyntacticUnitConstructor constructor = CreateConstructorWithDefaultScheme();
-            List<string> words = new List<string>();
+            ConcurrentBag<string> words = new ConcurrentBag<string>();
             int totalAmountOfWords = amountOfWords;
             //Act
             Stopwatch sw = new Stopwatch();

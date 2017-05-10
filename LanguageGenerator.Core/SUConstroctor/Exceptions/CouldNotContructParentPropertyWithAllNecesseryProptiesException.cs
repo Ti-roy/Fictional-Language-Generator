@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace LanguageGenerator.Core.Constructor
+namespace LanguageGenerator.Core.SUConstroctor.Exceptions
 {
     public class CouldNotContructParentPropertyWithAllNecesseryProptiesException :Exception
     {

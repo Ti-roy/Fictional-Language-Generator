@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using LanguageGenerator.Core.AbstractFactory;
-using LanguageGenerator.Core.Constructor;
 using LanguageGenerator.Core.Repository;
+using LanguageGenerator.Core.SUConstroctor;
 using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticProperty.ParentProperty;
 using LanguageGenerator.Core.SyntacticProperty.RootProperty;
@@ -100,7 +100,55 @@ namespace LanguageGenerator.Tests
 
 
         [Test]
-        public void Does_MustContain_Works_With_Few_Nessecery_Values()
+        public void Does_MustContain_Works_Required_Amount_Of_Time_Once()
+        {
+            //Arrange
+            ILanguageFactory languageFactory = new LanguageFactory();
+            //Act
+            CreateRootPropertySyntacticUnitPair(languageFactory, "child1", "Any", "a");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "child2", "child1", "b");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "child3", "child2", "c");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "child4", "child3", "d");
+
+            languageFactory.CreateParentProperty("TopParent").CanStartFrom("Start").MustContainProperty("child1");
+            languageFactory.CreateParentSyntacticUnit("TopParent")
+                           .AddChildrenAmount(4, 1)
+                           .AddPossibleChild("child2")
+                           .AddPossibleChild("child3")
+                           .AddPossibleChild("child4");
+
+            string result = new SyntacticUnitConstructor(languageFactory.Repository).GetResultStringOfProperty("TopParent");
+            //Assert
+            Assert.That(result == "abcd");
+        }
+
+
+        [Test]
+        public void Does_MustContain_Works_Required_Amount_Of_Time_Twice()
+        {
+            //Arrange
+            ILanguageFactory languageFactory = new LanguageFactory();
+            //Act
+            CreateRootPropertySyntacticUnitPair(languageFactory, "child1", "Any", "a");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "child2", "child1", "b");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "child3", "child2", "c");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "child4", "child3", "d");
+
+            languageFactory.CreateParentProperty("TopParent").CanStartFrom("Start").MustContainProperty("child1").MustContainProperty("child1");
+            languageFactory.CreateParentSyntacticUnit("TopParent")
+                           .AddChildrenAmount(5, 1)
+                           .AddPossibleChild("child2")
+                           .AddPossibleChild("child3")
+                           .AddPossibleChild("child4");
+
+            string result = new SyntacticUnitConstructor(languageFactory.Repository).GetResultStringOfProperty("TopParent");
+            //Assert
+            Assert.That(result == "aabcd");
+        }
+
+
+        [Test]
+        public void Does_MustContain_Works_With_Few_Nessecery_Values_And_Many_Possible()
         {
             //Arrange
             ILanguageFactory languageFactory = new LanguageFactory();
@@ -196,6 +244,32 @@ namespace LanguageGenerator.Tests
         }
 
 
+        [Test]
+        public void Does_MustContain_Works_With_With_Nessecery_Value_In_Middle()
+        {
+            //Arrange
+            ILanguageFactory languageFactory = new LanguageFactory();
+            //Act
+            CreateRootPropertySyntacticUnitPair(languageFactory, "child1", "Start", "a");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "child2", "child1", "b");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "child3", "child1", "c");
+            CreateRootPropertySyntacticUnitPair(languageFactory, "child4", "child3", "d");
+
+            languageFactory.CreateParentProperty("TopParent").CanStartFrom("Start").MustContainProperty("child3");
+            languageFactory.CreateParentSyntacticUnit("TopParent")
+                           .AddChildrenAmount(3, 1)
+                           .AddPossibleChild("child1")
+                           .AddPossibleChild("child2")
+                           .AddPossibleChild("child3")
+                           .AddPossibleChild("child4");
+
+
+            string result = new SyntacticUnitConstructor(languageFactory.Repository).GetResultStringOfProperty("TopParent");
+            //Assert
+            Assert.That(result == "acd");
+        }
+
+
         //                  3_0
         //              /       \
         //           2_0        2_1 ---
@@ -229,8 +303,6 @@ namespace LanguageGenerator.Tests
             //Assert
             Assert.That(result == "abcdfk");
         }
-
-
         //    2_0
         //     | \ 
         //    1_0 1_1

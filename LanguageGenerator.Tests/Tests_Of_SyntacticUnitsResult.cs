@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LanguageGenerator.Core.Constructor;
+using LanguageGenerator.Core.SUConstroctor.SyntacticUnitResultNamespace;
 using LanguageGenerator.Core.SyntacticUnit;
 using NSubstitute;
 using NUnit.Framework;

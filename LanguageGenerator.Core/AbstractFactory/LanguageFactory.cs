@@ -12,6 +12,9 @@ namespace LanguageGenerator.Core.AbstractFactory
 {
     public class LanguageFactory : ILanguageFactory
     {
+        private IRootProperty lastCreatedProperty;
+
+
         public LanguageFactory(ISyntacticUnitRepository repository)
         {
             Repository = repository;
@@ -29,6 +32,7 @@ namespace LanguageGenerator.Core.AbstractFactory
         public IRootProperty CreateRootProperty(string propertyName)
         {
             IRootProperty rootProperty = new RootProperty(propertyName);
+            SetLastCreatedProperty(rootProperty);
             Repository.Properties.Add(rootProperty);
             return rootProperty;
         }
@@ -59,8 +63,17 @@ namespace LanguageGenerator.Core.AbstractFactory
             }
             catch (InvalidOperationException exception)
             {
-                throw new PropertyNotExistsInRepositoryException(itsPropertyName + " property not found in repository on creating root syntactic unit.", exception);
+                throw new PropertyNotExistsInRepositoryException(
+                    itsPropertyName + " property not found in repository on creating root syntactic unit.", exception);
             }
+        }
+
+
+        public IRootSU CreateRootSyntacticUnitWithLastCreatedProperty(string stringRepresentation, int frequency = 100)
+        {
+            if(lastCreatedProperty == null)
+                throw new NullReferenceException("No property created before using this method.");
+            return CreateRootSyntacticUnit(stringRepresentation, lastCreatedProperty, frequency);
         }
 
 
@@ -73,7 +86,8 @@ namespace LanguageGenerator.Core.AbstractFactory
             }
             catch (InvalidOperationException exception)
             {
-                throw new PropertyNotExistsInRepositoryException(itsPropertyName + " property not found in repository on creating parent syntactic unit.", exception);
+                throw new PropertyNotExistsInRepositoryException(
+                    itsPropertyName + " property not found in repository on creating parent syntactic unit.", exception);
             }
         }
 
@@ -83,6 +97,12 @@ namespace LanguageGenerator.Core.AbstractFactory
             IParentSU parentSu = new ParentSU(frequency, itsProperty);
             Repository.SyntacticUnits.Add(parentSu);
             return parentSu;
+        }
+
+
+        private void SetLastCreatedProperty(IRootProperty property)
+        {
+            lastCreatedProperty = property;
         }
     }
 }

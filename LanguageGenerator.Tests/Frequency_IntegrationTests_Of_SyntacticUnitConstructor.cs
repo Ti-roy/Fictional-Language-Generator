@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using LanguageGenerator.Core.AbstractFactory;
-using LanguageGenerator.Core.Constructor;
+using LanguageGenerator.Core.SUConstroctor;
 using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticUnit.ParentSU;
 using NUnit.Framework;

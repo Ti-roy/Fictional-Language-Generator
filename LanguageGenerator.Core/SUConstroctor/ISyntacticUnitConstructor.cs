@@ -1,8 +1,9 @@
 ﻿using LanguageGenerator.Core.Repository;
+using LanguageGenerator.Core.SUConstroctor.SyntacticUnitResultSchemeNamespace;
 using LanguageGenerator.Core.SyntacticProperty;
 
 
-namespace LanguageGenerator.Core.Constructor
+namespace LanguageGenerator.Core.SUConstroctor
 {
     public interface ISyntacticUnitConstructor
     {

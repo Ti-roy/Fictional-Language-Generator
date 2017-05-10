@@ -9,7 +9,7 @@ namespace LanguageGenerator.Core.Repository
 {
     public class SyntacticUnitRepository : ISyntacticUnitRepository
     {
-        public SyntacticUnitRepository(IList<IProperty> properties, IList<ISyntacticUnit> syntacticUnits)
+        public SyntacticUnitRepository(ISet<IProperty> properties, ISet<ISyntacticUnit> syntacticUnits)
         {
             Properties = properties;
             SyntacticUnits = syntacticUnits;
@@ -17,18 +17,18 @@ namespace LanguageGenerator.Core.Repository
         }
 
 
-        public SyntacticUnitRepository() : this(new List<IProperty>(), new List<ISyntacticUnit>())
+        public SyntacticUnitRepository() : this(new HashSet<IProperty>(), new HashSet<ISyntacticUnit>())
         {
         }
 
 
-        public IList<IProperty> Properties { get; set; }
-        public IList<ISyntacticUnit> SyntacticUnits { get; set; }
+        public ISet<IProperty> Properties { get; set; }
+        public ISet<ISyntacticUnit> SyntacticUnits { get; set; }
 
 
         public IProperty GetPropertyWithName(string propertyName)
         {
-            return Properties.Single(prop => prop.PropertyName == propertyName);
+            return Properties.First(prop => prop.PropertyName == propertyName);
         }
 
 
@@ -48,6 +48,18 @@ namespace LanguageGenerator.Core.Repository
         {
             Properties.Add(BasicSyntacticUnitsSingleton.AnyProperty);
             Properties.Add(BasicSyntacticUnitsSingleton.StartOfConstructionProperty);
+        }
+
+
+        public override int GetHashCode()
+        {
+            unchecked 
+            {         
+                int hash = 27;
+                hash = (13 * hash) + Properties.GetHashCode();
+                hash = (13 * hash) + SyntacticUnits.GetHashCode();
+                return hash;
+            }
         }
     }
 }
