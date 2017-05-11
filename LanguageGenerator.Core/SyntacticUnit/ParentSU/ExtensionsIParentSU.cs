@@ -19,13 +19,6 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
         }
 
 
-        public static T ForbidDubplicateValues<T>(this T parentSU) where T : IParentSU
-        {
-            parentSU.DublicateChildrenAllowed = false;
-            return parentSU;
-        }
-
-
         public static T AddPossibleChild<T>(this T childInfo, string propertyName, int frequencyForThatAmount = 100) where T : IChildInfoForLinker
         {
             childInfo.PossibleChildrenByPropertyNames.Add(propertyName, frequencyForThatAmount);

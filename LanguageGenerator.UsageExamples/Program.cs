@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using LanguageGenerator.Core.LanguageConstructor;
 using LanguageGenerator.Core.SUConstroctor;
 using LanguageGenerator.Core.SyntacticProperty;
@@ -47,7 +48,7 @@ namespace LanguageGenerator.UsageExamples
                                .AddChildrenAmount(5, 100)
                                .AddChildrenAmount(6, 150)
                                .AddChildrenAmount(7, 130);
-            languageConstructor.CreateParentSyntacticUnit("orcish word")
+            languageConstructor.CreateParentSyntacticUnit("orcish word",160)
                                .AddPossibleChild("consonant")
                                .AddPossibleChild("vowel")
                                .AddChildrenAmount(3, 150)
@@ -59,7 +60,7 @@ namespace LanguageGenerator.UsageExamples
             languageConstructor.CreateParentProperty("orcish sentence base").CanStartFrom("Start");
             languageConstructor.CreateParentSyntacticUnit("orcish sentence base").AddPossibleChild("orcish word").AddPossibleChild("whitespace").AddChildrenAmount(3, 120).AddChildrenAmount(5, 110).AddChildrenAmount(7, 100).AddChildrenAmount(9, 100);
 
-            languageConstructor.CreateRootProperty("semtence ending").CanStartFrom("orcish sentence base");
+            languageConstructor.CreateRootProperty("sentence ending").CanStartFrom("orcish sentence base");
             languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty(".", 100);
             languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("!", 50);
             languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("?", 50);
@@ -69,13 +70,13 @@ namespace LanguageGenerator.UsageExamples
 
 
             languageConstructor.CreateParentProperty("orcish sentence").CanStartFrom("Start");
-            languageConstructor.CreateParentSyntacticUnit("orcish sentence").AddPossibleChild("orcish sentence base").AddPossibleChild("semtence ending").AddChildrenAmount(2);
+            languageConstructor.CreateParentSyntacticUnit("orcish sentence").AddPossibleChild("orcish sentence base").AddPossibleChild("sentence ending").AddChildrenAmount(2);
         }
 
 
         public void PrintSentencesOfOrcishLanguage(int amount)
         {
-            List<string> results = languageConstructor.GetStringListOfProprety("orcish sentence", amount);
+            List<string> results = languageConstructor.GetStringListOfProprety("orcish sentence", amount).ToList();
             for (int index = 0; index < results.Count; index++)
             {
                 results[index] = char.ToUpper(results[index][0]) + results[index].Substring(1);
@@ -90,7 +91,7 @@ namespace LanguageGenerator.UsageExamples
     {
         private static void Main(string[] args)
         {
-            new ReadMeExample().PrintAmountWords(10);
+            new OrcLanguage().PrintSentencesOfOrcishLanguage(20);
             Console.ReadLine();
 
         }

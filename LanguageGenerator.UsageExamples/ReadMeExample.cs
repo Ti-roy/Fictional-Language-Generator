@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using LanguageGenerator.Core.LanguageConstructor;
 using LanguageGenerator.Core.SUConstroctor;
 using LanguageGenerator.Core.SyntacticProperty;
@@ -53,7 +54,7 @@ namespace LanguageGenerator.UsageExamples
 
         public void PrintAmountWords(int amount)
         {
-            List<string> words = languageConstructor.GetStringListOfProprety("word", amount);
+            IEnumerable<string> words = languageConstructor.GetStringListOfProprety("word", amount);
             foreach (string word in words)
             {
                 Console.WriteLine(word);

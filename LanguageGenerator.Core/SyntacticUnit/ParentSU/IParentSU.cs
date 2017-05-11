@@ -10,7 +10,6 @@ namespace LanguageGenerator.Core.SyntacticUnit
 {
     public interface IParentSU : ISyntacticUnit, IEquatable<IParentSU>, IChildInfoForLinker
     {
-        bool DublicateChildrenAllowed { get; set; }
         IParentProperty ParentProperty { get; }
         IFrequencyDictionary<IProperty> PossibleChildren { get; }
         IFrequencyDictionary<int> ChildrenAmount { get; }
