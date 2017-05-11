@@ -56,9 +56,17 @@ namespace LanguageGenerator.UsageExamples.Examples
 
             languageConstructor.CreateRootProperty("whitespace").CanStartFrom("orcish word");
             languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty(" ");
+            languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty(", ",30);
+            languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty(": ",5);
 
             languageConstructor.CreateParentProperty("orcish sentence base").CanStartFrom("Start");
-            languageConstructor.CreateParentSyntacticUnit("orcish sentence base").AddPossibleChild("orcish word").AddPossibleChild("whitespace").AddChildrenAmount(3, 120).AddChildrenAmount(5, 110).AddChildrenAmount(7, 100).AddChildrenAmount(9, 100);
+            languageConstructor.CreateParentSyntacticUnit("orcish sentence base")
+                               .AddPossibleChild("orcish word")
+                               .AddPossibleChild("whitespace")
+                               .AddChildrenAmount(3, 120)
+                               .AddChildrenAmount(5, 110)
+                               .AddChildrenAmount(7, 100)
+                               .AddChildrenAmount(9, 100);
 
             languageConstructor.CreateRootProperty("sentence ending").CanStartFrom("orcish sentence base");
             languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty(".", 100);
@@ -72,7 +80,6 @@ namespace LanguageGenerator.UsageExamples.Examples
             languageConstructor.CreateParentProperty("orcish sentence").CanStartFrom("Start");
             languageConstructor.CreateParentSyntacticUnit("orcish sentence").AddPossibleChild("orcish sentence base").AddPossibleChild("sentence ending").AddChildrenAmount(2);
         }
-
 
         public void PrintSentencesOfOrcishLanguage(int amount)
         {
