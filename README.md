@@ -10,10 +10,11 @@ The general idea is to give API user way of creating unique strings, by allowing
 <li>order</li>
 <li>amount of elements, this element consists of</li>
 <li>element content (like string representaion or other elements)</li>
-</ul> 
-<b>TODO:</b>
+</ul>
 <h3>API overview</h3>
-<i>Warning: this naming conventions may be bad. If you know better names for program entities - contact me.</i>
+<i>Warning: this naming conventions may be bad. 
+
+If you know better names for program entities - contact me.</i> <br/>
 API consists of 2 basic entities which are dived in root and parent variants:
 <ul>
 <li>Syntactic property</li>
