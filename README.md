@@ -67,16 +67,46 @@ languageConstructor.CreateRootSyntacticUnit("w", "consonant", 100);
 languageConstructor.CreateRootSyntacticUnit("r", "consonant", 100);
 languageConstructor.CreateRootSyntacticUnit("t", "consonant", 100);
 `````
-We declared three consonants, each of them will be met with same frequency - `100`. What if we want to have letter `j` that will be met like 5 times more, than any other consonant.
+We declared three `consonant`s, each of them will be met with same frequency - `100`. What if we want to have letter `j` that will be met like 5 times more, than any other consonant.
 `````csharp
 languageConstructor.CreateRootSyntacticUnit("j", "consonant", 500);
 `````
-Ok, lets create some vowels
+Ok, lets create some vowels:
 `````csharp
 languageConstructor.CreateRootSyntacticUnit("a", "vowel", 100);
 languageConstructor.CreateRootSyntacticUnit("u", "vowel", 100);
 languageConstructor.CreateRootSyntacticUnit("o", "vowel", 100);
 `````
+Here is nothing new, we declared three syntactic units of property `vowel`, wich will be met with same frequency. OK, now lets create parent property with name `word`.
+`````csharp
+languageConstructor.CreateParentProperty("word").CanStartFrom("Start");
+`````
+Difference between `CreateParentProperty(string)` and `CreateRootProperty(string)` is that parent property reference parent syntactic units, which can have as children any parent property or root property. Also, note that we again told engine that `word` can start from property `Start`. Lets create parent syntactic units and specify its children.
+
+For creating parent syntactic unit we need to specify its children, and its children amount.
+`````csharp
+languageConstructor.CreateParentSyntacticUnit("word").AddPossibleChild("consonant", 100).AddPossibleChild("vowel", 80).AddChildrenAmount(3, 100);
+`````
+Here we told engine that syntactic unit that belong to property `word` should have children `consonant` and `vowel` (`AddPossibleChild("consonant", 100)`, `AddPossibleChild("vowel", 80)`). Child `vowel` will be chosen in 80/180 cases (total frequency 180 is sum of: `80` frequency of `vowel`, `100` frequency of `consonant`). This syntactic unit will have exatly 3 children, which is specified by method `AddChildrenAmount(3, 100)`. 
+
+We finished creating of our basic graph. Now, only thing that left is to get results:
+`````csharp
+languageConstructor.GetStringListOfProprety("word", 10);
+`````
+And all is done. Example output listed is below:
+```
+juj
+juj
+joj
+tuj
+wuj
+tot
+jaj
+wat
+ruj
+joj
+```
+Not the most incredible result, but even now, we created sequence of words that are remarkable by wast amount of letter `j` in it. If you want more, welcome to predefined sets section. 
 
 API overview
 ------
@@ -96,7 +126,7 @@ BasicSyntacticUnitsSingleton.AnyProperty
 ```
 
 ### Syntactic unit creation
-One main rule: **create property before its syntactic units**. You can reference not existing properties in when setting order and children by their furure names, but you cant create syntactic unit, and reference it to not existing propertie by its string name.
+One main rule: **create property before its syntactic units**. You can reference not existing properties in when setting order and children by their future names, but you cant create syntactic unit, and reference it to not existing property by its string name.
 
 
 Examples of usage
