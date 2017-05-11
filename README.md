@@ -25,7 +25,7 @@ Getting started
 ### Theoretical part
 <i style="color:grey;">Warning: this naming conventions may be bad. If you know better names for program entities - contact me.</i>
 
-API consists of 2 basic entities which are dived in root and parent variants:
+API consists of 2 basic entities which are divided in root and parent variants:
 <ul>
 <li><b>Syntactic property</b> is entity, set to difine order of certein element types. Root variant isnt much different from parent variant (and no different at all, if you only use API). Two difference are - root property contains lists of root syntactic units, while parent - parent syntactic units, and parent property contains info of what children its syntactic unit must have, to represent finished syntactic unit of its proprty.</li>
 <li><b>Syntactic unit</b> is entity, that belong to certain syntactic property. Root syntactic unit contains string representation, while parent syntactic unit - possible children and children amount.</li>
