@@ -1,5 +1,5 @@
 # Fictional language generator
-<h3>What is it?</h3>
+What is it?
 ======
 Fictional language generator is a well tested API for construction strings with user defined order, length, and content, based on frequency.
 <h3>What it can be used for?</h3>
