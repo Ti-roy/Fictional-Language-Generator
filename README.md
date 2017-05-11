@@ -11,7 +11,7 @@ For generating senteces, characters names, or other strings, with certain patter
 
 Whats idea behind it?
 ------
-The general idea is to give API user way of creating unique strings, by allowing them setting frequency for : 
+The general idea is to give user an API to create unique strings, by allowing them setting frequency for : 
 <ul>
 <li>length</li>
 <li>order</li>
@@ -27,13 +27,13 @@ Getting started
 
 API consists of 2 basic entities which are dived in root and parent variants:
 <ul>
-<li><b>Syntactic property</b> is entity, set to difine order of certein element types and the values syntactic unit must contain, to represent finished unit. Root variant isnt much different from parent variant (and no different at all, if you only use API). Only difference is that root property cantains lists of root syntactic units, while perent - parent syntactic units.</li>
+<li><b>Syntactic property</b> is entity, set to difine order of certein element types and the values syntactic unit must contain, to represent finished unit. Root variant isnt much different from parent variant (and no different at all, if you only use API). Only difference is that root property contains lists of root syntactic units, while perent - parent syntactic units.</li>
 <li><b>Syntactic unit</b> is entity, that belong to certain syntactic property. Root syntactic unit contains string representation, while parent syntactic unit - possible children and children amount.</li>
 </ul>
 
-Lets clarify this by simple example - consonant is name for root syntactic property, and this property can start from property `vowel`. It contains  root syctactic units with string representations such as `w`,`r`,`t`. Root property `vowel` can go after property `consonant`, and contains units with string representaiton `a`,`i`,`u`. Then, parent syntactic property `word`, contains parent syntactic unit, which defines that word can be created from 3 children, and this possible children are properties `vowel` and `consonant`.<br/>
+Lets clarify this by simple example - `consonant` is name for root syntactic property, and this property can start from property `vowel`. It contains  root syctactic units with string representations such as `w`,`r`,`t`. Root property `vowel` can go after property `consonant`, and contains units with string representaiton `a`,`i`,`u`. Then, parent syntactic property `word`, contains parent syntactic unit, which defines that word can be created from 3 children, and this possible children are properties `vowel` and `consonant`.<br/>
 <br/>
-And thats all you have to undestand, to use API. In this example we created simpliest tree. with parent `word` and children `vowel` and `consonant`. Engine will produce results such as `war`, `ari` and others.
+And thats all you have to undestand, to use API. In this example we created simpliest tree. with parent `word` and children `vowel` and `consonant`. Engine will produce results such as `war`, `tir` and others.
 
 Now lets see how its done by code.
 
@@ -74,7 +74,7 @@ languageConstructor.CreateRootSyntacticUnit("a", "vowel", 100);
 languageConstructor.CreateRootSyntacticUnit("u", "vowel", 100);
 languageConstructor.CreateRootSyntacticUnit("o", "vowel", 100);
 `````
-Here is nothing new, we declared three syntactic units of property `vowel`, wich will be met with same frequency. OK, now lets create parent property with name `word`.
+Here is nothing new, we declared three syntactic units of property `vowel`, which will be met with same frequency. OK, now lets create parent property with name `word`.
 `````csharp
 languageConstructor.CreateParentProperty("word").CanStartFrom("Start");
 `````
