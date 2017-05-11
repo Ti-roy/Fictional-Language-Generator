@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using LanguageGenerator.Core.LanguageConstructor;
 using LanguageGenerator.Core.SUConstroctor;
 using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticUnit.ParentSU;
 
 
-namespace LanguageGenerator.UsageExamples
+namespace LanguageGenerator.UsageExamples.Exapmles
 {
     internal class ReadMeExample
     {
@@ -54,7 +53,7 @@ namespace LanguageGenerator.UsageExamples
 
         public void PrintAmountWords(int amount)
         {
-            IEnumerable<string> words = languageConstructor.GetStringListOfProprety("word", amount);
+            IEnumerable<string> words = languageConstructor.GetStringEnumerableOfProprety("word", amount);
             foreach (string word in words)
             {
                 Console.WriteLine(word);

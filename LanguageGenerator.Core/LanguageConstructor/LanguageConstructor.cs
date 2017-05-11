@@ -1,5 +1,4 @@
-﻿using System;
-using LanguageGenerator.Core.AbstractFactory;
+﻿using LanguageGenerator.Core.AbstractFactory;
 using LanguageGenerator.Core.Repository;
 using LanguageGenerator.Core.SUConstroctor;
 using LanguageGenerator.Core.SUConstroctor.SyntacticUnitResultSchemeNamespace;
@@ -11,18 +10,26 @@ using LanguageGenerator.Core.SyntacticUnit.RootSU;
 
 namespace LanguageGenerator.Core.LanguageConstructor
 {
-    public class LanguageConstructor : ILanguageFactory,ISyntacticUnitConstructor
+    public class LanguageConstructor : ILanguageFactory, ISyntacticUnitConstructor
     {
-        LanguageFactory languageFactory;
-        SUConstroctor.SyntacticUnitConstructor unitConstructor;
-        int lastHashCodeSnippet = 0;
+        private readonly LanguageFactory languageFactory;
+        private int lastHashCodeSnippet;
+        private readonly SyntacticUnitConstructor unitConstructor;
+
 
         public LanguageConstructor()
         {
             languageFactory = new LanguageFactory();
-            unitConstructor = new SUConstroctor.SyntacticUnitConstructor(languageFactory.Repository);
+            unitConstructor = new SyntacticUnitConstructor(languageFactory.Repository);
         }
-        ISyntacticUnitRepository ILanguageFactory.Repository { get { return languageFactory.Repository; } }
+
+
+        ISyntacticUnitRepository ILanguageFactory.Repository
+        {
+            get { return languageFactory.Repository; }
+        }
+
+
         public IRootProperty CreateRootProperty(string propertyName)
         {
             return languageFactory.CreateRootProperty(propertyName);
@@ -65,7 +72,12 @@ namespace LanguageGenerator.Core.LanguageConstructor
         }
 
 
-        ISyntacticUnitRepository ISyntacticUnitConstructor.SyntacticUnitRepository { get { return languageFactory.Repository; } }
+        ISyntacticUnitRepository ISyntacticUnitConstructor.SyntacticUnitRepository
+        {
+            get { return languageFactory.Repository; }
+        }
+
+
         public string GetResultStringOfProperty(string propertyName)
         {
             LinkRepositoryIfItIsntLinked();
@@ -92,6 +104,14 @@ namespace LanguageGenerator.Core.LanguageConstructor
             LinkRepositoryIfItIsntLinked();
             return unitConstructor.GetResultSchemeOfProperty(property);
         }
+
+
+        public void LinkRepository()
+        {
+            unitConstructor.LinkRepository();
+        }
+
+
         private void LinkRepositoryIfItIsntLinked()
         {
             int currentRepositoryHashCode = languageFactory.Repository.GetHashCode();
@@ -99,12 +119,7 @@ namespace LanguageGenerator.Core.LanguageConstructor
             {
                 lastHashCodeSnippet = currentRepositoryHashCode;
                 LinkRepository();
-        }
-        }
-
-        public void LinkRepository()
-        {
-            unitConstructor.LinkRepository();
+            }
         }
     }
 }

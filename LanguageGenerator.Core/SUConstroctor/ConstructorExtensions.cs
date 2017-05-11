@@ -12,7 +12,7 @@ namespace LanguageGenerator.Core.SUConstroctor
         public static int MaxAmountOfStringToExecuteInSingleThread = 10000;
 
 
-        public static IEnumerable<string> GetStringListOfProprety(this ISyntacticUnitConstructor constructor, string propertyName, int amountOfStrings)
+        public static IEnumerable<string> GetStringEnumerableOfProprety(this ISyntacticUnitConstructor constructor, string propertyName, int amountOfStrings)
         {
             if (amountOfStrings < MaxAmountOfStringToExecuteInSingleThread)
             {
