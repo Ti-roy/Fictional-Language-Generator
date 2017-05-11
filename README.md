@@ -103,7 +103,7 @@ wat
 ruj
 joj
 ```
-Not the most incredible result, but even now, we created sequence of words that are remarkable by wast amount of letter `j` in it. Code used in this example can be found at <a href = "https://github.com/shinigamixas/Fictional-Language-Generator/blob/master/LanguageGenerator.UsageExamples/ReadMeExample.cs">this link</a>. If you want more, welcome to predefined sets section. 
+Not the most incredible result, but even now, we created sequence of words that are remarkable by wast amount of letter `j` in it. Code used in this example can be found at <a href = "https://github.com/shinigamixas/Fictional-Language-Generator/blob/master/LanguageGenerator.UsageExamples/Exapmles/ReadMeExample.cs">this link</a>. If you want more, welcome to predefined sets section. 
 
 API overview (class `LanguageConstructor`) 
 ------
@@ -182,5 +182,6 @@ Which be using multiply threads for large `amountOfStrings`.
 
 Examples of usage
 ------
+
 Predefined sets
 ------
