@@ -1,5 +1,5 @@
 ﻿using System;
-using LanguageGenerator.UsageExamples.Exapmles;
+using LanguageGenerator.UsageExamples.Examples;
 
 
 namespace LanguageGenerator.UsageExamples

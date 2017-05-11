@@ -7,7 +7,7 @@ using LanguageGenerator.Core.SyntacticProperty;
 using LanguageGenerator.Core.SyntacticUnit.ParentSU;
 
 
-namespace LanguageGenerator.UsageExamples.Exapmles
+namespace LanguageGenerator.UsageExamples.Examples
 {
     internal class OrcLanguage
     {

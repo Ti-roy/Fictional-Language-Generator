@@ -42,10 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exapmles\OrcLanguage.cs" />
+    <Compile Include="Examples\OrcLanguage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Exapmles\ReadMeExample.cs" />
+    <Compile Include="Examples\ReadMeExample.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
