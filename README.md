@@ -1,12 +1,12 @@
 # Fictional language generator
 What is it?
 ------
-Fictional language generator is a well tested API written in C# for construction strings with user defined order, length, and content, based on frequency.
+Fictional language generator is a well tested API written in C# for construction strings with user defined order, length and content, based on frequency.
 
 
 What it can be used for?
 ------
-For generating senteces, characters names, or other strings, with certain patterns.
+For generating sentences, characters names or other strings with certain patterns.
 
 
 Whats idea behind it?
@@ -16,7 +16,7 @@ The general idea is to give user an API to create unique strings, by allowing th
 <li>length</li>
 <li>order</li>
 <li>amount of elements, this element consists of</li>
-<li>element content (like string representaion or other elements)</li>
+<li>element content (like string representation or other elements)</li>
 </ul>
 
 
@@ -123,7 +123,7 @@ And unit with property name `Any`, that made to make user properties to follow a
 BasicSyntacticUnitsSingleton.AnyProperty
 ```
 #### Creating properties
-In code snippets below methods belong to class `LanguageConstructor`. Creating properties through language constructor will automaticly add them in constructor repository.
+In code snippets below methods belong to class `LanguageConstructor`. Creating properties through language constructor will automatically add them in constructor repository.
 ##### Creating root property
 `string propertyName` is name of property, which will be referenced by other syntactic units.
 ```csharp
@@ -178,7 +178,7 @@ Or, if you want many result strings, you can use:
 ```cs
 IEnumerable<string> GetStringEnumerableOfProprety(this ISyntacticUnitConstructor constructor, string propertyName, int amountOfStrings)
 ```
-Which will be using multiply threads for large `amountOfStrings`. 
+Which will be using multiple threads for large `amountOfStrings`. 
 
 Examples of usage
 ------
@@ -200,7 +200,7 @@ languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("t", 120);
 //.... here more units defined
 languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("m", 50);
 ```
-Next on the list `vowel` property. As we want to have squence `vowel`->`vowel` met not to ofter, as its makes language *lighter*, frequency for this case only `5`.
+Next on the list `vowel` property. As we want to have squence `vowel`->`vowel` met not to often, as its makes language *lighter*, frequency for this case only `5`.
 ```cs
 languageConstructor.CreateRootProperty("vowel").CanStartFrom("Start", 20).CanStartFrom("whitespace", 20).CanStartFrom("consonant", 100).CanStartFrom("vowel", 5);
 ```
@@ -277,7 +277,7 @@ Thats all. Our orc sentence generator ready. Lets use it.
 ```cs
 languageConstructor.GetStringEnumerableOfProprety("orcish sentence", 20);
 ```
-And the orcishe output.
+And the orcish output.
 ```cs
 Doegul avi kab bzanaku? 
 Dok mkewefo wow!!! 
