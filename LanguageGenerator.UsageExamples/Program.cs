@@ -10,13 +10,11 @@ namespace LanguageGenerator.UsageExamples
 {
     internal class OrcLanguage
     {
-        private readonly LanguageConstructor languageConstructor;
+        private readonly LanguageConstructor languageConstructor = new LanguageConstructor();
 
 
         public OrcLanguage()
         {
-            languageConstructor = new LanguageConstructor();
-
             languageConstructor.CreateRootProperty("consonant").CanStartFrom("Start").CanStartFrom("whitespace").CanStartFrom("consonant", 15).CanStartFrom("vowel", 100);
             languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("w", 150);
             languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("r", 180);
@@ -75,14 +73,15 @@ namespace LanguageGenerator.UsageExamples
         }
 
 
-        public List<string> GetSentencesOfOrcishLanguage(int amount)
+        public void PrintSentencesOfOrcishLanguage(int amount)
         {
             List<string> results = languageConstructor.GetStringListOfProprety("orcish sentence", amount);
             for (int index = 0; index < results.Count; index++)
             {
                 results[index] = char.ToUpper(results[index][0]) + results[index].Substring(1);
+                Console.WriteLine(results[index]);
             }
-            return results;
+            Console.ReadLine();
         }
     }
 
@@ -91,13 +90,9 @@ namespace LanguageGenerator.UsageExamples
     {
         private static void Main(string[] args)
         {
-            OrcLanguage language = new OrcLanguage();
-            List<string> sentencesOfOrcishLanguage = language.GetSentencesOfOrcishLanguage(10);
-            foreach (string sentence in sentencesOfOrcishLanguage)
-            {
-                Console.WriteLine(sentence);
-            }
+            new ReadMeExample().PrintAmountWords(10);
             Console.ReadLine();
+
         }
     }
 }
