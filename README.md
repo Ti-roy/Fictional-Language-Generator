@@ -12,7 +12,7 @@ The general idea is to give API user way of creating unique strings, by allowing
 <li>element content (like string representaion or other elements)</li>
 </ul>
 <h3>API overview</h3>
-<h6><i>Warning: this naming conventions may be bad. If you know better names for program entities - contact me.</i></h6> <br/>
+<sub><i>Warning: this naming conventions may be bad. If you know better names for program entities - contact me.</i></sub> <br/>
 API consists of 2 basic entities which are dived in root and parent variants:
 <ul>
 <li>Syntactic property</li>
