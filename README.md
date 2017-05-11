@@ -2,9 +2,13 @@
 What is it?
 ------
 Fictional language generator is a well tested API for construction strings with user defined order, length, and content, based on frequency.
+
+
 What it can be used for?
 ------
 For generating senteces, characters names, or other strings, with certain patterns.
+
+
 Whats idea behind it?
 ------
 The general idea is to give API user way of creating unique strings, by allowing them setting frequency for : 
@@ -14,6 +18,8 @@ The general idea is to give API user way of creating unique strings, by allowing
 <li>amount of elements, this element consists of</li>
 <li>element content (like string representaion or other elements)</li>
 </ul>
+
+
 API overview
 ------
 <sub><i>Warning: this naming conventions may be bad. If you know better names for program entities - contact me.</i></sub> <br/>
