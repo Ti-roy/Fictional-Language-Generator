@@ -1,11 +1,12 @@
 # Fictional language generator
 What is it?
-======
+------
 Fictional language generator is a well tested API for construction strings with user defined order, length, and content, based on frequency.
-<h3>What it can be used for?</h3>
-======
+What it can be used for?
+------
 For generating senteces, characters names, or other strings, with certain patterns.
-<h3>Whats idea behind it?</h3>
+Whats idea behind it?
+------
 The general idea is to give API user way of creating unique strings, by allowing them setting frequency for : 
 <ul>
 <li>length</li>
@@ -13,8 +14,8 @@ The general idea is to give API user way of creating unique strings, by allowing
 <li>amount of elements, this element consists of</li>
 <li>element content (like string representaion or other elements)</li>
 </ul>
-<h3>API overview</h3>
-======
+API overview
+------
 <sub><i>Warning: this naming conventions may be bad. If you know better names for program entities - contact me.</i></sub> <br/>
 API consists of 2 basic entities which are dived in root and parent variants:
 <ul>
@@ -30,7 +31,7 @@ And thats all you have to undestand, to use API. In this example we created simp
 
 Now lets see how its done by code.
 
-<h3>Examples of usage</h3>
-======
-<h3>Predefined sets</h3>
-======
+Examples of usage
+------
+Predefined sets
+------
