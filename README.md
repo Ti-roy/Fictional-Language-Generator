@@ -300,7 +300,7 @@ Ozekiti ksg gev waz.
 Pet kmbuliv noll efup. 
 Hupalo fov.
 ```
-Not bad, huh? In ~60 lines of code we created near infine amount of orcish senteces, which can be randomly generated at any time in your game or app. (Note: in output first letter is made uppercase by .net not engine related code, initially all letters where lowercase).
+Not bad, huh? In ~60 lines of code we created near infinite amount of orcish senteces, which can be randomly generated at any time in your game or app. (Note: in output first letter is made uppercase by .net not language generator related code, initially all letters where lowercase).
 
 
 Predefined sets
