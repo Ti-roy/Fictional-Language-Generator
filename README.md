@@ -41,16 +41,16 @@ Now lets see how its done by code.
 
 
 OK, lets jump in code, creating out last example. First of all, lets create language constructor - its an object, through all interaction with engine goes.
-```csharp
+```cs
 LanguageConstructor languageConstructor = new LanguageConstructor();
 ```
 Then, lets create our `consonant` property and specify order of that property:
-```csharp
+```cs
 languageConstructor.CreateRootProperty("consonant").CanStartFrom("Start", 100).CanStartFrom("vowel", 100);
 ```
 Ok, after creating  property `consonant`, we have to `CanStartFrom(string)` methods. `CanStartFrom("vowel", 100)` tells engine that property `consonant` can go after property `vowel` with frequency `100`. What this frequency is here for? Ok, lets say, we want that after `vowel` to go not only `consonant`, but other `vowel`, and this sequence `vowel`->`vowel` should be constructed like 10 times less often, then usual `consonant`->`vowel`. Lets write this.
 
-```csharp
+```cs
 languageConstructor.CreateRootProperty("vowel").CanStartFrom("consonant", 100).CanStartFrom("vowel", 10);
 ```
 Done.
@@ -114,31 +114,36 @@ Principal of properties is in core of engine. Properties can be seen as type of 
 Currently engine contains 2 syntactic units by default. 
 
 Its unit with property named `Start`, that represents start of new construction, made to clarify for engine, what properties follow start of construction. When setting order property can be referenced by its string name `"Start"` or: 
-```csharp
+```cs
 BasicSyntacticUnitsSingleton.StartOfConstructionProperty
 ```
 
 And unit with property name `Any`, that made to make user properties to follow any other properties. Can be referenced by its string name `"Any"` or: 
-```csharp
+```cs
 BasicSyntacticUnitsSingleton.AnyProperty
 ```
 #### Creating properties
 In code snippets below methods belong to class `LanguageConstructor`. Creating properties through language constructor will automatically add them in constructor repository.
 ##### Creating root property
 `string propertyName` is name of property, which will be referenced by other syntactic units.
-```csharp
+```cs
 IRootProperty CreateRootProperty(string propertyName)
 ```
 ##### Creating parent property
 `string propertyName` is name of property, which will be referenced by other syntactic units.
-```csharp
+```cs
 IParentProperty CreateParentProperty(string propertyName)
 ```
 #### Specifying order
 Property with `propertyNameToStartFrom` may not exist yet, its can be declayared later. Method adds `propertyNameToStartFrom` to collection , which later will be used to link data, or you can use exising link of property.
-```csharp
+```cs
 T CanStartFrom<T>(this T property, string propertyToGoAfter, int withFrequency = 100) where T: IProperty { }
 T CanStartFrom<T>(this T property, IProperty propertyToGoAfter, int withFrequency = 100) where T : IProperty { }
+```
+#### Setting child properties that parent property must contain
+`IParentProperty` is derived from `IPropertyMustContainInfoForLinker`. There are few things to keep in mind when using this method. You can specify few different or same properties, all of which will be constructed. And *must have* properties will be constructed at first possible place, based on their order. If not all children properties will be used during construction - exception will be thrown. Also, parent property must contain enogh space tp all *must have* children.
+```cs
+T MustContainProperty<T>(this T mustContainInfo, string propetyNameToContain) where T : IPropertyMustContainInfoForLinker
 ```
 ### Syntactic units
 One main rule: **create property before its syntactic units**. You can reference not existing properties in when setting order and children by their future names, but you cant create syntactic unit, and reference it to not existing property by its string name.
@@ -149,12 +154,12 @@ IRootSU CreateRootSyntacticUnit(string stringRepresentation, string itsPropertyN
 IRootSU CreateRootSyntacticUnit(string stringRepresentation, IRootProperty itsProperty, int frequency = 100)
 ```
 Also there is method, which takes last created instance or IRootProperty, and uses it as argument to two methods above. Must be used right after creation of IRootProperty.
-```csharp
+```cs
 IRootSU CreateRootSyntacticUnitWithLastCreatedProperty(string stringRepresentation, int frequency = 100)
 ```
 #### Creating parent syntactic unit
 These two methods can be used to create `IParentSU`. After creation at least one amount of children and possible childe needs to be specified, to `IParentSU` to work.
-```csharp
+```cs
 IParentSU CreateParentSyntacticUnit(string itsPropertyName, int frequency = 100)
 IParentSU CreateParentSyntacticUnit(IParentProperty itsProperty, int frequency = 100) 
 ```
@@ -306,4 +311,31 @@ Not bad, huh? In ~60 lines of code we created near infinite amount of orcish sen
 Predefined sets
 ------
 
-<a href = "https://github.com/shinigamixas/Fictional-Language-Generator/blob/master/LanguageGenerator.UsageExamples/Examples/OrcLanguage.cs">Orc language senteces</a>
+<a href = "https://github.com/shinigamixas/Fictional-Language-Generator/blob/master/LanguageGenerator.UsageExamples/Examples/OrcLanguage.cs">Orc language senteces.</a>
+Example output:
+```
+Wegor ohe bat rade buche!!!
+Kud var.
+Chos ked ropepah!!!
+Uhevoza nubo hazevz gud, hepo.
+Tew, uchuv bapuve?!
+Zafe rreh?!
+Wote buru, ruranap!
+Tuk puwel, chur, used kawosuch?
+Ruh dorir awed.
+Sud, bobe kore veb ahz?!
+```
+<a href = "https://github.com/shinigamixas/Fictional-Language-Generator/blob/master/LanguageGenerator.UsageExamples/Examples/ElvenLanguage.cs">Elven language senteces.</a>
+Example output:
+```
+Lakawus uhumauv.
+Elow faru-nipup, uge?!
+Hibel-epalum ikee, depuwug.
+Ail wavehu, ahifdiw, aeuibe, miwi.
+Munite: volei fateput.
+Uhifoti oseke.
+Resaf wisi.
+Hafeva afekip adu, echechil?
+Avizu upeiit, ineka.
+Kupivoch igilasu, miwigii enene.
+```
