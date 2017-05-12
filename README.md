@@ -140,8 +140,8 @@ Property with `propertyNameToStartFrom` may not exist yet, its can be declayared
 T CanStartFrom<T>(this T property, string propertyToGoAfter, int withFrequency = 100) where T: IProperty { }
 T CanStartFrom<T>(this T property, IProperty propertyToGoAfter, int withFrequency = 100) where T : IProperty { }
 ```
-#### Setting child properties parent property must contain
-`IParentProperty` is derived from `IPropertyMustContainInfoForLinker`. There are few things to have in mind when using this method. You can specify few different or same properties, all of which will be constructed. And you Properties will be constructed at first possible place, based on their order. If not all children properties will be used during construction - exception will be thrown.
+#### Setting child properties that parent property must contain
+`IParentProperty` is derived from `IPropertyMustContainInfoForLinker`. There are few things to keep in mind when using this method. You can specify few different or same properties, all of which will be constructed. And *must have* properties will be constructed at first possible place, based on their order. If not all children properties will be used during construction - exception will be thrown.
 ```cs
 T MustContainProperty<T>(this T mustContainInfo, string propetyNameToContain) where T : IPropertyMustContainInfoForLinker
 ```
@@ -311,7 +311,7 @@ Not bad, huh? In ~60 lines of code we created near infinite amount of orcish sen
 Predefined sets
 ------
 
-<a href = "https://github.com/shinigamixas/Fictional-Language-Generator/blob/master/LanguageGenerator.UsageExamples/Examples/OrcLanguage.cs">Orc language senteces</a>
+<a href = "https://github.com/shinigamixas/Fictional-Language-Generator/blob/master/LanguageGenerator.UsageExamples/Examples/OrcLanguage.cs">Orc language senteces.</a>
 Example output
 ```
 Wegor ohe bat rade buche!!!
@@ -325,7 +325,7 @@ Tuk puwel, chur, used kawosuch?
 Ruh dorir awed.
 Sud, bobe kore veb ahz?!
 ```
-<a href = "https://github.com/shinigamixas/Fictional-Language-Generator/blob/master/LanguageGenerator.UsageExamples/Examples/ElvenLanguage.cs">Elven language senteces</a>
+<a href = "https://github.com/shinigamixas/Fictional-Language-Generator/blob/master/LanguageGenerator.UsageExamples/Examples/ElvenLanguage.cs">Elven language senteces.</a>
 Example output
 ```
 Lakawus uhumauv.
