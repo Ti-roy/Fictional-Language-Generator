@@ -33,6 +33,7 @@ namespace LanguageGenerator.UsageExamples.Examples
             languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("b", 150);
             languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("n", 70);
             languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("m", 50);
+            languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("ch", 100);
 
             languageConstructor.CreateRootProperty("vowel").CanStartFrom("Start", 20).CanStartFrom("whitespace",20).CanStartFrom("consonant", 100).CanStartFrom("vowel", 5);
             languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("a", 100);

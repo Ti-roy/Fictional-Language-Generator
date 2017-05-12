@@ -9,6 +9,8 @@ namespace LanguageGenerator.UsageExamples
         private static void Main(string[] args)
         {
             new OrcLanguage().PrintSentencesOfOrcishLanguage(20);
+            Console.WriteLine();
+            new ElvenLanguage().PrintSentencesOfElvenLanguage(20);
             Console.ReadLine();
         }
     }
