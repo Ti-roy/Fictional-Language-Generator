@@ -11,6 +11,8 @@ namespace LanguageGenerator.UsageExamples
             new OrcLanguage().PrintSentencesOfOrcishLanguage(20);
             Console.WriteLine();
             new ElvenLanguage().PrintSentencesOfElvenLanguage(20);
+            Console.WriteLine();
+            new FictionalEnglishLikeLanguage().PrintSentencesOfEnglishLikeLanguage(20);
             Console.ReadLine();
         }
     }

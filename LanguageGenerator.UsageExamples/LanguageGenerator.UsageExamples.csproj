@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Examples\ElvenLanguage.cs" />
+    <Compile Include="Examples\FictionalEnglishLikeLanguage.cs" />
     <Compile Include="Examples\OrcLanguage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

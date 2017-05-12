@@ -32,6 +32,8 @@ namespace LanguageGenerator.UsageExamples.Examples
             languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("b", 80);
             languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("n", 150);
             languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("m", 160);
+            languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("c", 80);
+            languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("y", 120);
             languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("ch", 80);
 
             languageConstructor.CreateRootProperty("vowel").CanStartFrom("Start", 20).CanStartFrom("whitespace").CanStartFrom("consonant", 100).CanStartFrom("vowel", 15);
@@ -67,7 +69,8 @@ namespace LanguageGenerator.UsageExamples.Examples
                                .AddChildrenAmount(3, 100)
                                .AddChildrenAmount(5, 120)
                                .AddChildrenAmount(7, 130)
-                               .AddChildrenAmount(9, 110);
+                               .AddChildrenAmount(9, 110)
+                               .AddChildrenAmount(11, 100);
 
             languageConstructor.CreateRootProperty("sentence ending").CanStartFrom("elven sentence base");
             languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty(".", 200);
