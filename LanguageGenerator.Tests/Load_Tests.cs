@@ -25,7 +25,7 @@ namespace LanguageGenerator.Tests
         private readonly List<char> _consonants;
         private readonly List<char> _vowels;
 
-        private int amountOfWords = 1000000;
+        private int amountOfWords = 10000;
 
         private ILanguageFactory CreateRepositoryWithConsonantsAndVowels()
         {

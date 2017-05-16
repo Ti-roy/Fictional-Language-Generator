@@ -34,9 +34,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractFactory\AbstractFactoryExtensions.cs" />
     <Compile Include="AbstractFactory\ILanguageFactory.cs" />
     <Compile Include="AbstractFactory\PropertyNotExistsInRepositoryException.cs" />
     <Compile Include="LanguageConstructor\LanguageConstructor.cs" />
+    <Compile Include="Pair.cs" />
     <Compile Include="SUConstroctor\ConstructorExtensions.cs" />
     <Compile Include="SUConstroctor\Exceptions\CouldNotContructParentPropertyWithAllNecesseryProptiesException.cs" />
     <Compile Include="Repository\RepositoryLinker\RepositoryLinker.cs" />
