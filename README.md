@@ -339,3 +339,17 @@ Hafeva afekip adu, echechil?
 Avizu upeiit, ineka.
 Kupivoch igilasu, miwigii enene.
 ```
+<a href = "https://github.com/shinigamixas/Fictional-Language-Generator/blob/master/LanguageGenerator.UsageExamples/Examples/FictionalEnglishLikeLanguage.cs">English-like senteces.</a>
+Example output:
+```
+Tochuse eha, adie etudmoh-riheih?
+Wexota etohae ohuga.
+Oetvi htise, egidesa.
+Regochaa, net vega?
+Gecirfe cerchuh yemoto.
+Welawae atosi pocihh.
+Meriw eduha.
+Esijear slnin: tigroer-omee.
+Oaataw ehatos niroguch sina iechsavch.
+Tdahaf detalo, emgeco neey.
+```
