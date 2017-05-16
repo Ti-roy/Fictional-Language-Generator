@@ -86,7 +86,7 @@ namespace LanguageGenerator.UsageExamples.Examples
 
         public void PrintSentencesOfElvenLanguage(int amount)
         {
-            List<string> results = languageConstructor.GetStringEnumerableOfProprety("elven sentence", amount).ToList();
+            List<string> results = languageConstructor.GetStringEnumerableOfProperty("elven sentence", amount).ToList();
             for (int index = 0; index < results.Count; index++)
             {
                 results[index] = char.ToUpper(results[index][0]) + results[index].Substring(1);

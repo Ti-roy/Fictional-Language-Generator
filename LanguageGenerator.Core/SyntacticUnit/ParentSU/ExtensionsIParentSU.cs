@@ -47,14 +47,13 @@ namespace LanguageGenerator.Core.SyntacticUnit.ParentSU
                 childInfo.PossibleChildrenByPropertyNames.Add(propertyNamesAndFrequencyPair.Key, propertyNamesAndFrequencyPair.Value);
             }
         }
-
-        public static T AddPossibleChildren<T>(this T parentSU, params KeyValuePair<IProperty, int>[] propertyAndfrequencyPairs) where T : IParentSU
+        
+        public static void AddPossibleChildren<T>(this T parentSU, params KeyValuePair<IProperty, int>[] propertyAndfrequencyPairs) where T : IParentSU
         {
             foreach (KeyValuePair<IProperty, int> propertyAndfrequencyPair in propertyAndfrequencyPairs)
             {
                 parentSU.PossibleChildren.Add(propertyAndfrequencyPair.Key, propertyAndfrequencyPair.Value);
             }
-            return parentSU;
         }
     }
 }

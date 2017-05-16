@@ -90,7 +90,7 @@ namespace LanguageGenerator.UsageExamples.Examples
 
         public void PrintSentencesOfEnglishLikeLanguage(int amount)
         {
-            List<string> results = languageConstructor.GetStringEnumerableOfProprety("sentence", amount).ToList();
+            List<string> results = languageConstructor.GetStringEnumerableOfProperty("sentence", amount).ToList();
             for (int index = 0; index < results.Count; index++)
             {
                 results[index] = char.ToUpper(results[index][0]) + results[index].Substring(1);

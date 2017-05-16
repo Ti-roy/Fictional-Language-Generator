@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
+using LanguageGenerator.Core;
+using LanguageGenerator.Core.AbstractFactory;
 using LanguageGenerator.Core.LanguageConstructor;
 using LanguageGenerator.Core.SUConstroctor;
 using LanguageGenerator.Core.SyntacticProperty;
+using LanguageGenerator.Core.SyntacticProperty.ParentProperty;
+using LanguageGenerator.Core.SyntacticUnit;
 using LanguageGenerator.Core.SyntacticUnit.ParentSU;
 
 
@@ -11,49 +15,34 @@ namespace LanguageGenerator.UsageExamples.Examples
     internal class ReadMeExample
     {
         private readonly LanguageConstructor languageConstructor = new LanguageConstructor();
+
+
         public ReadMeExample()
         {
             GenerateLanguageGraphByExactExampleCode();
         }
 
+
         private void GenerateLanguageGraphByExactExampleCode()
         {
-            languageConstructor.CreateRootProperty("consonant").CanStartFrom("Start").CanStartFrom("vowel", 100);
-            languageConstructor.CreateRootProperty("vowel").CanStartFrom("consonant", 100).CanStartFrom("vowel", 10);
-            languageConstructor.CreateRootSyntacticUnit("w", "consonant", 100);
-            languageConstructor.CreateRootSyntacticUnit("r", "consonant", 100);
-            languageConstructor.CreateRootSyntacticUnit("t", "consonant", 100);
-            languageConstructor.CreateRootSyntacticUnit("j", "consonant", 500);
-            languageConstructor.CreateRootSyntacticUnit("a", "vowel", 100);
-            languageConstructor.CreateRootSyntacticUnit("u", "vowel", 100);
-            languageConstructor.CreateRootSyntacticUnit("o", "vowel", 100);
-            languageConstructor.CreateParentProperty("word").CanStartFrom("Start");
-            languageConstructor.CreateParentSyntacticUnit("word").AddPossibleChild("consonant", 100).AddPossibleChild("vowel", 80).AddChildrenAmount(3, 100);
+            IRootProperty consonant = languageConstructor.CreateRootProperty("consonant");
+            consonant.CanStartFrom(Pair.Of("Start", 100), Pair.Of("vowel", 100));
+            IRootProperty vowel = languageConstructor.CreateRootProperty("vowel");
+            vowel.CanStartFrom(Pair.Of("consonant", 100), Pair.Of("vowel", 10));
+            languageConstructor.CreateRootSyntacticUnitsOfProperty(consonant, Pair.Of("w", 100), Pair.Of("r", 100), Pair.Of("t", 100));
+            languageConstructor.CreateRootSyntacticUnitsOfProperty(consonant, Pair.Of("j", 500));
+            languageConstructor.CreateRootSyntacticUnitsOfProperty(vowel, Pair.Of("a", 100), Pair.Of("o", 100), Pair.Of("u", 100));
+            IParentProperty word = languageConstructor.CreateParentProperty("word");
+            word.CanStartFrom("Start", 100);
+            IParentSU wordSu = languageConstructor.CreateParentSyntacticUnit("word");
+            wordSu.AddPossibleChild(Pair.Of("consonant", 100), Pair.Of("vowel", 80));
+            wordSu.AddChildrenAmount(3, 100);
         }
-
-
-        private void GenerateLanguageGraphByBetterChainedSyntax()
-        {
-            languageConstructor.CreateRootProperty("consonant").CanStartFrom("Start").CanStartFrom("vowel", 100);
-            languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("w", 100);
-            languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("r", 100);
-            languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("t", 100);
-            languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("j", 500);
-
-            languageConstructor.CreateRootProperty("vowel").CanStartFrom("consonant", 100).CanStartFrom("vowel", 10);
-            languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("a", 100);
-            languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("u", 100);
-            languageConstructor.CreateRootSyntacticUnitWithLastCreatedProperty("o", 100);
-
-            languageConstructor.CreateParentProperty("word").CanStartFrom("Start");
-            languageConstructor.CreateParentSyntacticUnit("word").AddPossibleChild("consonant", 100).AddPossibleChild("vowel", 80).AddChildrenAmount(3, 100);
-        }
-
 
 
         public void PrintAmountWords(int amount)
         {
-            IEnumerable<string> words = languageConstructor.GetStringEnumerableOfProprety("word", amount);
+            IEnumerable<string> words = languageConstructor.GetStringEnumerableOfProperty("word", amount);
             foreach (string word in words)
             {
                 Console.WriteLine(word);

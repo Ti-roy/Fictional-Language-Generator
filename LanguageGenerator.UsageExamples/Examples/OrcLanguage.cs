@@ -59,7 +59,7 @@ namespace LanguageGenerator.UsageExamples.Examples
             longOrcishWordSU.AddPossibleChildren(Pair.Of(consonant, 100), Pair.Of(vowel, 100));
             longOrcishWordSU.AddChildrenAmount(Pair.Of(5, 100), Pair.Of(6, 150), Pair.Of(7, 130));
             IParentSU shortOrcishWordSU = languageConstructor.CreateParentSyntacticUnit(orcishWord, 160);
-            shortOrcishWordSU.AddPossibleChildren(Pair.Of(consonant, 100), Pair.Of(consonant, 100));
+            shortOrcishWordSU.AddPossibleChildren(Pair.Of(consonant, 100), Pair.Of(vowel, 100));
             shortOrcishWordSU.AddChildrenAmount(Pair.Of(3, 150), Pair.Of(4, 130));
 
             IRootProperty whitespace = languageConstructor.CreateRootProperty("whitespace");
@@ -93,7 +93,7 @@ namespace LanguageGenerator.UsageExamples.Examples
 
         public void PrintSentencesOfOrcishLanguage(int amount)
         {
-            List<string> results = languageConstructor.GetStringEnumerableOfProprety("orcish sentence", amount).ToList();
+            List<string> results = languageConstructor.GetStringEnumerableOfProperty("orcish sentence", amount).ToList();
             for (int index = 0; index < results.Count; index++)
             {
                 results[index] = char.ToUpper(results[index][0]) + results[index].Substring(1);
