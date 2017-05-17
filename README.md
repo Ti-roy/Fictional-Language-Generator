@@ -24,7 +24,7 @@ Updates
 
 *16/05/2017*
 
-Chained syntax doesnt work.The problem isnt in fact that it can be "train crush",but more in fact that one method in 200 chracters long looks horrible. Thats why I decided to replace all chained methods. All methods,that marked as obselete will be changed/deleted in next commit, as tests will be redone with new syntax. Current version is not much better, but hey, there must be code somewhere. You have to use library as in `OrcLanguage` or `GettingStartedMe` example.
+Chained syntax doesnt work.The problem isnt in fact that it can be "train crush",but more in fact that one method in 200 chracters long looks horrible. Thats why I decided to replace all chained methods. All methods,that marked as obselete will be changed/deleted in next commit, as tests will be redone with new syntax. Current version is not much better, but hey, there must be code somewhere. You have to use library as in `OrcLanguage` or `GettingStartedExample` example.
 
 Getting started
 ------
