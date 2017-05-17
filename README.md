@@ -65,7 +65,7 @@ Done.
 
 There is still 1 unclear element. In creating property `consonant` we written `CanStartFrom("Start", 100)`. Start property is first property added to construction scheme, and we said that `consonant` should go after it. **Language construction must have properties that can go after `Start` property.**
 
-OK, now we know how specify ordering and its order frequency, but we havent created any syntactic units, to construct our words. Lets declare some consonants.
+Now we know how specify ordering and its order frequency, but we havent created any syntactic units, to construct our words. Lets declare some consonants.
 
 ```cs
 languageConstructor.CreateRootSyntacticUnitsOfProperty(consonant, Pair.Of("w", 100), Pair.Of("r", 100), Pair.Of("t", 100));
@@ -74,11 +74,11 @@ We declared three `consonant`s, each of them will be met with same frequency - `
 ```cs
 languageConstructor.CreateRootSyntacticUnitsOfProperty(consonant, Pair.Of("j", 500));
 ```
-Ok, lets create some vowels:
+OK, lets create some vowels:
 ```cs
 languageConstructor.CreateRootSyntacticUnitsOfProperty(vowel, Pair.Of("a", 100), Pair.Of("o", 100), Pair.Of("u", 100));
 ```
-Here is nothing new, we declared three syntactic units of property `vowel`, which will be met with same frequency. OK, now lets create parent property with name `word`.
+Here is nothing new, we declared three syntactic units of property `vowel`, which will be met with same frequency. Now lets create parent property with name `word`.
 ```cs
 IParentProperty word = languageConstructor.CreateParentProperty("word");
 word.CanStartFrom("Start", 100);
@@ -116,7 +116,7 @@ API overview (class `LanguageConstructor`)
 ------
 This topic mainly describes class `LanguageConstructor`.
 ### Properties
-Principal of properties is in core of engine. Properties can be seen as type of syntactic units. Properties define order. Parent property also define what syntactic units that belong to it must contain to be complete. Also, properties can define how frequent certain property will be used, by specifing its frequency in `CanStartFrom(...)` method, if there is more than property, that can go after a property.
+Principal of properties is in core of engine. Properties can be seen as type of syntactic units. Properties define order. Parent property also define what syntactic units of its type must contain to be complete. Also, properties can define how frequent certain property will be used, by specifing its frequency in `CanStartFrom(...)` method, if there is more than property, that can go after a property.
 #### Default properties
 Currently engine contains 2 syntactic units by default. 
 
