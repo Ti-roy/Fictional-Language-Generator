@@ -12,7 +12,7 @@ namespace LanguageGenerator.Core.AbstractFactory
 {
     public class LanguageFactory : ILanguageFactory
     {
-        private IRootProperty lastCreatedProperty;
+        private IRootProperty _lastCreatedProperty;
 
 
         public LanguageFactory(ISyntacticUnitRepository repository)
@@ -71,9 +71,9 @@ namespace LanguageGenerator.Core.AbstractFactory
 
         public IRootSU CreateRootSyntacticUnitWithLastCreatedProperty(string stringRepresentation, int frequency = 100)
         {
-            if(lastCreatedProperty == null)
+            if(_lastCreatedProperty == null)
                 throw new NullReferenceException("No property created before using this method.");
-            return CreateRootSyntacticUnit(stringRepresentation, lastCreatedProperty, frequency);
+            return CreateRootSyntacticUnit(stringRepresentation, _lastCreatedProperty, frequency);
         }
 
 
@@ -102,7 +102,7 @@ namespace LanguageGenerator.Core.AbstractFactory
 
         private void SetLastCreatedProperty(IRootProperty property)
         {
-            lastCreatedProperty = property;
+            _lastCreatedProperty = property;
         }
     }
 }

@@ -12,112 +12,112 @@ namespace LanguageGenerator.Core.LanguageConstructor
 {
     public class LanguageConstructor : ILanguageFactory, ISyntacticUnitConstructor
     {
-        private readonly LanguageFactory languageFactory;
-        private int lastHashCodeSnippet;
-        private readonly SyntacticUnitConstructor unitConstructor;
+        private readonly LanguageFactory _languageFactory;
+        private int _lastHashCodeSnippet;
+        private readonly SyntacticUnitConstructor _unitConstructor;
 
 
         public LanguageConstructor()
         {
-            languageFactory = new LanguageFactory();
-            unitConstructor = new SyntacticUnitConstructor(languageFactory.Repository);
+            _languageFactory = new LanguageFactory();
+            _unitConstructor = new SyntacticUnitConstructor(_languageFactory.Repository);
         }
 
 
         ISyntacticUnitRepository ILanguageFactory.Repository
         {
-            get { return languageFactory.Repository; }
+            get { return _languageFactory.Repository; }
         }
 
 
         public IRootProperty CreateRootProperty(string propertyName)
         {
-            return languageFactory.CreateRootProperty(propertyName);
+            return _languageFactory.CreateRootProperty(propertyName);
         }
 
 
         public IParentProperty CreateParentProperty(string propertyName)
         {
-            return languageFactory.CreateParentProperty(propertyName);
+            return _languageFactory.CreateParentProperty(propertyName);
         }
 
 
         public IRootSU CreateRootSyntacticUnit(string stringRepresentation, IRootProperty itsProperty, int frequency = 100)
         {
-            return languageFactory.CreateRootSyntacticUnit(stringRepresentation, itsProperty, frequency);
+            return _languageFactory.CreateRootSyntacticUnit(stringRepresentation, itsProperty, frequency);
         }
 
 
         public IRootSU CreateRootSyntacticUnit(string stringRepresentation, string itsPropertyName, int frequency = 100)
         {
-            return languageFactory.CreateRootSyntacticUnit(stringRepresentation, itsPropertyName, frequency);
+            return _languageFactory.CreateRootSyntacticUnit(stringRepresentation, itsPropertyName, frequency);
         }
 
 
         public IRootSU CreateRootSyntacticUnitWithLastCreatedProperty(string stringRepresentation, int frequency = 100)
         {
-            return languageFactory.CreateRootSyntacticUnitWithLastCreatedProperty(stringRepresentation, frequency);
+            return _languageFactory.CreateRootSyntacticUnitWithLastCreatedProperty(stringRepresentation, frequency);
         }
 
 
         public IParentSU CreateParentSyntacticUnit(IParentProperty itsProperty, int frequency = 100)
         {
-            return languageFactory.CreateParentSyntacticUnit(itsProperty, frequency);
+            return _languageFactory.CreateParentSyntacticUnit(itsProperty, frequency);
         }
 
 
         public IParentSU CreateParentSyntacticUnit(string itsPropertyName, int frequency = 100)
         {
-            return languageFactory.CreateParentSyntacticUnit(itsPropertyName, frequency);
+            return _languageFactory.CreateParentSyntacticUnit(itsPropertyName, frequency);
         }
 
 
         ISyntacticUnitRepository ISyntacticUnitConstructor.SyntacticUnitRepository
         {
-            get { return languageFactory.Repository; }
+            get { return _languageFactory.Repository; }
         }
 
 
         public string GetResultStringOfProperty(string propertyName)
         {
             LinkRepositoryIfItIsntLinked();
-            return unitConstructor.GetResultStringOfProperty(propertyName);
+            return _unitConstructor.GetResultStringOfProperty(propertyName);
         }
 
 
         public string GetResultStringOfProperty(IProperty property)
         {
             LinkRepositoryIfItIsntLinked();
-            return unitConstructor.GetResultStringOfProperty(property);
+            return _unitConstructor.GetResultStringOfProperty(property);
         }
 
 
         public ISyntacticUnitResultScheme GetResultSchemeOfProperty(string propertyName)
         {
             LinkRepositoryIfItIsntLinked();
-            return unitConstructor.GetResultSchemeOfProperty(propertyName);
+            return _unitConstructor.GetResultSchemeOfProperty(propertyName);
         }
 
 
         public ISyntacticUnitResultScheme GetResultSchemeOfProperty(IProperty property)
         {
             LinkRepositoryIfItIsntLinked();
-            return unitConstructor.GetResultSchemeOfProperty(property);
+            return _unitConstructor.GetResultSchemeOfProperty(property);
         }
 
 
         public void LinkRepository()
         {
-            unitConstructor.LinkRepository();
+            _unitConstructor.LinkRepository();
         }
 
 
         private void LinkRepositoryIfItIsntLinked()
         {
-            int currentRepositoryHashCode = languageFactory.Repository.GetHashCode();
-            if (currentRepositoryHashCode != lastHashCodeSnippet)
+            int currentRepositoryHashCode = _languageFactory.Repository.GetHashCode();
+            if (currentRepositoryHashCode != _lastHashCodeSnippet)
             {
-                lastHashCodeSnippet = currentRepositoryHashCode;
+                _lastHashCodeSnippet = currentRepositoryHashCode;
                 LinkRepository();
             }
         }

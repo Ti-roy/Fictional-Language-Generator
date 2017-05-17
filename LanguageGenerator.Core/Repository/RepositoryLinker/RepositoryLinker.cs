@@ -10,7 +10,6 @@ namespace LanguageGenerator.Core.Repository.RepositoryLinker
 {
     public class RepositoryLinker : IRepositoryLinker
     {
-        //TODO:Better to cover this class with tests
         public bool IsRepositoryLinked(ISyntacticUnitRepository repository)
         {
             return IsAllChildLinkInfoEmpty(repository) && IsAllOrderLinkInfoEmpty(repository) && IsAllMustContainLinkInfoEmpty(repository);

@@ -12,12 +12,12 @@ using LanguageGenerator.Core.SyntacticUnit.ParentSU;
 
 namespace LanguageGenerator.UsageExamples.Examples
 {
-    internal class ReadMeExample
+    internal class GettingStartedExample
     {
         private readonly LanguageConstructor languageConstructor = new LanguageConstructor();
 
 
-        public ReadMeExample()
+        public GettingStartedExample()
         {
             GenerateLanguageGraphByExactExampleCode();
         }
