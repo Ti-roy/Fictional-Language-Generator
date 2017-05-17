@@ -24,7 +24,7 @@ Updates
 
 *16/05/2017*
 
-Chained syntax doesnt work.The problem isnt in fact that it can be "train crush",but more in fact that one method in 200 chracters long looks horrible. Thats why I decided to replace all chained methods. All methods,that marked as obselete will be changed/deleted in next commit, as tests will be redone with new syntax. Current version is not much better, but hey, there must be code somewhere. You have to use library as in `OrcLanguage` or `ReadMe` example.
+Chained syntax doesnt work.The problem isnt in fact that it can be "train crush",but more in fact that one method in 200 chracters long looks horrible. Thats why I decided to replace all chained methods. All methods,that marked as obselete will be changed/deleted in next commit, as tests will be redone with new syntax. Current version is not much better, but hey, there must be code somewhere. You have to use library as in `OrcLanguage` or `GettingStartedMe` example.
 
 Getting started
 ------
@@ -67,36 +67,36 @@ There is still 1 unclear element. In creating property `consonant` we written `C
 
 OK, now we know how specify ordering and its order frequency, but we havent created any syntactic units, to construct our words. Lets declare some consonants.
 
-`````cs
+```cs
 languageConstructor.CreateRootSyntacticUnitsOfProperty(consonant, Pair.Of("w", 100), Pair.Of("r", 100), Pair.Of("t", 100));
-`````
+```
 We declared three `consonant`s, each of them will be met with same frequency - `100`. What if we want to have letter `j` that will be met like 5 times more, than any other consonant.
-`````cs
+```cs
 languageConstructor.CreateRootSyntacticUnitsOfProperty(consonant, Pair.Of("j", 500));
-`````
+```
 Ok, lets create some vowels:
-`````cs
+```cs
 languageConstructor.CreateRootSyntacticUnitsOfProperty(vowel, Pair.Of("a", 100), Pair.Of("o", 100), Pair.Of("u", 100));
-`````
+```
 Here is nothing new, we declared three syntactic units of property `vowel`, which will be met with same frequency. OK, now lets create parent property with name `word`.
-`````cs
+```cs
 IParentProperty word = languageConstructor.CreateParentProperty("word");
 word.CanStartFrom("Start", 100);
-`````
+```
 Difference between `CreateParentProperty(string)` and `CreateRootProperty(string)` is that parent property reference parent syntactic units, which can have as children any parent property or root property. Also, note that we again told engine that `word` can start from property `Start`. Lets create parent syntactic units and specify its children.
 
 For creating parent syntactic unit we need to specify its children, and its children amount.
-`````cs
+```cs
 IParentSU wordSu = languageConstructor.CreateParentSyntacticUnit("word");
 wordSu.AddPossibleChild(Pair.Of("consonant", 100), Pair.Of("vowel", 80));
 wordSu.AddChildrenAmount(3, 100);
-`````
+```
 Here we told engine that syntactic unit that belong to property `word` should have children `consonant` and `vowel` (`AddPossibleChild("consonant", 100)`, `AddPossibleChild("vowel", 80)`). Child `vowel` will be chosen in 80/180 cases (total frequency 180 is sum of: `80` frequency of `vowel`, `100` frequency of `consonant`). This syntactic unit will have exatly 3 children, which is specified by method `AddChildrenAmount(3, 100)`. 
 
 We finished creating of our basic graph. Now, only thing that left is to get results:
-`````cs
+```cs
 languageConstructor.GetStringListOfProprety("word", 10);
-`````
+```
 And all is done. Example output listed is below:
 ```
 juj
@@ -110,7 +110,7 @@ wat
 ruj
 joj
 ```
-Not the most incredible result, but even now, we created sequence of words that are remarkable by wast amount of letter `j` in it. Code used in this example can be found at <a href = "https://github.com/shinigamixas/Fictional-Language-Generator/blob/master/LanguageGenerator.UsageExamples/Examples/ReadMeExample.cs">this link</a>. If you want more, welcome to predefined sets section. 
+Not the most incredible result, but even now, we created sequence of words that are remarkable by wast amount of letter `j` in it. Code used in this example can be found at <a href = "https://github.com/shinigamixas/Fictional-Language-Generator/blob/master/LanguageGenerator.UsageExamples/Examples/GettingStartedExample.cs">this link</a>. If you want more, welcome to predefined sets section. 
 
 API overview (class `LanguageConstructor`) 
 ------
